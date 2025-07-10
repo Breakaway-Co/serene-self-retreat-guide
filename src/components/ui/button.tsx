@@ -18,6 +18,10 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        healing: "bg-healing text-healing-foreground hover:bg-healing/90 shadow-gentle",
+        nature: "bg-nature text-nature-foreground hover:bg-nature/90 shadow-gentle",
+        calm: "bg-calm text-calm-foreground hover:bg-calm/90 shadow-gentle",
+        earth: "bg-earth text-earth-foreground hover:bg-earth/90 shadow-gentle",
       },
       size: {
         default: "h-10 px-4 py-2",
