@@ -3,27 +3,39 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Clock, CheckCircle, PlayCircle, Calendar } from "lucide-react";
+import { Clock, CheckCircle, PlayCircle, Calendar, BookOpen } from "lucide-react";
+import ActivityGuides from "./ActivityGuides";
 
 const DailyProgram = () => {
   const [selectedDay, setSelectedDay] = useState(1);
   const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
+  const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
+
+  // If an activity is selected, show the guide
+  if (selectedActivity) {
+    return (
+      <ActivityGuides 
+        selectedActivity={selectedActivity} 
+        onBack={() => setSelectedActivity(null)} 
+      />
+    );
+  }
 
   const dailyPrograms = {
     1: {
       theme: "Foundation & Safety",
       focus: "Creating a safe space and establishing routines",
       morning: [
-        { time: "7:00 AM", activity: "Gentle Wake-Up Breathing", duration: "10 min", type: "mindfulness" },
-        { time: "7:15 AM", activity: "Gratitude Journaling", duration: "15 min", type: "reflection" },
+        { time: "7:00 AM", activity: "Gentle Wake-Up Breathing", duration: "10 min", type: "mindfulness", guideId: "gentle-wake-up-breathing" },
+        { time: "7:15 AM", activity: "Gratitude Journaling", duration: "15 min", type: "reflection", guideId: "gratitude-journaling" },
         { time: "7:30 AM", activity: "Nutritious Breakfast Preparation", duration: "30 min", type: "nutrition" },
         { time: "8:00 AM", activity: "Morning Walk or Gentle Movement", duration: "20 min", type: "movement" }
       ],
       afternoon: [
         { time: "12:00 PM", activity: "Mindful Lunch Preparation", duration: "30 min", type: "nutrition" },
-        { time: "1:00 PM", activity: "Trauma-Informed Body Scan", duration: "20 min", type: "healing" },
-        { time: "2:00 PM", activity: "Creative Expression (Art/Music)", duration: "30 min", type: "creative" },
-        { time: "3:00 PM", activity: "Nature Connection Activity", duration: "30 min", type: "nature" }
+        { time: "1:00 PM", activity: "Trauma-Informed Body Scan", duration: "20 min", type: "healing", guideId: "trauma-informed-body-scan" },
+        { time: "2:00 PM", activity: "Creative Expression (Art/Music)", duration: "30 min", type: "creative", guideId: "creative-expression" },
+        { time: "3:00 PM", activity: "Nature Connection Activity", duration: "30 min", type: "nature", guideId: "grounding-exercises-outdoors" }
       ],
       evening: [
         { time: "6:00 PM", activity: "Wholesome Dinner Preparation", duration: "40 min", type: "nutrition" },
@@ -43,9 +55,9 @@ const DailyProgram = () => {
       ],
       afternoon: [
         { time: "12:00 PM", activity: "Comfort Food Lunch", duration: "30 min", type: "nutrition" },
-        { time: "1:00 PM", activity: "Progressive Muscle Relaxation", duration: "25 min", type: "healing" },
-        { time: "2:00 PM", activity: "Emotion Regulation Techniques", duration: "30 min", type: "healing" },
-        { time: "3:00 PM", activity: "Grounding Exercises Outdoors", duration: "30 min", type: "nature" }
+        { time: "1:00 PM", activity: "Progressive Muscle Relaxation", duration: "25 min", type: "healing", guideId: "progressive-muscle-relaxation" },
+        { time: "2:00 PM", activity: "Emotion Regulation Techniques", duration: "30 min", type: "healing", guideId: "emotion-regulation-techniques" },
+        { time: "3:00 PM", activity: "Grounding Exercises Outdoors", duration: "30 min", type: "nature", guideId: "grounding-exercises-outdoors" }
       ],
       evening: [
         { time: "6:00 PM", activity: "Nourishing Dinner Ritual", duration: "40 min", type: "nutrition" },
@@ -135,9 +147,22 @@ const DailyProgram = () => {
                         {activity.activity}
                       </p>
                     </div>
-                    <div className="flex items-center gap-1 text-muted-foreground">
-                      <Clock className="w-4 h-4" />
-                      <span className="text-sm">{activity.duration}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <Clock className="w-4 h-4" />
+                        <span className="text-sm">{activity.duration}</span>
+                      </div>
+                      {activity.guideId && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedActivity(activity.guideId)}
+                          className="h-8"
+                        >
+                          <BookOpen className="w-4 h-4 mr-1" />
+                          Guide
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -159,7 +184,7 @@ const DailyProgram = () => {
             14-Day Healing Program
           </CardTitle>
           <CardDescription>
-            Select a day to view the structured activities and exercises
+            Select a day to view the structured activities and exercises. Click "Guide" for detailed instructions.
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,0 +1,749 @@
+import { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Clock, CheckCircle, PlayCircle, BookOpen, Heart, Brain, Leaf, Shield } from "lucide-react";
+
+interface ActivityStep {
+  step: number;
+  instruction: string;
+  duration: string;
+  tip?: string;
+}
+
+interface ActivityGuide {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  evidenceBasis: string;
+  traumaInformed: string;
+  benefits: string[];
+  steps: ActivityStep[];
+  modifications: string[];
+  safetyNotes: string[];
+}
+
+const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string, onBack: () => void }) => {
+  const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+
+  const activityGuides: Record<string, ActivityGuide> = {
+    "gentle-wake-up-breathing": {
+      id: "gentle-wake-up-breathing",
+      name: "Gentle Wake-Up Breathing",
+      type: "mindfulness",
+      description: "A trauma-sensitive breathing exercise to gently transition from sleep to wakefulness",
+      evidenceBasis: "Based on Polyvagal Theory and research on diaphragmatic breathing for nervous system regulation (Porges, 2011)",
+      traumaInformed: "Uses gentle, non-forceful breathing patterns that allow for personal control and can be stopped at any time",
+      benefits: [
+        "Activates parasympathetic nervous system",
+        "Reduces morning anxiety",
+        "Increases oxygen flow to the brain",
+        "Promotes mindful awareness"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Remain lying down in bed. Place one hand on your chest, one on your belly.",
+          duration: "30 seconds",
+          tip: "Notice which hand moves more naturally - there's no wrong way"
+        },
+        {
+          step: 2,
+          instruction: "Without forcing anything, take a natural breath in through your nose.",
+          duration: "4 seconds",
+          tip: "If nose breathing feels restricted, mouth breathing is perfectly fine"
+        },
+        {
+          step: 3,
+          instruction: "Pause naturally at the top of your breath.",
+          duration: "1-2 seconds",
+          tip: "Don't hold your breath forcefully - just a gentle pause"
+        },
+        {
+          step: 4,
+          instruction: "Exhale slowly through your mouth with a gentle 'ahh' sound.",
+          duration: "6 seconds",
+          tip: "The sound helps release tension and signals safety to your nervous system"
+        },
+        {
+          step: 5,
+          instruction: "Repeat this pattern 5-10 times, noticing how your body feels.",
+          duration: "3-6 minutes",
+          tip: "Stop if you feel dizzy or uncomfortable - your comfort is the priority"
+        },
+        {
+          step: 6,
+          instruction: "End by taking three normal breaths and gently wiggling your fingers and toes.",
+          duration: "30 seconds",
+          tip: "This helps you reconnect with your body before getting up"
+        }
+      ],
+      modifications: [
+        "If lying down triggers trauma responses, try sitting up in bed",
+        "Use counted breathing (4-4-4-4) if timing feels too restrictive",
+        "Replace hand placement with just focusing on the sensation of breath",
+        "Breathe through mouth if nasal breathing causes anxiety"
+      ],
+      safetyNotes: [
+        "Stop immediately if you feel dizzy, panicked, or disconnected",
+        "This should feel gentle and natural, never forced",
+        "If breathing exercises trigger trauma responses, try focusing on external sounds instead",
+        "Remember: You're in control and can modify or stop at any time"
+      ]
+    },
+    "gratitude-journaling": {
+      id: "gratitude-journaling",
+      name: "Gratitude Journaling",
+      type: "reflection",
+      description: "A structured gratitude practice that builds resilience and positive neural pathways",
+      evidenceBasis: "Research shows gratitude practices increase dopamine and serotonin while reducing cortisol (Emmons & McCullough, 2003)",
+      traumaInformed: "Focuses on small, accessible positives rather than forcing gratitude for traumatic experiences",
+      benefits: [
+        "Rewires brain for positivity bias",
+        "Reduces symptoms of depression",
+        "Improves sleep quality",
+        "Strengthens social connections"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Find a comfortable seated position with your journal or paper.",
+          duration: "1 minute",
+          tip: "Use whatever feels comfortable - bed, chair, or floor"
+        },
+        {
+          step: 2,
+          instruction: "Write today's date and take three conscious breaths.",
+          duration: "1 minute",
+          tip: "The date helps track patterns in your gratitude over time"
+        },
+        {
+          step: 3,
+          instruction: "Write: 'Three things I'm grateful for today:' and number 1-3.",
+          duration: "30 seconds"
+        },
+        {
+          step: 4,
+          instruction: "For each item, write one specific thing you appreciate and WHY.",
+          duration: "8 minutes",
+          tip: "Examples: 'My morning coffee - because it tastes warm and comforting' rather than just 'coffee'"
+        },
+        {
+          step: 5,
+          instruction: "Write one thing about yourself you appreciate today.",
+          duration: "3 minutes",
+          tip: "Can be as simple as 'I got out of bed' or 'I'm trying to heal'"
+        },
+        {
+          step: 6,
+          instruction: "Close by writing: 'I am open to noticing more good things today.'",
+          duration: "1 minute",
+          tip: "This sets an intention for continued positive awareness"
+        }
+      ],
+      modifications: [
+        "If writing is difficult, try voice recording or mental listing",
+        "Start with just one thing if three feels overwhelming",
+        "Focus on sensory details (sounds, textures, tastes) if emotions feel inaccessible",
+        "Use prompts like 'Something that made me smile' or 'A person who cares about me'"
+      ],
+      safetyNotes: [
+        "Never force gratitude for traumatic experiences",
+        "It's okay if some days feel harder - that's normal",
+        "Focus on small, concrete things rather than big life events",
+        "If this brings up painful contrasts, try 'neutral observations' instead"
+      ]
+    },
+    "emotion-regulation-techniques": {
+      id: "emotion-regulation-techniques",
+      name: "Emotion Regulation Techniques",
+      type: "healing",
+      description: "Evidence-based strategies for managing difficult emotions safely and effectively",
+      evidenceBasis: "Based on Dialectical Behavior Therapy (DBT) emotion regulation skills (Linehan, 2014)",
+      traumaInformed: "Emphasizes self-compassion and validates all emotions as normal responses",
+      benefits: [
+        "Increases emotional intelligence",
+        "Reduces emotional reactivity",
+        "Builds distress tolerance",
+        "Improves relationship skills"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Name the emotion you're feeling right now without judgment.",
+          duration: "2 minutes",
+          tip: "Use emotion words like 'angry,' 'sad,' 'anxious' rather than 'bad' or 'upset'"
+        },
+        {
+          step: 2,
+          instruction: "Rate the intensity of this emotion on a scale of 1-10.",
+          duration: "1 minute",
+          tip: "This helps create distance between you and the emotion"
+        },
+        {
+          step: 3,
+          instruction: "Locate where you feel this emotion in your body.",
+          duration: "2 minutes",
+          tip: "Notice tension, heat, cold, heaviness, or other physical sensations"
+        },
+        {
+          step: 4,
+          instruction: "Practice the TIPP technique: Temperature (cold water), Intense exercise (30 seconds), Paced breathing, Paired muscle relaxation.",
+          duration: "5 minutes",
+          tip: "Choose one TIPP technique that feels most accessible right now"
+        },
+        {
+          step: 5,
+          instruction: "Use opposite action: If angry, be gentle. If sad, do something active. If anxious, approach rather than avoid.",
+          duration: "5 minutes",
+          tip: "This works by changing your body chemistry and breaking emotion-behavior cycles"
+        },
+        {
+          step: 6,
+          instruction: "Practice self-validation: 'This emotion makes sense given my situation.'",
+          duration: "2 minutes",
+          tip: "Validation reduces the intensity of emotions without changing the situation"
+        },
+        {
+          step: 7,
+          instruction: "Rate your emotion intensity again and notice any changes.",
+          duration: "1 minute",
+          tip: "Even small decreases are meaningful progress"
+        }
+      ],
+      modifications: [
+        "If naming emotions is difficult, use the emotion wheel or list",
+        "Start with rating physical sensations if emotions feel too abstract",
+        "Use shorter time intervals if attention is limited",
+        "Focus on just one TIPP technique that feels safest"
+      ],
+      safetyNotes: [
+        "Never use opposite action for appropriate emotions (like grief or fear in dangerous situations)",
+        "If emotions become overwhelming, focus on grounding techniques instead",
+        "Remember that all emotions are valid and temporary",
+        "Stop if you experience suicidal or self-harm thoughts - seek professional help"
+      ]
+    },
+    "grounding-exercises-outdoors": {
+      id: "grounding-exercises-outdoors",
+      name: "Grounding Exercises Outdoors",
+      type: "nature",
+      description: "Nature-based grounding techniques that use outdoor environments for healing and regulation",
+      evidenceBasis: "Based on research showing nature exposure reduces cortisol and improves mental health (Bratman et al., 2019)",
+      traumaInformed: "Uses the regulating effects of nature while maintaining awareness of safety and choice",
+      benefits: [
+        "Reduces stress hormones",
+        "Improves focus and attention",
+        "Connects you to the present moment",
+        "Provides natural dopamine boost"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Find a safe outdoor space - yard, park, balcony, or even by an open window.",
+          duration: "2 minutes",
+          tip: "Any access to nature counts, even urban green spaces"
+        },
+        {
+          step: 2,
+          instruction: "Stand or sit comfortably and take three natural breaths of fresh air.",
+          duration: "1 minute",
+          tip: "Notice how outdoor air feels different from indoor air"
+        },
+        {
+          step: 3,
+          instruction: "Use the 5-4-3-2-1 technique: Notice 5 things you see, 4 you hear, 3 you feel, 2 you smell, 1 you taste.",
+          duration: "5 minutes",
+          tip: "Focus on natural elements - birds, wind, sunlight, earth smells"
+        },
+        {
+          step: 4,
+          instruction: "Find something in nature to focus on - a tree, cloud, flower, or patch of grass.",
+          duration: "3 minutes",
+          tip: "Let your eyes rest on this natural object without trying to analyze or name it"
+        },
+        {
+          step: 5,
+          instruction: "If possible, make physical contact with nature - touch a tree, hold a leaf, or feel the ground.",
+          duration: "2 minutes",
+          tip: "This creates a literal grounding connection with the earth"
+        },
+        {
+          step: 6,
+          instruction: "Practice 'nature breathing' - breathe in for 4 counts, hold for 4, exhale for 6.",
+          duration: "5 minutes",
+          tip: "Imagine breathing in the life energy of plants around you"
+        },
+        {
+          step: 7,
+          instruction: "Set an intention to carry this peaceful feeling with you as you go inside.",
+          duration: "2 minutes",
+          tip: "This helps maintain the benefits of nature connection throughout your day"
+        }
+      ],
+      modifications: [
+        "If going outside isn't possible, practice by an open window or with houseplants",
+        "Use nature sounds or videos if no outdoor access is available",
+        "Start with just 5 minutes if longer periods feel overwhelming",
+        "Adapt for seasonal weather by dressing appropriately or finding covered spaces"
+      ],
+      safetyNotes: [
+        "Choose safe, familiar outdoor spaces",
+        "If you have nature phobias, start very gradually",
+        "Be aware of weather conditions and dress appropriately",
+        "Trust your instincts about safe vs. unsafe outdoor spaces"
+      ]
+    },
+    "creative-expression": {
+      id: "creative-expression",
+      name: "Creative Expression (Art/Music)",
+      type: "creative",
+      description: "Therapeutic creative activities that support emotional processing and self-expression",
+      evidenceBasis: "Art and music therapy show significant benefits for trauma recovery and emotional regulation (Malchiodi, 2020)",
+      traumaInformed: "Emphasizes process over product and allows for non-verbal emotional expression",
+      benefits: [
+        "Provides outlet for emotions",
+        "Accesses non-verbal parts of brain",
+        "Builds self-esteem and mastery",
+        "Creates meaning from difficult experiences"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Gather simple materials: paper, pencils, crayons, or access to music/singing.",
+          duration: "2 minutes",
+          tip: "Use whatever is available - even drawing in dirt or singing in the shower counts"
+        },
+        {
+          step: 2,
+          instruction: "Set an intention: 'I'm creating to express, not to impress.'",
+          duration: "1 minute",
+          tip: "This removes pressure and judgment from the creative process"
+        },
+        {
+          step: 3,
+          instruction: "Check in with your emotions and choose how to express them creatively.",
+          duration: "2 minutes",
+          tip: "Anger might become bold strokes, sadness might become gentle humming"
+        },
+        {
+          step: 4,
+          instruction: "Create freely for 15 minutes without critiquing or editing.",
+          duration: "15 minutes",
+          tip: "Let your hands or voice move intuitively - there's no wrong way"
+        },
+        {
+          step: 5,
+          instruction: "Step back and observe your creation without judgment.",
+          duration: "3 minutes",
+          tip: "Notice colors, textures, sounds, or patterns that emerged naturally"
+        },
+        {
+          step: 6,
+          instruction: "Write or think about what this creative expression represents for you.",
+          duration: "5 minutes",
+          tip: "This helps integrate the emotional processing that occurred"
+        },
+        {
+          step: 7,
+          instruction: "Appreciate yourself for taking time to create and express.",
+          duration: "2 minutes",
+          tip: "This builds a positive association with creative self-care"
+        }
+      ],
+      modifications: [
+        "Use digital tools if physical materials aren't available",
+        "Try movement or dance if traditional art/music doesn't appeal",
+        "Use guided imagery or visualization as a form of creative expression",
+        "Collaborate with others online or in person if desired"
+      ],
+      safetyNotes: [
+        "Stop if creative expression brings up overwhelming trauma memories",
+        "Remember that dark or difficult themes in art are normal and healthy",
+        "Avoid self-criticism or comparison to others' work",
+        "Consider sharing your creations only if it feels safe and desired"
+      ]
+    },
+    "trauma-informed-body-scan": {
+      id: "trauma-informed-body-scan",
+      name: "Trauma-Informed Body Scan",
+      type: "healing",
+      description: "A gentle body awareness practice that respects trauma responses and promotes safety",
+      evidenceBasis: "Adapted from MBSR and Trauma-Sensitive Mindfulness protocols (Treleaven, 2018)",
+      traumaInformed: "Emphasizes choice, control, and the option to disconnect from triggering sensations",
+      benefits: [
+        "Increases body awareness safely",
+        "Reduces dissociation",
+        "Builds distress tolerance",
+        "Promotes nervous system regulation"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Choose a position that feels most safe - sitting, lying down, or standing.",
+          duration: "1 minute",
+          tip: "You can keep your eyes open or closed - whatever feels safer"
+        },
+        {
+          step: 2,
+          instruction: "Notice your points of contact with your support surface (chair, bed, floor).",
+          duration: "2 minutes",
+          tip: "This grounding helps establish safety before internal focus"
+        },
+        {
+          step: 3,
+          instruction: "Bring gentle attention to your feet. Notice temperature, pressure, or tingling.",
+          duration: "2 minutes",
+          tip: "If any area feels uncomfortable or triggering, simply move your attention elsewhere"
+        },
+        {
+          step: 4,
+          instruction: "Slowly move attention up through your legs, noticing sensations without judgment.",
+          duration: "3 minutes",
+          tip: "Use about 80% attention on body, 20% on the room around you for safety"
+        },
+        {
+          step: 5,
+          instruction: "Continue through torso, arms, and head, moving at your own pace.",
+          duration: "8 minutes",
+          tip: "Skip any areas that hold trauma or feel uncomfortable"
+        },
+        {
+          step: 6,
+          instruction: "End by noticing your whole body as one connected system.",
+          duration: "2 minutes",
+          tip: "Appreciate your body for carrying you through this practice"
+        },
+        {
+          step: 7,
+          instruction: "Gently wiggle fingers and toes, take three normal breaths.",
+          duration: "1 minute",
+          tip: "This helps you fully return to present moment awareness"
+        }
+      ],
+      modifications: [
+        "Keep eyes open if closing them feels unsafe",
+        "Focus only on external sensations (clothing, air temperature) if internal feels too intense",
+        "Use the 'window of tolerance' - stay within comfortable sensation levels",
+        "Try focusing on just hands or feet if full body feels overwhelming"
+      ],
+      safetyNotes: [
+        "You have permission to stop or modify this practice at any time",
+        "If you dissociate, focus on external sounds or textures to reconnect",
+        "Avoid areas where trauma is stored in the body",
+        "This should feel curious and gentle, never forced or invasive"
+      ]
+    },
+    "progressive-muscle-relaxation": {
+      id: "progressive-muscle-relaxation",
+      name: "Progressive Muscle Relaxation",
+      type: "healing",
+      description: "A systematic tension and release practice that helps distinguish between stress and relaxation",
+      evidenceBasis: "Developed by Jacobson (1938), extensively researched for anxiety and PTSD symptom reduction",
+      traumaInformed: "Modified to allow choice in which muscles to engage and respect trauma-related muscle tension",
+      benefits: [
+        "Reduces physical tension",
+        "Improves awareness of stress signals",
+        "Promotes deeper relaxation",
+        "Helps with sleep preparation"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Sit or lie in a comfortable position. Take three natural breaths.",
+          duration: "1 minute",
+          tip: "Choose a position where you feel most in control and safe"
+        },
+        {
+          step: 2,
+          instruction: "Start with your feet. Curl your toes tightly for 5 seconds, then release.",
+          duration: "30 seconds",
+          tip: "Notice the contrast between tension and relaxation"
+        },
+        {
+          step: 3,
+          instruction: "Tense your calf muscles by pointing toes toward your shins, hold, then release.",
+          duration: "30 seconds",
+          tip: "Only use about 70% of your maximum tension - this should never be painful"
+        },
+        {
+          step: 4,
+          instruction: "Continue up through thighs, glutes, abdomen, and back - tense and release each area.",
+          duration: "8 minutes",
+          tip: "Skip any muscle groups that are injured or hold trauma"
+        },
+        {
+          step: 5,
+          instruction: "Work through arms: make fists, tense biceps, then shoulders up to ears.",
+          duration: "3 minutes",
+          tip: "Release shoulders with a gentle rolling motion"
+        },
+        {
+          step: 6,
+          instruction: "Finish with face muscles: scrunch face tight, then release into soft expression.",
+          duration: "1 minute",
+          tip: "End with a gentle smile or neutral expression"
+        },
+        {
+          step: 7,
+          instruction: "Do a final full-body tense for 5 seconds, then completely release everything.",
+          duration: "30 seconds",
+          tip: "This helps integrate the relaxation response throughout your body"
+        },
+        {
+          step: 8,
+          instruction: "Rest in complete relaxation for 5 minutes, noticing the sensations.",
+          duration: "5 minutes",
+          tip: "If you fall asleep here, that's perfectly fine and beneficial"
+        }
+      ],
+      modifications: [
+        "Focus only on hands and arms if full body feels too activating",
+        "Use gentle muscle engagement rather than forceful tension",
+        "Practice 'release without tension' - just letting go without the tense phase",
+        "Do seated version if lying down triggers hypervigilance"
+      ],
+      safetyNotes: [
+        "Never tense muscles that are injured or painful",
+        "Avoid areas where trauma may be stored physically",
+        "Stop if you experience muscle cramps or sharp pain",
+        "If anxiety increases, focus on just the release phase without tensing"
+      ]
+    }
+  };
+
+  const currentGuide = activityGuides[selectedActivity];
+  
+  if (!currentGuide) {
+    return (
+      <Card className="shadow-gentle">
+        <CardContent className="pt-6 text-center">
+          <p>Activity guide not found.</p>
+          <Button onClick={onBack} variant="outline" className="mt-4">
+            Back to Schedule
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const toggleStep = (stepNumber: number) => {
+    const newCompleted = new Set(completedSteps);
+    if (newCompleted.has(stepNumber)) {
+      newCompleted.delete(stepNumber);
+    } else {
+      newCompleted.add(stepNumber);
+    }
+    setCompletedSteps(newCompleted);
+  };
+
+  const completedCount = completedSteps.size;
+  const totalSteps = currentGuide.steps.length;
+  const progressPercentage = (completedCount / totalSteps) * 100;
+
+  const getTypeIcon = (type: string) => {
+    const icons = {
+      mindfulness: Heart,
+      reflection: BookOpen,
+      healing: Shield,
+      movement: Leaf,
+      nutrition: Leaf,
+      creative: Brain,
+      nature: Leaf
+    };
+    return icons[type as keyof typeof icons] || BookOpen;
+  };
+
+  const getTypeColor = (type: string) => {
+    const colors = {
+      mindfulness: "healing",
+      reflection: "nature", 
+      nutrition: "calm",
+      movement: "earth",
+      healing: "healing",
+      creative: "nature",
+      nature: "calm"
+    };
+    return colors[type as keyof typeof colors] || "secondary";
+  };
+
+  const TypeIcon = getTypeIcon(currentGuide.type);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <Card className="shadow-nurturing">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg bg-${getTypeColor(currentGuide.type)}/10`}>
+                <TypeIcon className={`w-6 h-6 text-${getTypeColor(currentGuide.type)}`} />
+              </div>
+              <div>
+                <CardTitle className="text-xl">{currentGuide.name}</CardTitle>
+                <CardDescription>{currentGuide.description}</CardDescription>
+              </div>
+            </div>
+            <Button onClick={onBack} variant="outline">
+              Back to Schedule
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4 mb-4">
+            <Badge variant="secondary" className={`bg-${getTypeColor(currentGuide.type)}/10 text-${getTypeColor(currentGuide.type)}`}>
+              {currentGuide.type}
+            </Badge>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              <span>{totalSteps} steps</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1">
+              <div className="flex justify-between text-sm mb-2">
+                <span>Progress</span>
+                <span>{completedCount}/{totalSteps} completed</span>
+              </div>
+              <Progress value={progressPercentage} className="h-2" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Evidence Base & Trauma-Informed Info */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card className="bg-healing/5 border-healing/20">
+          <CardHeader>
+            <CardTitle className="text-sm text-healing">Evidence-Based Foundation</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm">{currentGuide.evidenceBasis}</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-nature/5 border-nature/20">
+          <CardHeader>
+            <CardTitle className="text-sm text-nature">Trauma-Informed Approach</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm">{currentGuide.traumaInformed}</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Benefits */}
+      <Card className="shadow-gentle">
+        <CardHeader>
+          <CardTitle className="text-lg">Benefits</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-2">
+            {currentGuide.benefits.map((benefit, index) => (
+              <div key={index} className="flex items-center gap-2 text-sm">
+                <CheckCircle className="w-4 h-4 text-healing" />
+                <span>{benefit}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Step-by-Step Guide */}
+      <Card className="shadow-gentle">
+        <CardHeader>
+          <CardTitle className="text-lg">Step-by-Step Guide</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {currentGuide.steps.map((step) => {
+              const isCompleted = completedSteps.has(step.step);
+              return (
+                <div 
+                  key={step.step}
+                  className={`border rounded-lg p-4 transition-colors ${
+                    isCompleted ? 'bg-healing/5 border-healing/20' : 'border-border'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => toggleStep(step.step)}
+                      className="h-8 w-8 p-0 mt-1"
+                    >
+                      {isCompleted ? (
+                        <CheckCircle className="w-5 h-5 text-healing" />
+                      ) : (
+                        <div className="w-5 h-5 rounded-full border-2 border-muted-foreground flex items-center justify-center text-xs">
+                          {step.step}
+                        </div>
+                      )}
+                    </Button>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="font-medium">Step {step.step}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {step.duration}
+                        </Badge>
+                      </div>
+                      <p className={`text-sm mb-2 ${isCompleted ? 'line-through text-muted-foreground' : ''}`}>
+                        {step.instruction}
+                      </p>
+                      {step.tip && (
+                        <div className="bg-calm/10 border border-calm/20 rounded p-2 text-xs">
+                          <span className="font-medium text-calm">💡 Tip: </span>
+                          {step.tip}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Safety & Modifications */}
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="modifications">
+          <AccordionTrigger className="text-left">
+            <span className="text-earth">Modifications & Adaptations</span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {currentGuide.modifications.map((modification, index) => (
+                <div key={index} className="flex items-start gap-2 text-sm">
+                  <span className="text-earth mt-1">•</span>
+                  <span>{modification}</span>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="safety">
+          <AccordionTrigger className="text-left">
+            <span className="text-destructive">Safety Notes & Precautions</span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2">
+              {currentGuide.safetyNotes.map((note, index) => (
+                <div key={index} className="flex items-start gap-2 text-sm">
+                  <Shield className="w-4 h-4 text-destructive mt-0.5 flex-shrink-0" />
+                  <span>{note}</span>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </div>
+  );
+};
+
+export default ActivityGuides;
