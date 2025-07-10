@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Phone, Heart, Brain, Shield, Lightbulb } from "lucide-react";
+import { BookOpen, Phone, Heart, Brain, Shield, Lightbulb, ExternalLink } from "lucide-react";
 
 const Resources = () => {
   const crisisResources = [
@@ -10,25 +10,49 @@ const Resources = () => {
       name: "National Suicide Prevention Lifeline",
       number: "988",
       description: "24/7, free and confidential support for people in distress",
-      availability: "24/7"
+      availability: "24/7",
+      website: "https://988lifeline.org/",
+      websiteText: "988lifeline.org"
     },
     {
       name: "Crisis Text Line",
       number: "Text HOME to 741741",
       description: "Free, 24/7 crisis support via text message",
-      availability: "24/7"
+      availability: "24/7",
+      website: "https://www.crisistextline.org/",
+      websiteText: "crisistextline.org"
     },
     {
       name: "NAMI Helpline",
       number: "1-800-950-NAMI",
       description: "Information, support and referrals for mental health",
-      availability: "Mon-Fri 10am-10pm ET"
+      availability: "Mon-Fri 10am-10pm ET",
+      website: "https://www.nami.org/help",
+      websiteText: "nami.org/help"
     },
     {
       name: "SAMHSA National Helpline",
       number: "1-800-662-4357",
       description: "Treatment referral and information service",
-      availability: "24/7"
+      availability: "24/7",
+      website: "https://www.samhsa.gov/find-help/national-helpline",
+      websiteText: "samhsa.gov"
+    },
+    {
+      name: "International Association for Suicide Prevention",
+      number: "Multiple international numbers",
+      description: "Crisis centers and helplines worldwide",
+      availability: "Varies by location",
+      website: "https://www.iasp.info/resources/Crisis_Centres/",
+      websiteText: "iasp.info"
+    },
+    {
+      name: "National Domestic Violence Hotline",
+      number: "1-800-799-7233",
+      description: "Support for domestic violence survivors",
+      availability: "24/7",
+      website: "https://www.thehotline.org/",
+      websiteText: "thehotline.org"
     }
   ];
 
@@ -119,6 +143,77 @@ const Resources = () => {
     "I trust in my ability to heal"
   ];
 
+  const educationalResources = [
+    {
+      category: "Trauma & PTSD Education",
+      resources: [
+        {
+          name: "National Center for PTSD",
+          description: "Comprehensive PTSD information and self-assessment tools",
+          website: "https://www.ptsd.va.gov/",
+          websiteText: "ptsd.va.gov"
+        },
+        {
+          name: "Trauma Informed Oregon",
+          description: "Understanding trauma-informed care and healing approaches",
+          website: "https://traumainformedoregon.org/",
+          websiteText: "traumainformedoregon.org"
+        }
+      ]
+    },
+    {
+      category: "Anxiety & Depression",
+      resources: [
+        {
+          name: "Anxiety and Depression Association of America",
+          description: "Evidence-based resources for anxiety and depression",
+          website: "https://adaa.org/",
+          websiteText: "adaa.org"
+        },
+        {
+          name: "Centre for Clinical Interventions",
+          description: "Free self-help modules for depression and anxiety",
+          website: "https://www.cci.health.wa.gov.au/",
+          websiteText: "cci.health.wa.gov.au"
+        }
+      ]
+    },
+    {
+      category: "Substance Use & Addiction",
+      resources: [
+        {
+          name: "National Institute on Drug Abuse",
+          description: "Science-based information on addiction and recovery",
+          website: "https://www.drugabuse.gov/",
+          websiteText: "drugabuse.gov"
+        },
+        {
+          name: "Faces & Voices of Recovery",
+          description: "Stories and resources for addiction recovery",
+          website: "https://facesandvoicesofrecovery.org/",
+          websiteText: "facesandvoicesofrecovery.org"
+        }
+      ]
+    },
+    {
+      category: "Mindfulness & Meditation",
+      resources: [
+        {
+          name: "Mindfulness-Based Stress Reduction",
+          description: "Original MBSR program resources and research",
+          website: "https://www.umassmed.edu/cfm/",
+          websiteText: "umassmed.edu/cfm"
+        },
+        {
+          name: "UCLA Mindful Awareness Research Center",
+          description: "Free guided meditations and mindfulness resources",
+          website: "https://www.uclahealth.org/programs/marc",
+          websiteText: "uclahealth.org/programs/marc"
+        }
+      ]
+    }
+  ];
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -135,11 +230,12 @@ const Resources = () => {
       </Card>
 
       <Tabs defaultValue="coping" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="coping">Coping Tools</TabsTrigger>
           <TabsTrigger value="crisis">Crisis Support</TabsTrigger>
           <TabsTrigger value="daily">Daily Practices</TabsTrigger>
           <TabsTrigger value="affirmations">Affirmations</TabsTrigger>
+          <TabsTrigger value="educational">Learn More</TabsTrigger>
         </TabsList>
 
         <TabsContent value="coping" className="space-y-6">
@@ -188,7 +284,16 @@ const Resources = () => {
                         <Badge variant="outline">{resource.availability}</Badge>
                       </div>
                       <p className="text-2xl font-bold text-destructive mb-2">{resource.number}</p>
-                      <p className="text-sm text-muted-foreground">{resource.description}</p>
+                      <p className="text-sm text-muted-foreground mb-3">{resource.description}</p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => window.open(resource.website, '_blank')}
+                        className="text-xs"
+                      >
+                        <ExternalLink className="w-3 h-3 mr-1" />
+                        {resource.websiteText}
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -252,6 +357,41 @@ const Resources = () => {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="educational" className="space-y-6">
+          {educationalResources.map((category) => (
+            <Card key={category.category} className="shadow-gentle">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-primary">
+                  <BookOpen className="w-5 h-5" />
+                  {category.category}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4">
+                  {category.resources.map((resource, index) => (
+                    <div key={index} className="p-4 bg-muted/30 rounded-lg border">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-medium">{resource.name}</h4>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => window.open(resource.website, '_blank')}
+                          className="text-xs ml-2"
+                        >
+                          <ExternalLink className="w-3 h-3 mr-1" />
+                          Visit
+                        </Button>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">{resource.description}</p>
+                      <p className="text-xs text-primary">{resource.websiteText}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </TabsContent>
       </Tabs>
 
