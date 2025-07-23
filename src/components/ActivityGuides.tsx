@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Clock, CheckCircle, PlayCircle, BookOpen, Heart, Brain, Leaf, Shield } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Clock, CheckCircle, PlayCircle, BookOpen, Heart, Brain, Leaf, Shield, Volume2, Save, Mic, MicOff } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ActivityStep {
   step: number;
@@ -26,8 +30,13 @@ interface ActivityGuide {
   safetyNotes: string[];
 }
 
+import AudioGuidance from "./AudioGuidance";
+import ActivityResponse from "./ActivityResponse";
+
 const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string, onBack: () => void }) => {
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const [showResponses, setShowResponses] = useState(false);
+  const { toast } = useToast();
 
   const activityGuides: Record<string, ActivityGuide> = {
     "gentle-wake-up-breathing": {
@@ -570,6 +579,32 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
     return colors[type as keyof typeof colors] || "secondary";
   };
 
+  const getResponseType = (activityType: string): "journal" | "scale" | "emotion" | "reflection" | "gratitude" => {
+    const responseMap: Record<string, "journal" | "scale" | "emotion" | "reflection" | "gratitude"> = {
+      "somatic-intervention": "scale",
+      "cognitive-behavioral": "gratitude",
+      "dialectical-behavioral-therapy": "emotion",
+      "healing": "reflection",
+      "nature": "reflection",
+      "creative": "journal",
+      "mindfulness": "reflection"
+    };
+    return responseMap[activityType] || "reflection";
+  };
+
+  const getPromptsForActivity = (activityType: string): string[] => {
+    const prompts: Record<string, string[]> = {
+      "somatic-intervention": ["How did your breathing feel during this practice?", "What physical sensations did you notice?"],
+      "cognitive-behavioral": ["What thoughts came up during this practice?", "How did this practice affect your mindset?"],
+      "dialectical-behavioral-therapy": ["What emotions did you work with today?", "How effective were the regulation techniques?"],
+      "healing": ["What insights emerged during this practice?", "How do you feel now compared to when you started?"],
+      "nature": ["How did connecting with nature affect your mood?", "What did you notice about your environment?"],
+      "creative": ["What did your creative expression reveal about your inner state?", "How did it feel to create without judgment?"],
+      "mindfulness": ["What did you become aware of during this practice?", "How present did you feel throughout the exercise?"]
+    };
+    return prompts[activityType] || ["How was this practice for you?", "What did you learn about yourself?"];
+  };
+
   const TypeIcon = getTypeIcon(currentGuide.type);
 
   return (
@@ -707,6 +742,51 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
           </div>
         </CardContent>
       </Card>
+
+      {/* Audio Guidance for meditation/breathwork activities */}
+      {(currentGuide.type === "somatic-intervention" || currentGuide.type === "healing" || currentGuide.type === "mindfulness") && (
+        <AudioGuidance 
+          activityType={currentGuide.type}
+          instructions={currentGuide.steps.map(step => step.instruction)}
+          onAudioComplete={() => {
+            toast({
+              title: "Practice Complete",
+              description: "Take a moment to reflect on your experience."
+            });
+            setShowResponses(true);
+          }}
+        />
+      )}
+
+      {/* Interactive Response Capture */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Track Your Experience</h3>
+          <Button 
+            onClick={() => setShowResponses(!showResponses)}
+            variant="outline"
+            size="sm"
+          >
+            {showResponses ? "Hide" : "Show"} Response Form
+          </Button>
+        </div>
+        
+        {showResponses && (
+          <ActivityResponse
+            activityId={currentGuide.id}
+            activityName={currentGuide.name}
+            responseType={getResponseType(currentGuide.type)}
+            prompts={getPromptsForActivity(currentGuide.type)}
+            onSave={(responses) => {
+              console.log("Activity responses saved:", responses);
+              toast({
+                title: "Progress Tracked",
+                description: "Your responses have been saved to your progress history."
+              });
+            }}
+          />
+        )}
+      </div>
 
       {/* Safety & Modifications */}
       <Accordion type="single" collapsible className="w-full">
