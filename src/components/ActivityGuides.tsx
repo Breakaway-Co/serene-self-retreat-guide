@@ -32,10 +32,10 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
   const activityGuides: Record<string, ActivityGuide> = {
     "gentle-wake-up-breathing": {
       id: "gentle-wake-up-breathing",
-      name: "Gentle Wake-Up Breathing",
-      type: "mindfulness",
-      description: "A trauma-sensitive breathing exercise to gently transition from sleep to wakefulness",
-      evidenceBasis: "Based on Polyvagal Theory and research on diaphragmatic breathing for nervous system regulation (Porges, 2011)",
+      name: "Clinical Breathwork Protocol",
+      type: "somatic-intervention",
+      description: "Evidence-based respiratory intervention utilizing diaphragmatic breathing techniques to regulate autonomic nervous system function and establish neurological stability",
+      evidenceBasis: "Grounded in Polyvagal Theory (Porges, 2011) and pranayama research. Clinical studies demonstrate controlled breathing activates parasympathetic nervous system, reduces HPA axis hyperactivation, and promotes prefrontal cortex regulation of limbic responses",
       traumaInformed: "Uses gentle, non-forceful breathing patterns that allow for personal control and can be stopped at any time",
       benefits: [
         "Activates parasympathetic nervous system",
@@ -96,10 +96,10 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
     },
     "gratitude-journaling": {
       id: "gratitude-journaling",
-      name: "Gratitude Journaling",
-      type: "reflection",
-      description: "A structured gratitude practice that builds resilience and positive neural pathways",
-      evidenceBasis: "Research shows gratitude practices increase dopamine and serotonin while reducing cortisol (Emmons & McCullough, 2003)",
+      name: "Structured Gratitude Intervention",
+      type: "cognitive-behavioral",
+      description: "Clinical journaling protocol designed to restructure maladaptive cognitive patterns and enhance neuroplasticity through positive psychology interventions",
+      evidenceBasis: "Supported by neuroscience research demonstrating gratitude practices increase dopamine and serotonin production, enhance prefrontal cortex function, and create measurable changes in brain structure associated with improved emotional regulation and resilience (Emmons & McCullough, 2003; Kini et al., 2016)",
       traumaInformed: "Focuses on small, accessible positives rather than forcing gratitude for traumatic experiences",
       benefits: [
         "Rewires brain for positivity bias",
@@ -159,10 +159,10 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
     },
     "emotion-regulation-techniques": {
       id: "emotion-regulation-techniques",
-      name: "Emotion Regulation Techniques",
-      type: "healing",
-      description: "Evidence-based strategies for managing difficult emotions safely and effectively",
-      evidenceBasis: "Based on Dialectical Behavior Therapy (DBT) emotion regulation skills (Linehan, 2014)",
+      name: "Clinical Emotion Regulation Protocol",
+      type: "dialectical-behavioral-therapy",
+      description: "Advanced DBT-based emotion regulation strategies utilizing distress tolerance and mindfulness techniques for sustainable emotional stability",
+      evidenceBasis: "Based on comprehensive Dialectical Behavior Therapy (DBT) emotion regulation modules with demonstrated efficacy in treating complex trauma, borderline personality disorder, and severe emotional dysregulation (Linehan, 2014; Koons et al., 2001)",
       traumaInformed: "Emphasizes self-compassion and validates all emotions as normal responses",
       benefits: [
         "Increases emotional intelligence",

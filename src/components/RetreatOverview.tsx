@@ -68,21 +68,25 @@ const RetreatOverview = () => {
         <CardHeader>
           <CardTitle className="text-2xl text-primary">Welcome to Your Healing Journey</CardTitle>
           <CardDescription className="text-lg">
-            This comprehensive 14-day trauma-informed retreat is designed to support you through stress, 
-            depression, anxiety, trauma, and addiction recovery from the comfort and safety of your own home.
+            This evidence-based, clinically-informed 14-day residential-style retreat program utilizes 
+            advanced therapeutic modalities and integrated treatment approaches to address stress, depression, 
+            anxiety, complex trauma, and substance dependency. Designed with medical oversight principles 
+            for sustainable recovery and long-term wellbeing from your home environment.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-healing">What You'll Experience</h3>
+              <h3 className="text-lg font-semibold mb-3 text-healing">Evidence-Based Treatment Modalities</h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li>• Daily structured healing activities</li>
-                <li>• Nutritious, affordable meal plans with recipes</li>
-                <li>• Mindfulness and meditation practices</li>
-                <li>• Trauma-informed therapeutic exercises</li>
-                <li>• Progressive recovery milestones</li>
-                <li>• 24/7 access to coping resources</li>
+                <li>• Structured daily therapeutic programming with clinical objectives</li>
+                <li>• Nutritional rehabilitation with medically-informed meal planning</li>
+                <li>• Mindfulness-based stress reduction (MBSR) and contemplative practices</li>
+                <li>• Trauma-informed somatic and cognitive behavioral interventions</li>
+                <li>• Progressive assessment milestones with measurable outcomes</li>
+                <li>• Comprehensive resource library with crisis intervention protocols</li>
+                <li>• Psychoeducational components addressing neuroplasticity and recovery</li>
+                <li>• Integrated approach addressing physical, psychological, and spiritual wellbeing</li>
               </ul>
             </div>
             <div>
@@ -125,9 +129,11 @@ const RetreatOverview = () => {
             <div>
               <h3 className="font-semibold text-healing mb-2">Important Notice</h3>
               <p className="text-sm text-muted-foreground">
-                This retreat is designed as a supportive wellness program and should not replace professional 
-                medical or therapeutic treatment. If you're experiencing severe symptoms or crisis situations, 
-                please contact a healthcare provider or crisis helpline immediately.
+                This program utilizes evidence-based therapeutic approaches and is designed to complement 
+                professional medical and psychiatric care. While comprehensive in scope, this retreat does not 
+                replace clinical assessment, medical supervision, or specialized therapeutic intervention. 
+                Participants experiencing acute symptoms, suicidal ideation, or psychiatric crisis should 
+                seek immediate professional medical attention or contact emergency services.
               </p>
             </div>
           </div>
