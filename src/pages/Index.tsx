@@ -2,6 +2,7 @@ import { useState } from "react";
 import RetreatNavigation from "@/components/RetreatNavigation";
 import RetreatOverview from "@/components/RetreatOverview";
 import DailyProgram from "@/components/DailyProgram";
+import ChildRetreat from "@/components/ChildRetreat";
 import MealPlan from "@/components/MealPlan";
 import Resources from "@/components/Resources";
 import Progress from "@/components/Progress";
@@ -15,6 +16,8 @@ const Index = () => {
         return <RetreatOverview />;
       case "daily-program":
         return <DailyProgram />;
+      case "child-retreat":
+        return <ChildRetreat />;
       case "meal-plan":
         return <MealPlan />;
       case "resources":

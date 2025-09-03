@@ -11,8 +11,9 @@ const RetreatNavigation = ({ activeSection, onSectionChange }: RetreatNavigation
   const navigationItems = [
     { id: 'overview', label: 'Overview', icon: Heart, variant: 'healing' as const },
     { id: 'daily-program', label: 'Daily Program', icon: Calendar, variant: 'nature' as const },
-    { id: 'meal-plan', label: 'Meal Plan', icon: ChefHat, variant: 'calm' as const },
-    { id: 'resources', label: 'Resources', icon: BookOpen, variant: 'earth' as const },
+    { id: 'child-retreat', label: 'Me n U Kiddo', icon: Heart, variant: 'calm' as const },
+    { id: 'meal-plan', label: 'Meal Plan', icon: ChefHat, variant: 'earth' as const },
+    { id: 'resources', label: 'Resources', icon: BookOpen, variant: 'nature' as const },
     { id: 'progress', label: 'Progress', icon: BarChart3, variant: 'healing' as const },
   ];
 
