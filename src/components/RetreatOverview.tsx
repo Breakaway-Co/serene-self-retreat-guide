@@ -2,8 +2,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Heart, Shield, Leaf, Brain } from "lucide-react";
 import heroImage from "@/assets/hero-healing.jpg";
+import { PersonalizedRetreat } from "@/types/retreat";
 
-const RetreatOverview = () => {
+interface RetreatOverviewProps {
+  retreat: PersonalizedRetreat;
+}
+
+const RetreatOverview = ({ retreat }: RetreatOverviewProps) => {
   const principles = [
     {
       icon: Shield,
@@ -31,13 +36,7 @@ const RetreatOverview = () => {
     }
   ];
 
-  const focusAreas = [
-    "Stress Management",
-    "Depression Support",
-    "Anxiety Relief",
-    "Trauma Healing",
-    "Addiction Recovery"
-  ];
+  const focusAreas = retreat.baseRetreat.focusAreas;
 
   return (
     <div className="space-y-8">
@@ -51,14 +50,14 @@ const RetreatOverview = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-healing/80 to-nature/60" />
           <div className="absolute inset-0 flex items-center justify-center text-center p-6">
-            <div className="text-white">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                Serene Self Retreat
-              </h1>
-              <p className="text-xl md:text-2xl opacity-90">
-                Your 14-Day Journey to Healing & Recovery
-              </p>
-            </div>
+          <div className="text-white">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              {retreat.baseRetreat.name}
+            </h1>
+            <p className="text-xl md:text-2xl opacity-90">
+              Your {retreat.baseRetreat.duration}-Day Journey to Healing & Recovery
+            </p>
+          </div>
           </div>
         </div>
       </Card>
@@ -68,10 +67,7 @@ const RetreatOverview = () => {
         <CardHeader>
           <CardTitle className="text-2xl text-primary">Welcome to Your Healing Journey</CardTitle>
           <CardDescription className="text-lg">
-            This evidence-based, clinically-informed 14-day residential-style retreat program utilizes 
-            advanced therapeutic modalities and integrated treatment approaches to address stress, depression, 
-            anxiety, complex trauma, and substance dependency. Designed with medical oversight principles 
-            for sustainable recovery and long-term wellbeing from your home environment.
+            {retreat.baseRetreat.description}
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -3,8 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Phone, Heart, Brain, Shield, Lightbulb, ExternalLink } from "lucide-react";
+import { PersonalizedRetreat } from "@/types/retreat";
 
-const Resources = () => {
+interface ResourcesProps {
+  retreat: PersonalizedRetreat;
+}
+
+const Resources = ({ retreat }: ResourcesProps) => {
   const crisisResources = [
     {
       name: "National Suicide Prevention Lifeline",

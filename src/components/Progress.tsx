@@ -5,8 +5,14 @@ import { Progress as ProgressBar } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { BarChart3, Heart, Calendar, Trophy, BookOpen, TrendingUp } from "lucide-react";
+import { PersonalizedRetreat } from "@/types/retreat";
+import { usePersonalizedRetreat } from "@/hooks/usePersonalizedRetreat";
 
-const Progress = () => {
+interface ProgressProps {
+  retreat: PersonalizedRetreat;
+}
+
+const Progress = ({ retreat }: ProgressProps) => {
   const [moodRating, setMoodRating] = useState(5);
   const [journalEntry, setJournalEntry] = useState("");
   const [dailyReflections, setDailyReflections] = useState({

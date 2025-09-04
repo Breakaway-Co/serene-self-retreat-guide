@@ -4,8 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChefHat, Clock, DollarSign, Users, Heart } from "lucide-react";
+import { PersonalizedRetreat } from "@/types/retreat";
 
-const MealPlan = () => {
+interface MealPlanProps {
+  retreat: PersonalizedRetreat;
+}
+
+const MealPlan = ({ retreat }: MealPlanProps) => {
   const [selectedDay, setSelectedDay] = useState(1);
 
   const mealPlan = {
@@ -230,10 +235,10 @@ const MealPlan = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ChefHat className="w-5 h-5" />
-            14-Day Healing Meal Plan
+            {retreat.baseRetreat.duration}-Day Healing Meal Plan
           </CardTitle>
           <CardDescription>
-            Affordable, nutritious meals designed to support mental health and recovery
+            Affordable, nutritious meals designed to support mental health and recovery for {retreat.baseRetreat.name}
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -5,11 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Clock, CheckCircle, PlayCircle, Calendar, BookOpen } from "lucide-react";
 import ActivityGuides from "./ActivityGuides";
+import { PersonalizedRetreat } from "@/types/retreat";
+import { usePersonalizedRetreat } from "@/hooks/usePersonalizedRetreat";
 
-const DailyProgram = () => {
+interface DailyProgramProps {
+  retreat: PersonalizedRetreat;
+}
+
+const DailyProgram = ({ retreat }: DailyProgramProps) => {
   const [selectedDay, setSelectedDay] = useState(1);
-  const [completedActivities, setCompletedActivities] = useState<Set<string>>(new Set());
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
+  const { progress, completeActivity } = usePersonalizedRetreat();
 
   // If an activity is selected, show the guide
   if (selectedActivity) {
@@ -21,57 +27,8 @@ const DailyProgram = () => {
     );
   }
 
-  const dailyPrograms = {
-    1: {
-      theme: "Foundation & Safety",
-      focus: "Creating a safe space and establishing routines",
-      morning: [
-        { time: "7:00 AM", activity: "Gentle Wake-Up Breathing", duration: "10 min", type: "mindfulness", guideId: "gentle-wake-up-breathing" },
-        { time: "7:15 AM", activity: "Gratitude Journaling", duration: "15 min", type: "reflection", guideId: "gratitude-journaling" },
-        { time: "7:30 AM", activity: "Nutritious Breakfast Preparation", duration: "30 min", type: "nutrition" },
-        { time: "8:00 AM", activity: "Morning Walk or Gentle Movement", duration: "20 min", type: "movement" }
-      ],
-      afternoon: [
-        { time: "12:00 PM", activity: "Mindful Lunch Preparation", duration: "30 min", type: "nutrition" },
-        { time: "1:00 PM", activity: "Trauma-Informed Body Scan", duration: "20 min", type: "healing", guideId: "trauma-informed-body-scan" },
-        { time: "2:00 PM", activity: "Creative Expression (Art/Music)", duration: "30 min", type: "creative", guideId: "creative-expression" },
-        { time: "3:00 PM", activity: "Nature Connection Activity", duration: "30 min", type: "nature", guideId: "grounding-exercises-outdoors" }
-      ],
-      evening: [
-        { time: "6:00 PM", activity: "Wholesome Dinner Preparation", duration: "40 min", type: "nutrition" },
-        { time: "7:30 PM", activity: "Emotional Check-In Journal", duration: "15 min", type: "reflection" },
-        { time: "8:00 PM", activity: "Gentle Yoga or Stretching", duration: "20 min", type: "movement" },
-        { time: "9:00 PM", activity: "Evening Meditation", duration: "15 min", type: "mindfulness" }
-      ]
-    },
-    2: {
-      theme: "Emotional Awareness",
-      focus: "Identifying and understanding emotions safely",
-      morning: [
-        { time: "7:00 AM", activity: "Emotion Identification Breathing", duration: "10 min", type: "mindfulness" },
-        { time: "7:15 AM", activity: "Feelings Check-In Journal", duration: "15 min", type: "reflection" },
-        { time: "7:30 AM", activity: "Mood-Boosting Breakfast", duration: "30 min", type: "nutrition" },
-        { time: "8:00 AM", activity: "Energizing Movement", duration: "25 min", type: "movement" }
-      ],
-      afternoon: [
-        { time: "12:00 PM", activity: "Comfort Food Lunch", duration: "30 min", type: "nutrition" },
-        { time: "1:00 PM", activity: "Progressive Muscle Relaxation", duration: "25 min", type: "healing", guideId: "progressive-muscle-relaxation" },
-        { time: "2:00 PM", activity: "Emotion Regulation Techniques", duration: "30 min", type: "healing", guideId: "emotion-regulation-techniques" },
-        { time: "3:00 PM", activity: "Grounding Exercises Outdoors", duration: "30 min", type: "nature", guideId: "grounding-exercises-outdoors" }
-      ],
-      evening: [
-        { time: "6:00 PM", activity: "Nourishing Dinner Ritual", duration: "40 min", type: "nutrition" },
-        { time: "7:30 PM", activity: "Daily Wins Celebration", duration: "15 min", type: "reflection" },
-        { time: "8:00 PM", activity: "Tension Release Yoga", duration: "25 min", type: "movement" },
-        { time: "9:00 PM", activity: "Loving-Kindness Meditation", duration: "20 min", type: "mindfulness" }
-      ]
-    }
-    // Additional days would continue with themes like:
-    // Day 3: Stress Management, Day 4: Anxiety Relief, Day 5: Depression Support
-    // Day 6: Trauma Processing, Day 7: Addiction Understanding, etc.
-  };
-
-  const currentProgram = dailyPrograms[selectedDay as keyof typeof dailyPrograms] || dailyPrograms[1];
+  // Use retreat days data
+  const currentProgram = retreat.baseRetreat.days.find(day => day.day === selectedDay) || retreat.baseRetreat.days[0];
 
   const getTypeColor = (type: string) => {
     const colors = {
@@ -87,18 +44,12 @@ const DailyProgram = () => {
   };
 
   const toggleActivity = (activityId: string) => {
-    const newCompleted = new Set(completedActivities);
-    if (newCompleted.has(activityId)) {
-      newCompleted.delete(activityId);
-    } else {
-      newCompleted.add(activityId);
-    }
-    setCompletedActivities(newCompleted);
+    completeActivity(activityId);
   };
 
   const totalActivities = [...currentProgram.morning, ...currentProgram.afternoon, ...currentProgram.evening].length;
   const completedCount = [...currentProgram.morning, ...currentProgram.afternoon, ...currentProgram.evening]
-    .filter(activity => completedActivities.has(`${selectedDay}-${activity.activity}`)).length;
+    .filter(activity => progress?.completedActivities.has(activity.id) || false).length;
   const progressPercentage = (completedCount / totalActivities) * 100;
 
   const renderTimeBlock = (title: string, activities: any[], icon: any) => {
@@ -114,8 +65,7 @@ const DailyProgram = () => {
         <CardContent>
           <div className="space-y-3">
             {activities.map((activity, index) => {
-              const activityId = `${selectedDay}-${activity.activity}`;
-              const isCompleted = completedActivities.has(activityId);
+              const isCompleted = progress?.completedActivities.has(activity.id) || false;
               return (
                 <div 
                   key={index}
@@ -127,7 +77,7 @@ const DailyProgram = () => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => toggleActivity(activityId)}
+                      onClick={() => toggleActivity(activity.id)}
                       className="h-8 w-8 p-0"
                     >
                       {isCompleted ? (
@@ -189,19 +139,16 @@ const DailyProgram = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-7 gap-2 mb-6">
-            {[...Array(14)].map((_, i) => {
-              const day = i + 1;
-              return (
-                <Button
-                  key={day}
-                  variant={selectedDay === day ? "healing" : "outline"}
-                  className="h-12 font-medium"
-                  onClick={() => setSelectedDay(day)}
-                >
-                  Day {day}
-                </Button>
-              );
-            })}
+            {retreat.baseRetreat.days.map((day) => (
+              <Button
+                key={day.day}
+                variant={selectedDay === day.day ? "healing" : "outline"}
+                className="h-12 font-medium"
+                onClick={() => setSelectedDay(day.day)}
+              >
+                Day {day.day}
+              </Button>
+            ))}
           </div>
           
           {/* Current Day Info */}
