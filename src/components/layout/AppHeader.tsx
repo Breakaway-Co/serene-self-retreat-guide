@@ -30,7 +30,7 @@ export const AppHeader: React.FC = () => {
         <div className="flex items-center gap-4">
           <SidebarTrigger className="h-8 w-8" />
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-semibold text-primary">Healing Retreats</h1>
+            <h1 className="text-lg font-playfair font-semibold text-primary">Breakaway Co.</h1>
             {state.retreat.selectedRetreatId && (
               <Badge variant="secondary" className="text-xs">
                 Day {state.retreat.currentDay}

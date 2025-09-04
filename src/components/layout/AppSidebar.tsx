@@ -25,16 +25,16 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 const navigationItems = [
-  { title: 'Overview', url: '/', icon: Home, section: 'overview' },
+  { title: 'Dashboard', url: '/', icon: Home, section: 'dashboard' },
+  { title: 'My Retreats', url: '/retreats', icon: Compass, section: 'retreats' },
   { title: 'Daily Program', url: '/daily', icon: Calendar, section: 'daily-program' },
-  { title: 'Activities', url: '/activities', icon: Activity, section: 'activities' },
-  { title: 'Resources', url: '/resources', icon: BookOpen, section: 'resources' },
   { title: 'Progress', url: '/progress', icon: TrendingUp, section: 'progress' },
+  { title: 'Resources', url: '/resources', icon: BookOpen, section: 'resources' },
 ];
 
 const utilityItems = [
-  { title: 'Assessment', url: '/intake', icon: FileText },
-  { title: 'Settings', url: '/settings', icon: Settings },
+  { title: 'Wellness Assessment', url: '/intake', icon: FileText },
+  { title: 'Subscription', url: '/subscription', icon: Settings },
 ];
 
 export const AppSidebar: React.FC = () => {
@@ -43,56 +43,35 @@ export const AppSidebar: React.FC = () => {
   const location = useLocation();
 
   const getNavClassName = ({ isActive }: { isActive: boolean }) =>
-    isActive ? 'bg-healing/10 text-healing font-medium' : 'hover:bg-muted/50';
+    isActive ? 'bg-luxury-emerald/10 text-luxury-emerald font-medium' : 'hover:bg-muted/50';
 
   const hasSelectedRetreat = appState.retreat.selectedRetreatId !== null;
 
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
-        {/* Main Navigation - Only show if retreat is selected */}
-        {hasSelectedRetreat && (
-          <SidebarGroup>
-            <SidebarGroupLabel>Retreat Navigation</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {navigationItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink 
-                        to={item.url} 
-                        end 
-                        className={getNavClassName}
-                      >
-                        <item.icon className="h-4 w-4" />
-                        {sidebarState === 'expanded' && <span>{item.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
-
-        {/* Retreat Selection - Show if no retreat selected */}
-        {!hasSelectedRetreat && (
-          <SidebarGroup>
-            <SidebarGroupLabel>Get Started</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
+        {/* Main Navigation */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navigationItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <NavLink to="/" className={getNavClassName}>
-                      <Compass className="h-4 w-4" />
-                      {sidebarState === 'expanded' && <span>Choose Retreat</span>}
+                    <NavLink 
+                      to={item.url} 
+                      end 
+                      className={getNavClassName}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {sidebarState === 'expanded' && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
 
         {/* Utility Navigation */}
         <SidebarGroup>
@@ -110,7 +89,7 @@ export const AppSidebar: React.FC = () => {
                       {sidebarState === 'expanded' && (
                         <div className="flex items-center justify-between w-full">
                           <span>{item.title}</span>
-                          {item.title === 'Assessment' && appState.user.hasCompletedIntake && (
+                          {item.title === 'Wellness Assessment' && appState.user.hasCompletedIntake && (
                             <Badge variant="secondary" className="text-xs ml-2">
                               ✓
                             </Badge>
