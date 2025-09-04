@@ -3,9 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Star, Palette, RotateCcw, Play, Pause, Square, Heart, Mic, MicOff } from "lucide-react";
+import { ArrowLeft, Star, Palette, RotateCcw, Play, Pause, Square, Heart, Mic, MicOff, Timer, CheckCircle, Sparkles } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import AudioGuidance from "./AudioGuidance";
+import ActivityGuide from "./ActivityGuide";
+import GuidedSteps from "./GuidedSteps";
+import InteractiveChoices from "./InteractiveChoices";
 
 interface RetreatModule {
   id: string;
@@ -42,161 +45,609 @@ const ChildActivityModule = ({ module, onBack, onComplete }: ChildActivityModule
     switch (module.type) {
       case 'builder':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-calm/10 rounded-lg border border-calm/20">
-              <Palette className="w-12 h-12 text-calm mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-calm mb-2">Let's Build Together!</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {['🧸 Soft Toy', '🎨 Art Supplies', '📸 Photos', '🎵 Music Box', '💎 Special Stone', '📝 Journal'].map((item, index) => (
-                <Button
-                  key={index}
-                  variant="outline"
-                  className="h-20 flex flex-col items-center justify-center space-y-2 border-calm/30 hover:bg-calm/10"
-                  onClick={() => setSelectedOption(item)}
-                >
-                  <span className="text-2xl">{item.split(' ')[0]}</span>
-                  <span className="text-xs">{item.split(' ').slice(1).join(' ')}</span>
-                </Button>
-              ))}
-            </div>
+          <ActivityGuide
+            title="Building Your Emotions First Aid Toolbox"
+            activityType="builder"
+            introduction="Let's create a special collection of things that help when feelings get big or overwhelming. This is your personal comfort kit!"
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "🧸 Hi there! I'm your activity guide, and I'm so excited to help you build something really special today. We're going to make an emotions first aid toolbox - just like doctors have medical first aid kits, we're making one for feelings!"
+              },
+              {
+                type: 'encouragement',
+                content: "💝 You know what's amazing? Every person's toolbox is different because we all find comfort in different things. That's what makes you special and unique!"
+              },
+              {
+                type: 'instruction',
+                content: "🎯 Here's how we'll do this: First, I'll show you lots of different things that can help with big feelings. Then, you'll choose the ones that feel right for YOU. Finally, we'll talk about why they're special."
+              },
+              {
+                type: 'tip',
+                content: "💡 Remember, there are no wrong choices here. If something makes you feel better, safer, or happier, then it belongs in your toolbox!"
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to your emotions first aid toolbox activity",
+              "Take a deep breath and get comfortable",
+              "We're going to explore what helps you feel better when emotions feel big"
+            ]}
+          >
+            <div className="space-y-6">
+              <InteractiveChoices
+                title="Choose Your Comfort Items"
+                description="Pick the things that make you feel safe, calm, or happy. You can choose as many as you want!"
+                activityType="emotion"
+                choices={[
+                  {
+                    id: 'soft_toy',
+                    emoji: '🧸',
+                    title: 'Soft Toy',
+                    description: 'A stuffed animal, blanket, or something cuddly',
+                    guidance: "Soft toys are wonderful! They can give us hugs when we need them and help us feel less alone. You can hold them tight when feelings get big.",
+                    followUp: "Tell me about your soft toy. What makes it special? How does it help you feel better?"
+                  },
+                  {
+                    id: 'art_supplies',
+                    emoji: '🎨',
+                    title: 'Art Supplies',
+                    description: 'Crayons, markers, paper for drawing feelings',
+                    guidance: "Art is a fantastic way to show feelings when words feel too hard! Sometimes drawing or coloring helps our feelings come out safely.",
+                    followUp: "What kind of art do you like to make? Do you like to draw pictures, use lots of colors, or something else?"
+                  },
+                  {
+                    id: 'photos',
+                    emoji: '📸',
+                    title: 'Special Photos',
+                    description: 'Pictures of people you love or happy memories',
+                    guidance: "Photos help us remember love and happy times, especially when we're feeling sad or scared. They remind us we're not alone!",
+                    followUp: "What photos would you put in your toolbox? Who or what makes you smile when you see their picture?"
+                  },
+                  {
+                    id: 'music',
+                    emoji: '🎵',
+                    title: 'Music or Sounds',
+                    description: 'Songs, lullabies, or peaceful sounds',
+                    guidance: "Music has special powers! It can help us feel calm, happy, or even help us cry when we need to. Different songs help with different feelings.",
+                    followUp: "What music or sounds help you feel better? Do you like calm music, happy songs, or nature sounds?"
+                  },
+                  {
+                    id: 'special_object',
+                    emoji: '💎',
+                    title: 'Special Object',
+                    description: 'A stone, shell, or meaningful item you can hold',
+                    guidance: "Special objects can be like magical helpers! When we hold them, they remind us of good feelings or important people.",
+                    followUp: "Do you have a special object that's important to you? What makes it special?"
+                  },
+                  {
+                    id: 'journal',
+                    emoji: '📝',
+                    title: 'Journal or Notebook',
+                    description: 'A place to write or draw your thoughts',
+                    guidance: "Writing or drawing our thoughts is like emptying our backpack when it gets too heavy. It helps make space in our hearts and minds!",
+                    followUp: "What would you like to write or draw in your journal? Stories, feelings, pictures, or something else?"
+                  }
+                ]}
+                onChoiceSelect={(choiceId) => setSelectedOption(choiceId)}
+                onResponseComplete={(choiceId, response) => setUserInput(response)}
+              />
 
-            {selectedOption && (
-              <div className="p-4 bg-accent/20 rounded-lg">
-                <p className="text-sm text-accent-foreground">
-                  You chose: <strong>{selectedOption}</strong>
-                </p>
-                <Textarea
-                  placeholder="Tell us why this is special for your toolbox..."
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  className="mt-2"
-                />
+              <div className="p-4 bg-calm/10 rounded-lg border border-calm/20">
+                <h4 className="font-medium text-calm mb-3 text-center">🌟 Your Toolbox Building Progress</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Items chosen:</span>
+                    <span className="font-medium text-calm">{selectedOption ? '1+' : '0'}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Personal stories shared:</span>
+                    <span className="font-medium text-calm">{userInput.length > 10 ? '✓' : 'Coming up...'}</span>
+                  </div>
+                </div>
               </div>
-            )}
-          </div>
+
+              {selectedOption && userInput && (
+                <Card className="shadow-gentle border-healing/30 bg-gradient-to-r from-healing/10 to-calm/10">
+                  <CardContent className="p-4">
+                    <div className="text-center">
+                      <Star className="w-8 h-8 text-healing mx-auto mb-2 fill-current" />
+                      <h4 className="font-medium text-healing mb-2">Beautiful Work! 🌟</h4>
+                      <p className="text-sm text-muted-foreground">
+                        You're building something really special here. Your toolbox is going to help you feel stronger and more confident when big feelings come up. 
+                        Remember, you can always add new things to your toolbox as you discover what helps you!
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </ActivityGuide>
         );
 
       case 'spinner':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-nature/10 rounded-lg border border-nature/20">
-              <RotateCcw className="w-12 h-12 text-nature mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-nature mb-2">Activity Wheel</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
-
-            <div className="relative">
-              <div className="w-64 h-64 mx-auto bg-gradient-to-br from-nature/20 to-calm/20 rounded-full border-4 border-nature/30 flex items-center justify-center">
-                {selectedOption ? (
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🎯</div>
-                    <p className="text-sm font-medium text-nature">
-                      {selectedOption.replace('_', ' ').toUpperCase()}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🎪</div>
-                    <p className="text-sm text-muted-foreground">Click spin!</p>
-                  </div>
-                )}
+          <ActivityGuide
+            title="Activity Wheel Adventure"
+            activityType="spinner"
+            introduction="Sometimes the best adventures happen when we let surprise choose for us! Let's spin the wheel and see what gentle activity wants to play with us today."
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "🎪 Hello, adventure friend! I love this activity because it brings surprises and fun into our day. We never know what we'll get, and that's the exciting part!"
+              },
+              {
+                type: 'encouragement',
+                content: "🌟 You know what's wonderful about spinning wheels? There are no wrong answers! Whatever we get is exactly what we need today. Trust the magic!"
+              },
+              {
+                type: 'tip',
+                content: "💫 If you don't like what you spin, that's okay! You can always spin again, or we can adapt the activity to work better for you. This is YOUR adventure!"
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to the activity wheel adventure",
+              "Take a moment to get excited about the surprise ahead",
+              "Remember, whatever we spin will be perfect for today"
+            ]}
+          >
+            <div className="space-y-6">
+              <div className="relative">
+                <div className="w-80 h-80 mx-auto bg-gradient-to-br from-nature/20 via-calm/20 to-healing/20 rounded-full border-4 border-nature/30 flex items-center justify-center shadow-xl transition-all duration-300 hover:shadow-2xl">
+                  {selectedOption ? (
+                    <div className="text-center animate-in zoom-in-50 duration-500">
+                      <div className="text-6xl mb-3">🎯</div>
+                      <p className="text-lg font-medium text-nature mb-2">
+                        {selectedOption.replace('_', ' ').toUpperCase()}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Your special activity for today!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="text-center">
+                      <div className="text-6xl mb-3 animate-pulse">🎪</div>
+                      <p className="text-lg font-medium text-nature mb-2">Ready to spin?</p>
+                      <p className="text-sm text-muted-foreground">
+                        What adventure awaits you today?
+                      </p>
+                    </div>
+                  )}
+                </div>
+                
+                <Button
+                  variant="nature"
+                  size="lg"
+                  className="mt-6 mx-auto block min-w-[200px] text-lg py-6"
+                  onClick={() => {
+                    const activityOptions = {
+                      'colouring': '🎨 Mindful Coloring',
+                      'breathing_bubbles': '🫧 Bubble Breathing',
+                      'music_time': '🎵 Musical Moments',
+                      'nature_walk': '🌿 Nature Connection',
+                      'sensory_play': '🤲 Touch & Feel',
+                      'stretch_sway': '🌸 Gentle Movement'
+                    };
+                    
+                    const options = module.options || Object.keys(activityOptions);
+                    const randomOption = options[Math.floor(Math.random() * options.length)];
+                    setSelectedOption(randomOption);
+                  }}
+                >
+                  <RotateCcw className="w-5 h-5 mr-3" />
+                  {selectedOption ? 'Spin Again!' : 'Spin the Wheel!'}
+                </Button>
               </div>
-              
-              <Button
-                variant="nature"
-                size="lg"
-                className="mt-4 mx-auto block"
-                onClick={() => {
-                  const options = module.options || ['fun activity', 'gentle movement', 'quiet time'];
-                  const randomOption = options[Math.floor(Math.random() * options.length)];
-                  setSelectedOption(randomOption);
-                }}
-              >
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Spin the Wheel!
-              </Button>
-            </div>
 
-            {selectedOption && (
-              <div className="p-4 bg-nature/10 rounded-lg text-center">
-                <h4 className="font-medium text-nature mb-2">Today's Activity</h4>
-                <p className="text-muted-foreground capitalize">
-                  {selectedOption.replace('_', ' ')}
-                </p>
-                <Textarea
-                  placeholder="How did this activity feel? Draw or write about it..."
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  className="mt-3"
-                />
-              </div>
-            )}
-          </div>
+              {selectedOption && (
+                <div className="animate-in slide-in-from-bottom-5 duration-500">
+                  <InteractiveChoices
+                    title={`Let's Do: ${selectedOption.replace('_', ' ').toUpperCase()}`}
+                    description="Here are some ways to enjoy your activity. Choose what feels right for you today!"
+                    activityType="activity"
+                    choices={
+                      selectedOption === 'colouring' ? [
+                        {
+                          id: 'free_draw',
+                          emoji: '🎨',
+                          title: 'Free Drawing',
+                          description: 'Draw whatever comes to your heart',
+                          guidance: "Free drawing is wonderful! Let your hand move however it wants. There's no right or wrong - just let your feelings flow through colors and shapes.",
+                          followUp: "What did you draw? What colors did you choose? How did it feel to let your creativity flow?"
+                        },
+                        {
+                          id: 'feeling_colors',
+                          emoji: '🌈',
+                          title: 'Feeling Colors',
+                          description: 'Color how your emotions look today',
+                          guidance: "This is so special! Different feelings have different colors. Maybe happy is yellow, calm is blue, or excited is orange. Trust what feels right!",
+                          followUp: "What colors represent your feelings today? Which feeling-color was strongest?"
+                        }
+                      ] : selectedOption === 'breathing_bubbles' ? [
+                        {
+                          id: 'real_bubbles',
+                          emoji: '🫧',
+                          title: 'Bubble Blowing',
+                          description: 'Blow real bubbles and watch them float',
+                          guidance: "Real bubbles are magical! Take a slow breath in, then blow gently and steadily. Watch the bubbles float away, taking any worried feelings with them.",
+                          followUp: "How many bubbles did you blow? Did you watch them pop or float away? How do you feel after bubble breathing?"
+                        },
+                        {
+                          id: 'imaginary_bubbles',
+                          emoji: '💭',
+                          title: 'Imaginary Bubbles',
+                          description: 'Pretend to blow bubbles with your breath',
+                          guidance: "Imagination bubbles are just as powerful! Breathe in slowly, then breathe out like you're blowing the most beautiful bubble. Picture it floating away with any big feelings.",
+                          followUp: "What color were your imaginary bubbles? Where did they float to? What feelings did they take with them?"
+                        }
+                      ] : selectedOption === 'music_time' ? [
+                        {
+                          id: 'dance_free',
+                          emoji: '💃',
+                          title: 'Free Dance',
+                          description: 'Move your body however feels good',
+                          guidance: "Your body knows how to dance! There's no right way - just move however feels good. Fast, slow, big movements, tiny movements - it's all perfect!",
+                          followUp: "How did your body want to move? Did you feel any emotions while dancing? What was your favorite movement?"
+                        },
+                        {
+                          id: 'sing_along',
+                          emoji: '🎤',
+                          title: 'Sing Along',
+                          description: 'Sing a favorite song or make up your own',
+                          guidance: "Singing is like giving your heart a voice! You can sing loud, soft, silly, or serious. Maybe make up a song about how you're feeling today!",
+                          followUp: "What did you sing about? Did you make up any new words? How did singing make you feel?"
+                        }
+                      ] : [
+                        {
+                          id: 'gentle_way',
+                          emoji: '🌸',
+                          title: 'Gentle Approach',
+                          description: 'Take it slow and easy',
+                          guidance: `This activity is perfect for taking things slow and gentle. Listen to your body and heart - they'll tell you exactly what you need.`,
+                          followUp: "How did this gentle activity feel? What did your body or heart tell you while you were doing it?"
+                        },
+                        {
+                          id: 'playful_way',
+                          emoji: '🎈',
+                          title: 'Playful Approach',
+                          description: 'Make it fun and energetic',
+                          guidance: `Playing is one of the best ways to feel good! Let yourself be silly, laugh, and enjoy every moment. There's no wrong way to play!`,
+                          followUp: "What was the most fun part? Did you laugh or smile? How did playing make you feel?"
+                        }
+                      ]
+                    }
+                    onChoiceSelect={(choiceId) => setSelectedOption(selectedOption + '_' + choiceId)}
+                    onResponseComplete={(choiceId, response) => setUserInput(response)}
+                  />
+
+                  <div className="p-4 bg-nature/10 rounded-lg mt-6">
+                    <h4 className="font-medium text-nature mb-2">Activity Reflection</h4>
+                    <Textarea
+                      placeholder="How was your activity adventure? What surprised you? What would you want to try again? You can write, draw, or ask someone to help you share..."
+                      value={userInput}
+                      onChange={(e) => setUserInput(e.target.value)}
+                      className="mt-2 min-h-24"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </ActivityGuide>
         );
 
       case 'audio_rest':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-healing/10 rounded-lg border border-healing/20">
-              <Heart className="w-12 h-12 text-healing mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-healing mb-2">Rest & Listen</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
-
-            <AudioGuidance
-              activityType="rest"
-              instructions={[module.narration, "Take slow, gentle breaths.", "Feel safe and loved."]}
-            />
-
-            <div className="p-4 bg-healing/10 rounded-lg">
-              <h4 className="font-medium text-healing mb-2">After your rest time</h4>
-              <Textarea
-                placeholder="How do you feel? You can draw, write, or ask a grown-up to help..."
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                className="mt-2"
+          <ActivityGuide
+            title="Cuddle Time - Rest & Listen Together"
+            activityType="audio_rest"
+            introduction="Sometimes our hearts and bodies need quiet time to feel better. Let's create a cozy, safe space where you can rest and listen to gentle sounds."
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "🧸 Hi sweetie! I'm here to help you have the most peaceful rest time. We're going to create a special cozy nest where you can feel completely safe and loved."
+              },
+              {
+                type: 'encouragement',
+                content: "💝 You know what's wonderful? Your body is so smart - it knows how to feel better when you give it gentle rest time. You're taking such good care of yourself!"
+              },
+              {
+                type: 'tip',
+                content: "🌙 There's no wrong way to rest. You can lie down, sit up, hold something soft, or even gently move if that feels better. Listen to what your body wants!"
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to your special cuddle and rest time",
+              "Find your coziest spot and get comfortable",
+              "We're going to breathe together and feel peaceful"
+            ]}
+          >
+            <div className="space-y-6">
+              <InteractiveChoices
+                title="Create Your Cozy Nest"
+                description="How would you like to make your rest time extra special today?"
+                activityType="emotion"
+                choices={[
+                  {
+                    id: 'teddy_cuddle',
+                    emoji: '🧸',
+                    title: 'Teddy Bear Cuddles',
+                    description: 'Hold something soft and cuddly',
+                    guidance: "Teddy bears and soft things are like magical comfort helpers! They remind us we're not alone and give us something safe to hold when feelings feel big.",
+                    followUp: "What soft friend did you choose to cuddle with? How does it feel to hold them?"
+                  },
+                  {
+                    id: 'blanket_nest',
+                    emoji: '🌙',
+                    title: 'Blanket Nest',
+                    description: 'Wrap up cozy in your favorite blanket',
+                    guidance: "Blankets are like gentle hugs that last as long as you need them! They help your body feel warm and safe, just like being in a cozy bird's nest.",
+                    followUp: "How does your blanket nest feel? Are you perfectly cozy and warm?"
+                  },
+                  {
+                    id: 'pillow_fort',
+                    emoji: '🏰',
+                    title: 'Pillow Fort',
+                    description: 'Build a special safe space with pillows',
+                    guidance: "Pillow forts are amazing! They're like your own private peaceful kingdom where only good feelings are allowed. You're the ruler of this cozy space!",
+                    followUp: "Tell me about your pillow fort! What makes it feel extra safe and special?"
+                  },
+                  {
+                    id: 'lap_cuddles',
+                    emoji: '💗',
+                    title: 'Lap Cuddles',
+                    description: 'Snuggle with your caregiver',
+                    guidance: "Lap cuddles are the most special! There's something magical about feeling someone who loves you holding you safe. Their heartbeat can help your heart feel calmer too.",
+                    followUp: "How do lap cuddles feel? Can you feel the love and safety around you?"
+                  }
+                ]}
+                onChoiceSelect={(choiceId) => setSelectedOption(choiceId)}
+                onResponseComplete={(choiceId, response) => setUserInput(response)}
               />
+
+              <div className="p-6 bg-healing/10 rounded-lg border border-healing/20">
+                <h4 className="font-medium text-healing mb-4 text-center">🎵 Peaceful Listening Time</h4>
+                <AudioGuidance
+                  activityType="rest"
+                  instructions={[
+                    "Let's start with three gentle breaths together",
+                    "Breathe in slowly... and out slowly...",
+                    "Feel your body getting more relaxed",
+                    "You are safe, you are loved, you are enough",
+                    "Let any worried thoughts float away like clouds",
+                    "Just rest here in this peaceful moment"
+                  ]}
+                />
+                
+                <div className="mt-4 p-3 bg-healing/20 rounded text-center">
+                  <p className="text-sm text-healing">
+                    <Timer className="w-4 h-4 inline mr-1" />
+                    Take as much time as you need. There's no rush at all.
+                  </p>
+                </div>
+              </div>
+
+              <GuidedSteps
+                activityType="feelings"
+                steps={[
+                  {
+                    id: 'settle_in',
+                    title: 'Settle Into Your Cozy Space',
+                    description: 'Get comfortable and feel safe',
+                    guidance: "Take a moment to wiggle around until you feel just right. Maybe stretch a little, fluff your pillow, or adjust your blanket. Your body will tell you when it feels perfect!",
+                    encouragement: "Perfect! You've created such a beautiful, safe space for yourself! 🌟"
+                  },
+                  {
+                    id: 'breathing_together',
+                    title: 'Breathing Together',
+                    description: 'Take slow, gentle breaths',
+                    guidance: "Let's breathe together like we're blowing bubbles very slowly. In through your nose... and out through your mouth. Your grown-up can breathe with you!",
+                    encouragement: "Beautiful breathing! You're helping your whole body feel calmer! 💙"
+                  },
+                  {
+                    id: 'listening_time',
+                    title: 'Peaceful Listening',
+                    description: 'Listen to gentle sounds and music',
+                    guidance: "Now just listen to the peaceful sounds. You might hear music, nature sounds, or just the quiet. Let the sounds wrap around you like a gentle hug.",
+                    encouragement: "You're such a good listener! Your heart is getting more peaceful! 🎵"
+                  },
+                  {
+                    id: 'feeling_check',
+                    title: 'Gentle Feeling Check',
+                    description: 'Notice how you feel after resting',
+                    guidance: "Take a moment to notice how your body and heart feel now. Are they more peaceful? Different? That's okay - there's no right or wrong way to feel!",
+                    encouragement: "You took such wonderful care of yourself! You should feel proud! ✨"
+                  }
+                ]}
+                onAllComplete={() => {
+                  toast({
+                    title: "Beautiful Rest Time! 🌙",
+                    description: "You gave yourself the gift of peaceful rest. That's so important!",
+                  });
+                }}
+              />
+
+              <div className="p-4 bg-healing/10 rounded-lg">
+                <h4 className="font-medium text-healing mb-2">After Your Rest Time</h4>
+                <Textarea
+                  placeholder="How do you feel after your peaceful rest? What was your favorite part? Did your body feel different? You can write, draw, or ask a grown-up to help you share..."
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  className="mt-2 min-h-24"
+                />
+              </div>
             </div>
-          </div>
+          </ActivityGuide>
         );
 
       case 'record_or_text':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-earth/10 rounded-lg border border-earth/20">
-              <Mic className="w-12 h-12 text-earth mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-earth mb-2">Share Your Story</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
+          <ActivityGuide
+            title="Story & Memory Time - Sharing From Your Heart"
+            activityType="memory"
+            introduction="Stories and memories are like precious treasures! Today we're going to share some special memories about the person we love and miss."
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "📖 Hello, beautiful storyteller! I'm so honored to listen to your stories today. Sharing memories is one of the most special things we can do - it keeps love alive in our hearts!"
+              },
+              {
+                type: 'encouragement',
+                content: "💝 You know what's amazing? Every story you tell, every memory you share, is a gift. It's a way of saying 'this person was important and I love them.' That's so beautiful!"
+              },
+              {
+                type: 'tip',
+                content: "🌟 Stories can be happy, funny, silly, or even a little sad - all feelings are okay here! You can tell about big moments or tiny everyday things. Every memory matters!"
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to your special story and memory sharing time",
+              "Take a moment to think about someone you love",
+              "We're going to share memories with open hearts"
+            ]}
+          >
+            <div className="space-y-6">
+              <InteractiveChoices
+                title="What Kind of Story Would You Like to Share?"
+                description="Choose the type of memory that feels right for you today. There's no pressure - just follow your heart!"
+                activityType="memory"
+                choices={[
+                  {
+                    id: 'happy_memory',
+                    emoji: '😊',
+                    title: 'Happy Memory',
+                    description: 'A time that made you smile or laugh',
+                    guidance: "Happy memories are like sunshine for our hearts! They remind us of love, joy, and all the good times. These memories show us that even when we miss someone, the happiness they brought us stays with us forever.",
+                    followUp: "What made this memory so special and happy? How did it feel to remember this joyful time?"
+                  },
+                  {
+                    id: 'funny_story',
+                    emoji: '😂',
+                    title: 'Funny Story',
+                    description: 'Something silly or funny that happened',
+                    guidance: "Funny stories are wonderful! Laughter is like medicine for sad hearts. When we remember funny moments, it reminds us that this person brought joy and silliness into our lives - and that's such a beautiful gift!",
+                    followUp: "What was so funny about this moment? Do you still laugh when you think about it?"
+                  },
+                  {
+                    id: 'special_tradition',
+                    emoji: '🎈',
+                    title: 'Special Tradition',
+                    description: 'Something you did together regularly',
+                    guidance: "Traditions are so precious! They're like special rituals that only you and this person shared. Whether it was bedtime stories, cooking together, or holiday traditions - these repeated moments of love are treasures!",
+                    followUp: "What made this tradition special? Would you like to keep doing it to remember them?"
+                  },
+                  {
+                    id: 'everyday_moment',
+                    emoji: '💫',
+                    title: 'Everyday Moment',
+                    description: 'A simple, ordinary moment that felt special',
+                    guidance: "Sometimes the most precious memories are the quiet, everyday ones! Maybe it was the way they made your breakfast, how they said goodnight, or just sitting together. These simple moments are full of love.",
+                    followUp: "What made this everyday moment feel special? How did it show their love for you?"
+                  },
+                  {
+                    id: 'what_they_taught_me',
+                    emoji: '🌱',
+                    title: 'What They Taught Me',
+                    description: 'Something important you learned from them',
+                    guidance: "The things people teach us are gifts that last forever! It might be how to tie your shoes, how to be kind, or how to be brave. These lessons mean they're still helping you grow, even now.",
+                    followUp: "What did they teach you? How do you use what they taught you in your life now?"
+                  }
+                ]}
+                onChoiceSelect={(choiceId) => setSelectedOption(choiceId)}
+                onResponseComplete={(choiceId, response) => setUserInput(response)}
+              />
 
-            <div className="flex gap-4 justify-center">
-              <Button
-                variant={isRecording ? "destructive" : "earth"}
-                size="lg"
-                onClick={() => setIsRecording(!isRecording)}
-              >
-                {isRecording ? <MicOff className="w-4 h-4 mr-2" /> : <Mic className="w-4 h-4 mr-2" />}
-                {isRecording ? "Stop Recording" : "Start Recording"}
-              </Button>
-            </div>
+              {selectedOption && (
+                <div className="space-y-6">
+                  <div className="p-4 bg-earth/10 rounded-lg border border-earth/20">
+                    <h4 className="font-medium text-earth mb-3 text-center">📱 Choose How to Share Your Story</h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <Button
+                        variant={isRecording ? "destructive" : "earth"}
+                        size="lg"
+                        onClick={() => setIsRecording(!isRecording)}
+                        className="h-16 flex flex-col items-center justify-center"
+                      >
+                        {isRecording ? (
+                          <>
+                            <MicOff className="w-5 h-5 mb-1" />
+                            <span className="text-sm">Stop Recording</span>
+                          </>
+                        ) : (
+                          <>
+                            <Mic className="w-5 h-5 mb-1" />
+                            <span className="text-sm">Record Your Story</span>
+                          </>
+                        )}
+                      </Button>
+                      
+                      <div className="flex items-center justify-center p-4 border border-earth/30 rounded-lg">
+                        <div className="text-center text-muted-foreground">
+                          <Palette className="w-5 h-5 mx-auto mb-1" />
+                          <span className="text-sm">Or write/draw below</span>
+                        </div>
+                      </div>
+                    </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-earth mb-2 block">
-                  Or write/draw your story here:
-                </label>
-                <Textarea
-                  placeholder="Tell us about a happy memory, a funny story, or anything special..."
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  className="min-h-32"
-                />
-              </div>
+                    {isRecording && (
+                      <div className="p-3 bg-earth/20 rounded-lg text-center animate-pulse">
+                        <p className="text-sm text-earth font-medium">
+                          🎤 Recording your beautiful story...
+                        </p>
+                        <p className="text-xs text-earth/80 mt-1">
+                          Take your time. Speak from your heart.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-sm font-medium text-earth mb-2 block flex items-center gap-2">
+                        <Heart className="w-4 h-4" />
+                        Write or Draw Your Story Here:
+                      </label>
+                      <Textarea
+                        placeholder="Tell me about this special memory... What happened? Who was there? How did it feel? What do you want to remember most? You can also draw pictures or ask someone to help you write..."
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        className="min-h-32 border-earth/30 focus:border-earth/50"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div className="p-3 bg-earth/5 rounded-lg text-center">
+                        <Star className="w-4 h-4 text-earth mx-auto mb-1" />
+                        <p className="text-xs text-earth">Tell about the people</p>
+                      </div>
+                      <div className="p-3 bg-earth/5 rounded-lg text-center">
+                        <Heart className="w-4 h-4 text-earth mx-auto mb-1" />
+                        <p className="text-xs text-earth">Share the feelings</p>
+                      </div>
+                      <div className="p-3 bg-earth/5 rounded-lg text-center">
+                        <Sparkles className="w-4 h-4 text-earth mx-auto mb-1" />
+                        <p className="text-xs text-earth">What made it special</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {userInput.length > 20 && (
+                    <Card className="shadow-gentle border-healing/30 bg-gradient-to-r from-healing/10 to-earth/10">
+                      <CardContent className="p-4">
+                        <div className="text-center">
+                          <Star className="w-8 h-8 text-healing mx-auto mb-2 fill-current" />
+                          <h4 className="font-medium text-healing mb-2">Thank You for Sharing! 💝</h4>
+                          <p className="text-sm text-muted-foreground">
+                            What a beautiful story! Sharing memories like this is so important. It helps keep love alive and helps your heart heal. 
+                            This person would be so happy to know you're remembering them with such love! 🌟
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+              )}
             </div>
-          </div>
+          </ActivityGuide>
         );
 
       case 'craft':
@@ -236,34 +687,126 @@ const ChildActivityModule = ({ module, onBack, onComplete }: ChildActivityModule
 
       case 'guided_steps':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-nature/10 rounded-lg border border-nature/20">
-              <Heart className="w-12 h-12 text-nature mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-nature mb-2">Let's Do This Together</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
-
-            <div className="space-y-3">
-              {['Step 1: Gather supplies together', 'Step 2: Take turns helping', 'Step 3: Share and enjoy', 'Step 4: Clean up as a team'].map((step, index) => (
-                <div key={index} className="flex items-center p-3 bg-nature/5 rounded-lg border border-nature/20">
-                  <div className="w-6 h-6 rounded-full bg-nature text-nature-foreground flex items-center justify-center text-sm font-medium mr-3">
-                    {index + 1}
-                  </div>
-                  <span className="text-muted-foreground">{step}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-4 bg-nature/10 rounded-lg">
-              <h4 className="font-medium text-nature mb-2">How did it go?</h4>
-              <Textarea
-                placeholder="What was your favorite part? How did it feel to work together?"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                className="mt-2"
+          <ActivityGuide
+            title="Kitchen Connection - Cooking Together"
+            activityType="kitchen"
+            introduction="There's something magical about making food together. It helps us connect, share stories, and create sweet memories while we make something delicious!"
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "👨‍🍳 Welcome to our kitchen adventure! Cooking together is one of the most special ways families and friends can connect. Today, we're not just making food - we're making memories!"
+              },
+              {
+                type: 'encouragement',
+                content: "💝 You know what's wonderful about cooking? It doesn't have to be perfect! The best part is being together, laughing, maybe making a little mess, and enjoying each other's company."
+              },
+              {
+                type: 'tip',
+                content: "🌟 While we cook, this is a perfect time to share stories, talk about your day, or even talk about the person you're remembering. Food has a way of bringing out love and memories!"
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to your kitchen connection activity",
+              "Take a moment to look around your kitchen space",
+              "We're going to cook with love and create memories together"
+            ]}
+          >
+            <div className="space-y-6">
+              <InteractiveChoices
+                title="Choose Your Recipe Adventure"
+                description="Pick something yummy to make together! Think about what sounds fun and tasty."
+                activityType="activity"
+                choices={[
+                  {
+                    id: 'fruit_kabobs',
+                    emoji: '🍓',
+                    title: 'Rainbow Fruit Kabobs',
+                    description: 'Colorful, healthy, and fun to assemble',
+                    guidance: "Fruit kabobs are perfect! They're healthy, colorful, and everyone can make their own pattern. Plus, you get to eat the rainbow!",
+                    followUp: "What fruits do you want to use? What pattern or colors are you excited to make?"
+                  },
+                  {
+                    id: 'mini_pancakes',
+                    emoji: '🥞',
+                    title: 'Mini Heart Pancakes',
+                    description: 'Sweet treats shaped with love',
+                    guidance: "Heart-shaped pancakes are so special! Every flip shows love, and decorating them together is pure joy. Perfect for sharing sweet moments!",
+                    followUp: "What toppings do you want to add? Berries, whipped cream, honey, or something else special?"
+                  },
+                  {
+                    id: 'sandwich_art',
+                    emoji: '🥪',
+                    title: 'Creative Sandwich Art',
+                    description: 'Turn lunch into edible masterpieces',
+                    guidance: "Sandwich art lets you be creative with food! You can make faces, animals, or designs. It's amazing how food can become art!",
+                    followUp: "What kind of sandwich art do you want to create? An animal, a face, or maybe something that reminds you of someone special?"
+                  },
+                  {
+                    id: 'smoothie_bowl',
+                    emoji: '🍌',
+                    title: 'Smoothie Bowl Creation',
+                    description: 'Blend, pour, and decorate something delicious',
+                    guidance: "Smoothie bowls are like edible canvases! You blend the colors, then decorate the top like an artist. So pretty and so yummy!",
+                    followUp: "What colors do you want your smoothie to be? What toppings will make it look amazing?"
+                  }
+                ]}
+                onChoiceSelect={(choiceId) => setSelectedOption(choiceId)}
+                onResponseComplete={(choiceId, response) => setUserInput(response)}
               />
+
+              {selectedOption && (
+                <GuidedSteps
+                  activityType="kitchen"
+                  steps={[
+                    {
+                      id: 'prep',
+                      title: 'Kitchen Prep Time',
+                      description: 'Get your space and ingredients ready',
+                      guidance: "Let's start by washing our hands and gathering everything we need. This is a great time to talk about what we're making and why it's special!",
+                      encouragement: "Great prep work! You're setting up for success! 🌟"
+                    },
+                    {
+                      id: 'create_together',
+                      title: 'Creating Together',
+                      description: 'Take turns, help each other, and have fun',
+                      guidance: "Now for the fun part! Take turns with different tasks. Maybe one person can mix while the other adds ingredients. Share the joy!",
+                      encouragement: "Beautiful teamwork! You're both doing amazing! 💫"
+                    },
+                    {
+                      id: 'share_stories',
+                      title: 'Share & Stories',
+                      description: 'Enjoy your creation and share memories',
+                      guidance: "While you eat, this is perfect time for stories! Share a memory, talk about your day, or tell each other what you're grateful for.",
+                      encouragement: "What wonderful sharing! These moments are the most precious ingredients! ❤️"
+                    },
+                    {
+                      id: 'cleanup_love',
+                      title: 'Cleanup with Love',
+                      description: 'Tidy up together as a team',
+                      guidance: "Cleaning up together is just as important as cooking together! Put on some music, make it fun, and celebrate what you accomplished!",
+                      encouragement: "Perfect! A clean kitchen and full hearts - you did amazing work together! ✨"
+                    }
+                  ]}
+                  onAllComplete={() => {
+                    toast({
+                      title: "Kitchen Connection Complete! 🍳",
+                      description: "You created delicious food AND beautiful memories together!",
+                    });
+                  }}
+                />
+              )}
+
+              <div className="p-4 bg-nature/10 rounded-lg">
+                <h4 className="font-medium text-nature mb-2">Share Your Kitchen Experience</h4>
+                <Textarea
+                  placeholder="How did cooking together feel? What was your favorite part? What stories did you share? What did your creation taste like?"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  className="mt-2 min-h-24"
+                />
+              </div>
             </div>
-          </div>
+          </ActivityGuide>
         );
 
       case 'draw_template':
