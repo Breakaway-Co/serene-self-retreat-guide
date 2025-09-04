@@ -652,37 +652,128 @@ const ChildActivityModule = ({ module, onBack, onComplete }: ChildActivityModule
 
       case 'craft':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-calm/10 rounded-lg border border-calm/20">
-              <Star className="w-12 h-12 text-calm mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-calm mb-2">Creative Time</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
+          <ActivityGuide
+            title={module.title}
+            activityType="craft"
+            introduction="Let's create something beautiful together! Art helps us express feelings that are hard to put into words."
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "🎨 Today we're making a Memory Star or Heart! This will be a special way to remember someone important to you.",
+                icon: '✨'
+              },
+              {
+                type: 'encouragement', 
+                content: "There's no right or wrong way to make art. Your feelings and creativity are perfect just as they are!",
+                icon: '💖'
+              },
+              {
+                type: 'tip',
+                content: "If you feel sad while creating, that's okay! Art can help us feel better. Take breaks if you need them.",
+                icon: '🌈'
+              },
+              {
+                type: 'check-in',
+                content: "Ready to create something magical? Remember, your grown-up is right here with you!",
+                icon: '🌟'
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to our special craft time! Today we're going to make something really meaningful together.",
+              "Art is like a magic way to show our feelings. Sometimes when words feel too hard, colors and shapes can help us instead.",
+              "Remember, this is YOUR art. Make it however feels right to you!"
+            ]}
+          >
+            <div className="space-y-6">
+              <InteractiveChoices
+                title="What Would You Like to Make?"
+                description="Choose what feels right for your heart today"
+                activityType="creative"
+                choices={[
+                  {
+                    id: 'memory_star',
+                    emoji: '⭐',
+                    title: 'Memory Star',
+                    description: 'A bright star to hold special memories',
+                    guidance: "Stars shine in the dark, just like happy memories can help when we feel sad. Let's make a star that holds your favorite memory!",
+                    followUp: "What's a happy memory you'd like to put in your star? You can draw it, write about it, or tell your grown-up about it!"
+                  },
+                  {
+                    id: 'love_heart',
+                    emoji: '💖',
+                    title: 'Love Heart',
+                    description: 'A heart full of love and warm feelings',
+                    guidance: "Hearts hold all our love! Even when someone isn't with us anymore, the love stays in our hearts forever.",
+                    followUp: "What would you like to put in your love heart? Maybe colors that remind you of someone special, or words that feel warm and happy?"
+                  },
+                  {
+                    id: 'feeling_rainbow',
+                    emoji: '🌈',
+                    title: 'Feeling Rainbow',
+                    description: 'A rainbow showing all your different feelings',
+                    guidance: "Rainbows have lots of colors, just like we have lots of different feelings! Every color is important and beautiful.",
+                    followUp: "What colors match your feelings today? You can use any colors you want - there's no wrong choice!"
+                  }
+                ]}
+                onChoiceSelect={(choiceId) => setSelectedOption(choiceId)}
+                onResponseComplete={(choiceId, response) => setUserInput(response)}
+              />
 
-            <div className="grid grid-cols-2 gap-4">
-              {['⭐ Star Shape', '💝 Heart Shape', '🌈 Rainbow Colors', '🦋 Butterfly Design'].map((option, index) => (
-                <Button
-                  key={index}
-                  variant={selectedOption === option ? "calm" : "outline"}
-                  className="h-16 flex flex-col items-center justify-center"
-                  onClick={() => setSelectedOption(option)}
-                >
-                  <span className="text-xl mb-1">{option.split(' ')[0]}</span>
-                  <span className="text-xs">{option.split(' ').slice(1).join(' ')}</span>
-                </Button>
-              ))}
-            </div>
-
-            <div className="p-4 bg-calm/10 rounded-lg">
-              <h4 className="font-medium text-calm mb-2">Tell us about your creation</h4>
-              <Textarea
-                placeholder="What colors did you use? What makes it special? You can also draw here..."
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                className="min-h-24"
+              <GuidedSteps
+                activityType="craft"
+                steps={[
+                  {
+                    id: 'gather_supplies',
+                    title: 'Gather Your Art Supplies',
+                    description: 'Let\'s collect everything we need for our special creation',
+                    guidance: 'Look around for paper, crayons, markers, stickers, or anything colorful! You can even use things from nature like leaves or flowers. Ask your grown-up to help you find supplies.',
+                    encouragement: 'Great job gathering your supplies! You\'re all ready to create something amazing! 🎨'
+                  },
+                  {
+                    id: 'choose_colors',
+                    title: 'Pick Your Special Colors',
+                    description: 'Choose colors that feel good to you today',
+                    guidance: 'What colors make you feel happy? What colors remind you of someone special? There are no wrong colors - pick the ones that feel right in your heart!',
+                    encouragement: 'Beautiful color choices! Your heart knows exactly what it needs today! 💝'
+                  },
+                  {
+                    id: 'start_creating',
+                    title: 'Begin Your Art',
+                    description: 'Start drawing, coloring, or decorating your shape',
+                    guidance: 'You can draw pictures, write words, add stickers, or make patterns! If you want to change something, that\'s perfectly okay. Art is about having fun and expressing yourself.',
+                    encouragement: 'Look at you creating! You\'re doing such beautiful work! Keep going! ✨'
+                  },
+                  {
+                    id: 'add_memories',
+                    title: 'Add Your Special Memories or Feelings',
+                    description: 'Put something meaningful into your art',
+                    guidance: 'You can draw a picture of a happy time, write a word that feels important, or add a sticker that makes you smile. You can also just use colors that feel good!',
+                    encouragement: 'What a special way to show your feelings! Your art is full of love! 🌟'
+                  },
+                  {
+                    id: 'finishing_touches',
+                    title: 'Add Final Magic Touches',
+                    description: 'Make your creation extra special',
+                    guidance: 'Maybe add some sparkles, draw some hearts, or write your name! You can also add anything else that feels important to you.',
+                    encouragement: 'Perfect! Your creation is absolutely wonderful and uniquely yours! 💖'
+                  },
+                  {
+                    id: 'share_creation',
+                    title: 'Share Your Beautiful Art',
+                    description: 'Show your grown-up what you made',
+                    guidance: 'Tell your grown-up about your art! What do you like best about it? How did it feel to make it? Your grown-up will love hearing about your creation!',
+                    encouragement: 'You should feel so proud! You created something beautiful and meaningful! 🌈'
+                  }
+                ]}
+                onAllComplete={() => {
+                  toast({
+                    title: "Amazing Artwork! 🎨",
+                    description: "You created something truly beautiful and meaningful!",
+                  });
+                }}
               />
             </div>
-          </div>
+          </ActivityGuide>
         );
 
       case 'guided_steps':
@@ -842,46 +933,144 @@ const ChildActivityModule = ({ module, onBack, onComplete }: ChildActivityModule
 
       case 'ritual_select':
         return (
-          <div className="space-y-6">
-            <div className="text-center p-6 bg-earth/10 rounded-lg border border-earth/20">
-              <Star className="w-12 h-12 text-earth mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-earth mb-2">Special Closing</h3>
-              <p className="text-muted-foreground">{module.narration}</p>
-            </div>
+          <ActivityGuide
+            title={module.title}
+            activityType="ritual"
+            introduction="It's time for our special closing ceremony! Rituals help us say goodbye in a gentle, meaningful way."
+            guideMessages={[
+              {
+                type: 'instruction',
+                content: "🌟 We're going to choose a special way to end our time together today. Rituals are like gentle hugs for our hearts when we need to say goodbye.",
+                icon: '🤗'
+              },
+              {
+                type: 'encouragement',
+                content: "You've done such beautiful, brave work today! This closing ritual is a way to honor all the feelings you've shared and the love in your heart.",
+                icon: '💝'
+              },
+              {
+                type: 'tip',
+                content: "There's no pressure to say anything special or feel a certain way. Just be yourself and do what feels right in your heart.",
+                icon: '💙'
+              },
+              {
+                type: 'check-in',
+                content: "Ready to choose how we'd like to close our special time together? Each choice is beautiful and meaningful!",
+                icon: '✨'
+              }
+            ]}
+            audioInstructions={[
+              "Welcome to our closing ceremony time. This is a very special moment where we take all the love and learning from today and keep it safe in our hearts.",
+              "Rituals are like special ceremonies that help us mark important moments. They can be simple and gentle, just like us.",
+              "Whatever you choose will be perfect, because it comes from your heart!"
+            ]}
+          >
+            <div className="space-y-6">
+              <InteractiveChoices
+                title="How Would You Like to Say Goodbye Today?"
+                description="Choose the ceremony that feels right in your heart"
+                activityType="memory"
+                choices={[
+                  {
+                    id: 'candle_light',
+                    emoji: '🕯️',
+                    title: 'Light a Candle',
+                    description: 'Light a special candle and watch it glow',
+                    guidance: "Candles are like little lights of love and memory. When we light a candle, it's like sending warm thoughts to someone special or keeping love glowing in our hearts.",
+                    followUp: "What would you like to think about while we watch the candle? Maybe a happy memory, or just the warm love in your heart?"
+                  },
+                  {
+                    id: 'plant_seed',
+                    emoji: '🌱',
+                    title: 'Plant a Seed',
+                    description: 'Plant a seed that will grow into something beautiful',
+                    guidance: "Seeds are amazing! They start small but grow into beautiful plants. Just like how love grows in our hearts, even when we're sad. This seed will be a reminder of your brave heart!",
+                    followUp: "What do you hope this little seed will become? What would you like to tell it as we plant it together?"
+                  },
+                  {
+                    id: 'wish_balloon',
+                    emoji: '🎈',
+                    title: 'Send a Wish Balloon',
+                    description: 'Release a balloon with your special wish or message',
+                    guidance: "Balloons can carry our wishes and messages high up into the sky! It's like sending a gentle hug or happy thought out into the world where it can float freely.",
+                    followUp: "What wish or message would you like to send with your balloon? It can be anything that feels important to you!"
+                  },
+                  {
+                    id: 'memory_stone',
+                    emoji: '🪨',
+                    title: 'Choose a Memory Stone',
+                    description: 'Find a special stone to keep your memories safe',
+                    guidance: "Stones are strong and last a long time, just like the love in our hearts! We can find a special stone that will hold our memories and feelings safe forever.",
+                    followUp: "What would you like your special stone to remember? What feelings would you like it to hold for you?"
+                  },
+                  {
+                    id: 'gratitude_circle',
+                    emoji: '🙏',
+                    title: 'Make a Gratitude Circle',
+                    description: 'Share what we\'re thankful for from our time together',
+                    guidance: "Gratitude means thinking about the good things, even when we feel sad. We can sit in a circle and share what we're thankful for from our time together today.",
+                    followUp: "What are you thankful for today? Maybe something you learned, or how brave you were, or just having your grown-up with you?"
+                  }
+                ]}
+                onChoiceSelect={(choiceId) => setSelectedOption(choiceId)}
+                onResponseComplete={(choiceId, response) => setUserInput(response)}
+              />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                { id: 'candle', icon: '🕯️', title: 'Light a Candle', desc: 'Make a gentle wish' },
-                { id: 'seed', icon: '🌱', title: 'Plant a Seed', desc: 'Watch something grow' },
-                { id: 'balloon', icon: '🎈', title: 'Wish Balloon', desc: 'Send love to the sky' }
-              ].map((ritual) => (
-                <Button
-                  key={ritual.id}
-                  variant={selectedOption === ritual.id ? "earth" : "outline"}
-                  className="h-24 flex flex-col items-center justify-center space-y-2 border-earth/30"
-                  onClick={() => setSelectedOption(ritual.id)}
-                >
-                  <span className="text-2xl">{ritual.icon}</span>
-                  <div className="text-center">
-                    <div className="text-sm font-medium">{ritual.title}</div>
-                    <div className="text-xs text-muted-foreground">{ritual.desc}</div>
-                  </div>
-                </Button>
-              ))}
+              <GuidedSteps
+                activityType="ritual"
+                steps={[
+                  {
+                    id: 'prepare_space',
+                    title: 'Create Our Sacred Space',
+                    description: 'Make our space feel special and peaceful',
+                    guidance: 'Find a quiet, comfortable spot where you and your grown-up can sit together. Maybe dim the lights a little, or just find a cozy corner. This is your special ceremony space!',
+                    encouragement: 'Perfect! You\'ve created such a peaceful, sacred space for your ceremony! 🌟'
+                  },
+                  {
+                    id: 'quiet_moment',
+                    title: 'Take a Quiet Moment Together',
+                    description: 'Sit quietly and feel the love between you',
+                    guidance: 'Sit close to your grown-up and just be quiet together for a moment. Feel how much love there is between you. You can hold hands, hug, or just sit peacefully side by side.',
+                    encouragement: 'Beautiful! You can feel how much love and safety there is between you and your grown-up! 💝'
+                  },
+                  {
+                    id: 'perform_ritual',
+                    title: 'Do Your Special Ceremony',
+                    description: 'Carry out the ritual you chose with care and love',
+                    guidance: 'Now it\'s time for your special ceremony! Take your time, there\'s no rush. Let your grown-up help you, and do everything with gentle care and love.',
+                    encouragement: 'You\'re doing this so beautifully! Your ceremony is filled with love and meaning! ✨'
+                  },
+                  {
+                    id: 'share_feelings',
+                    title: 'Share How You\'re Feeling',
+                    description: 'Tell your grown-up how the ceremony felt',
+                    guidance: 'How did that feel? Was it peaceful? Special? Different than you expected? You can tell your grown-up anything about how it felt, or just sit quietly if you prefer.',
+                    encouragement: 'Thank you for sharing your feelings! Your thoughts and feelings are so important! 🤗'
+                  },
+                  {
+                    id: 'make_promise',
+                    title: 'Make a Gentle Promise',
+                    description: 'Promise to take care of yourself and your feelings',
+                    guidance: 'You can make a gentle promise to yourself and your grown-up. Maybe to remember that you\'re loved, or to ask for help when you need it, or to be kind to yourself.',
+                    encouragement: 'What a beautiful promise! You\'re learning to take such good care of yourself! 💖'
+                  },
+                  {
+                    id: 'closing_hug',
+                    title: 'Share a Special Closing Hug',
+                    description: 'End with a warm, loving hug together',
+                    guidance: 'Give your grown-up a big, warm hug! Hold each other close and feel all the love. This hug is like wrapping up all the good feelings from today and keeping them safe in your hearts.',
+                    encouragement: 'What a perfect way to end! You\'ve been so brave, so loving, and so wonderful today! You should feel very proud! 🌈'
+                  }
+                ]}
+                onAllComplete={() => {
+                  toast({
+                    title: "Beautiful Closing Ceremony! 🌟",
+                    description: "What a special way to end your time together with love and meaning!",
+                  });
+                }}
+              />
             </div>
-
-            {selectedOption && (
-              <div className="p-4 bg-earth/10 rounded-lg">
-                <h4 className="font-medium text-earth mb-2">Your special moment</h4>
-                <Textarea
-                  placeholder="What did you wish for? How did it feel? What would you like to remember?"
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  className="mt-2"
-                />
-              </div>
-            )}
-          </div>
+          </ActivityGuide>
         );
 
       default:
