@@ -6,6 +6,7 @@ import { QuickAccess } from '@/components/QuickAccess';
 import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
 import { useApp } from "@/contexts/AppContext";
 import { ArrowRight, Play, Users, Award, Sparkles } from 'lucide-react';
+import heroImage from '@/assets/hero-retreat-dashboard.jpg';
 
 const Index = () => {
   const { state } = useApp();
@@ -34,8 +35,15 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-hero text-white py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20" />
+      <section className="relative text-white py-24 lg:py-32 overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={heroImage} 
+            alt="Luxury wellness retreat sanctuary with serene meditation space" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-luxury-tan/80 via-luxury-tan/60 to-luxury-champagne/40" />
+        </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
