@@ -1,3 +1,5 @@
+import { ScreeningSession } from './screening';
+
 export interface ConsentData {
   privacyAgreement?: boolean;
   dataProcessing?: boolean;
@@ -74,6 +76,17 @@ export interface IntakeData {
   safety: SafetyData;
   lifestyle: LifestyleData;
   goals: GoalsData;
+  screeningSession?: ScreeningSession;
+  riskAssessment?: RiskAssessment;
+}
+
+export interface RiskAssessment {
+  overallRiskLevel: 'low' | 'moderate' | 'high';
+  riskFactors: string[];
+  recommendations: string[];
+  requiresProfessionalSupport: boolean;
+  suitableForRetreat: boolean;
+  recommendedRetreatId?: string;
 }
 
 export interface RetreatMatch {

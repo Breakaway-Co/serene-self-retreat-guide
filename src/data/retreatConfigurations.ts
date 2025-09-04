@@ -1,6 +1,8 @@
 import { RetreatConfiguration } from '@/types/retreat';
+import { addictionsRecoveryRetreat } from './addictionsRetreatConfig';
 
 export const retreatConfigurations: Record<string, RetreatConfiguration> = {
+  retreat_addictions_recovery: addictionsRecoveryRetreat,
   inner_compass: {
     id: 'inner_compass',
     name: 'Inner Compass: Stress Recovery Retreat',
