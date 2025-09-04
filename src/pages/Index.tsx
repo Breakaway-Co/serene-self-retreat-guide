@@ -74,22 +74,6 @@ const Index = () => {
                 Explore Programs
               </Button>
             </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-luxury-champagne">25K+</div>
-                <div className="text-white/80 text-sm">Happy Members</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-luxury-champagne">150+</div>
-                <div className="text-white/80 text-sm">Retreat Programs</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-luxury-champagne">4.9★</div>
-                <div className="text-white/80 text-sm">Average Rating</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
