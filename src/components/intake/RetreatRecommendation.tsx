@@ -34,7 +34,7 @@ const RetreatRecommendation = ({ data, onPrevious }: RetreatRecommendationProps)
     const timeCommitment = intakeData.goals?.timeCommitment || 'moderate';
     
     // Define retreat options
-    const retreats = [
+    const retreats: RetreatMatch[] = [
       {
         retreatId: "inner_compass",
         name: "Inner Compass: Stress Recovery Retreat",
