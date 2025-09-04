@@ -8,53 +8,53 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Luxury color palette */
-    --background: 15 15% 97%;
-    --foreground: 200 15% 15%;
+    /* Champagne/Beige/Tan luxury palette */
+    --background: 45 25% 97%;
+    --foreground: 30 15% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 200 15% 15%;
+    --card-foreground: 30 15% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 200 15% 15%;
+    --popover-foreground: 30 15% 20%;
 
-    /* Luxury primary - Deep sapphire blue */
-    --primary: 218 85% 25%;
-    --primary-foreground: 0 0% 98%;
+    /* Primary - Rich Champagne */
+    --primary: 45 35% 65%;
+    --primary-foreground: 30 15% 15%;
 
-    /* Sophisticated secondary - Warm pearl */
-    --secondary: 45 15% 88%;
-    --secondary-foreground: 200 15% 25%;
+    /* Secondary - Soft Beige */
+    --secondary: 42 20% 85%;
+    --secondary-foreground: 30 15% 25%;
 
-    --muted: 45 10% 92%;
-    --muted-foreground: 200 8% 45%;
+    --muted: 45 15% 90%;
+    --muted-foreground: 30 10% 45%;
 
-    --accent: 200 25% 85%;
-    --accent-foreground: 200 15% 25%;
+    --accent: 40 25% 80%;
+    --accent-foreground: 30 15% 25%;
 
-    /* Luxury-focused design tokens */
-    --luxury-gold: 45 85% 65%;
-    --luxury-gold-foreground: 200 15% 15%;
+    /* Luxury champagne/beige design tokens */
+    --luxury-champagne: 48 45% 75%;
+    --luxury-champagne-foreground: 30 15% 15%;
     
-    --luxury-platinum: 200 10% 85%;
-    --luxury-platinum-foreground: 200 15% 15%;
+    --luxury-cream: 45 30% 88%;
+    --luxury-cream-foreground: 30 15% 15%;
     
-    --luxury-emerald: 160 45% 45%;
-    --luxury-emerald-foreground: 0 0% 98%;
+    --luxury-tan: 35 40% 55%;
+    --luxury-tan-foreground: 0 0% 98%;
     
-    --luxury-rose: 350 35% 75%;
-    --luxury-rose-foreground: 200 15% 15%;
+    --luxury-warm: 38 35% 70%;
+    --luxury-warm-foreground: 30 15% 15%;
 
     /* Premium gradients */
-    --gradient-luxury: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--luxury-emerald)));
-    --gradient-gold: linear-gradient(135deg, hsl(var(--luxury-gold)), hsl(45 85% 85%));
-    --gradient-platinum: linear-gradient(180deg, hsl(var(--luxury-platinum)), hsl(var(--secondary)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--luxury-emerald)) 100%);
+    --gradient-luxury: linear-gradient(135deg, hsl(var(--luxury-champagne)), hsl(var(--luxury-tan)));
+    --gradient-champagne: linear-gradient(135deg, hsl(var(--luxury-champagne)), hsl(45 45% 85%));
+    --gradient-cream: linear-gradient(180deg, hsl(var(--luxury-cream)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--luxury-tan)) 0%, hsl(var(--luxury-champagne)) 100%);
 
     /* Sophisticated shadows */
-    --shadow-luxury: 0 8px 32px -8px hsl(var(--primary) / 0.3);
-    --shadow-gold: 0 4px 20px -4px hsl(var(--luxury-gold) / 0.4);
-    --shadow-elevated: 0 16px 48px -16px hsl(var(--primary) / 0.2);
+    --shadow-luxury: 0 8px 32px -8px hsl(var(--luxury-tan) / 0.25);
+    --shadow-champagne: 0 4px 20px -4px hsl(var(--luxury-champagne) / 0.3);
+    --shadow-elevated: 0 16px 48px -16px hsl(var(--luxury-tan) / 0.15);
 
     /* Smooth transitions */
     --transition-luxury: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -62,68 +62,68 @@ All colors MUST be HSL.
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 200 20% 88%;
-    --input: 200 20% 88%;
-    --ring: 218 85% 25%;
+    --border: 42 20% 85%;
+    --input: 42 20% 85%;
+    --ring: 45 35% 65%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 200 15% 25%;
-    --sidebar-primary: 218 85% 25%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 45 15% 92%;
-    --sidebar-accent-foreground: 200 15% 25%;
-    --sidebar-border: 200 15% 85%;
-    --sidebar-ring: 218 85% 25%;
+    --sidebar-background: 45 25% 98%;
+    --sidebar-foreground: 30 15% 25%;
+    --sidebar-primary: 45 35% 65%;
+    --sidebar-primary-foreground: 30 15% 15%;
+    --sidebar-accent: 42 20% 90%;
+    --sidebar-accent-foreground: 30 15% 25%;
+    --sidebar-border: 42 15% 85%;
+    --sidebar-ring: 45 35% 65%;
   }
 
   .dark {
-    --background: 200 15% 8%;
-    --foreground: 45 15% 88%;
+    --background: 30 15% 8%;
+    --foreground: 45 25% 88%;
 
-    --card: 200 15% 10%;
-    --card-foreground: 45 15% 88%;
+    --card: 30 15% 10%;
+    --card-foreground: 45 25% 88%;
 
-    --popover: 200 15% 10%;
-    --popover-foreground: 45 15% 88%;
+    --popover: 30 15% 10%;
+    --popover-foreground: 45 25% 88%;
 
-    --primary: 218 85% 65%;
-    --primary-foreground: 200 15% 8%;
+    --primary: 45 35% 75%;
+    --primary-foreground: 30 15% 8%;
 
-    --secondary: 200 15% 15%;
-    --secondary-foreground: 45 15% 88%;
+    --secondary: 30 15% 15%;
+    --secondary-foreground: 45 25% 88%;
 
-    --muted: 200 15% 12%;
-    --muted-foreground: 45 10% 55%;
+    --muted: 30 15% 12%;
+    --muted-foreground: 45 15% 55%;
 
-    --accent: 200 15% 15%;
-    --accent-foreground: 45 15% 88%;
+    --accent: 30 15% 15%;
+    --accent-foreground: 45 25% 88%;
 
-    --luxury-gold: 45 85% 75%;
-    --luxury-gold-foreground: 200 15% 8%;
+    --luxury-champagne: 48 45% 80%;
+    --luxury-champagne-foreground: 30 15% 8%;
     
-    --luxury-platinum: 200 10% 25%;
-    --luxury-platinum-foreground: 45 15% 88%;
+    --luxury-cream: 45 30% 25%;
+    --luxury-cream-foreground: 45 25% 88%;
     
-    --luxury-emerald: 160 45% 55%;
-    --luxury-emerald-foreground: 200 15% 8%;
+    --luxury-tan: 35 40% 65%;
+    --luxury-tan-foreground: 30 15% 8%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 45 15% 88%;
+    --destructive-foreground: 45 25% 88%;
 
-    --border: 200 15% 20%;
-    --input: 200 15% 20%;
-    --ring: 218 85% 65%;
+    --border: 30 15% 20%;
+    --input: 30 15% 20%;
+    --ring: 45 35% 75%;
 
-    --sidebar-background: 200 15% 10%;
-    --sidebar-foreground: 45 15% 80%;
-    --sidebar-primary: 218 85% 65%;
-    --sidebar-primary-foreground: 200 15% 8%;
-    --sidebar-accent: 200 15% 15%;
-    --sidebar-accent-foreground: 45 15% 88%;
-    --sidebar-border: 200 15% 20%;
-    --sidebar-ring: 218 85% 65%;
+    --sidebar-background: 30 15% 10%;
+    --sidebar-foreground: 45 25% 80%;
+    --sidebar-primary: 45 35% 75%;
+    --sidebar-primary-foreground: 30 15% 8%;
+    --sidebar-accent: 30 15% 15%;
+    --sidebar-accent-foreground: 45 25% 88%;
+    --sidebar-border: 30 15% 20%;
+    --sidebar-ring: 45 35% 75%;
   }
 }
 

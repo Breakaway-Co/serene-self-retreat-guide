@@ -41,7 +41,7 @@ const Index = () => {
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-7xl font-playfair font-bold leading-tight">
                 Luxury Wellness
-                <span className="block text-luxury-gold">At Your Fingertips</span>
+                <span className="block text-luxury-champagne">At Your Fingertips</span>
               </h1>
               <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto font-inter">
                 Transform your life with world-class retreat experiences, personalized for your journey and delivered to your home.
@@ -52,7 +52,7 @@ const Index = () => {
               <Button 
                 onClick={handleStartRetreat}
                 size="lg" 
-                className="bg-luxury-gold text-luxury-gold-foreground hover:bg-luxury-gold/90 text-lg px-8 py-6 font-semibold shadow-gold"
+                className="bg-luxury-champagne text-luxury-champagne-foreground hover:bg-luxury-champagne/90 text-lg px-8 py-6 font-semibold shadow-champagne"
               >
                 <Play className="w-5 h-5 mr-2" />
                 Start Your Retreat
@@ -70,15 +70,15 @@ const Index = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto pt-12">
               <div className="text-center">
-                <div className="text-3xl font-bold text-luxury-gold">25K+</div>
+                <div className="text-3xl font-bold text-luxury-champagne">25K+</div>
                 <div className="text-white/80 text-sm">Happy Members</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-luxury-gold">150+</div>
+                <div className="text-3xl font-bold text-luxury-champagne">150+</div>
                 <div className="text-white/80 text-sm">Retreat Programs</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-luxury-gold">4.9★</div>
+                <div className="text-3xl font-bold text-luxury-champagne">4.9★</div>
                 <div className="text-white/80 text-sm">Average Rating</div>
               </div>
             </div>
@@ -101,8 +101,8 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center hover:shadow-luxury transition-all duration-300 group">
               <CardContent className="p-8">
-                <div className="w-16 h-16 bg-luxury-emerald/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-luxury-emerald/20 transition-colors">
-                  <Users className="w-8 h-8 text-luxury-emerald" />
+                <div className="w-16 h-16 bg-luxury-tan/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-luxury-tan/20 transition-colors">
+                  <Users className="w-8 h-8 text-luxury-tan" />
                 </div>
                 <h3 className="text-xl font-playfair font-semibold mb-4">Expert-Led Programs</h3>
                 <p className="text-muted-foreground">
@@ -113,8 +113,8 @@ const Index = () => {
 
             <Card className="text-center hover:shadow-luxury transition-all duration-300 group">
               <CardContent className="p-8">
-                <div className="w-16 h-16 bg-luxury-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-luxury-gold/20 transition-colors">
-                  <Sparkles className="w-8 h-8 text-luxury-gold" />
+                <div className="w-16 h-16 bg-luxury-champagne/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-luxury-champagne/20 transition-colors">
+                  <Sparkles className="w-8 h-8 text-luxury-champagne" />
                 </div>
                 <h3 className="text-xl font-playfair font-semibold mb-4">Personalized Experience</h3>
                 <p className="text-muted-foreground">
@@ -162,7 +162,7 @@ const Index = () => {
           <Button 
             onClick={handleStartRetreat}
             size="lg"
-            className="bg-luxury-gold text-luxury-gold-foreground hover:bg-luxury-gold/90 text-xl px-12 py-6 font-bold shadow-gold"
+            className="bg-luxury-champagne text-luxury-champagne-foreground hover:bg-luxury-champagne/90 text-xl px-12 py-6 font-bold shadow-champagne"
           >
             Begin Your Transformation
             <ArrowRight className="w-6 h-6 ml-3" />

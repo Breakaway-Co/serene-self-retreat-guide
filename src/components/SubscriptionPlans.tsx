@@ -98,7 +98,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onSelectPl
             >
               {plan.isPopular && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-gradient-gold text-luxury-gold-foreground px-4 py-1 font-semibold">
+                  <Badge className="bg-gradient-champagne text-luxury-champagne-foreground px-4 py-1 font-semibold">
                     <Star className="w-3 h-3 mr-1" />
                     Most Popular
                   </Badge>
@@ -143,7 +143,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onSelectPl
                   <ul className="space-y-2">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-luxury-emerald mt-0.5 flex-shrink-0" />
+                        <Check className="w-4 h-4 text-luxury-tan mt-0.5 flex-shrink-0" />
                         <span className="text-sm text-muted-foreground">
                           {feature}
                         </span>
@@ -178,7 +178,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onSelectPl
                       ? 'bg-gradient-luxury hover:opacity-90' 
                       : ''
                   }`}
-                  variant={plan.isPopular ? 'luxury-emerald' : 'outline'}
+                  variant={plan.isPopular ? 'luxury-tan' : 'outline'}
                 >
                   {plan.isPopular ? 'Start Premium Journey' : 'Choose Plan'}
                 </Button>

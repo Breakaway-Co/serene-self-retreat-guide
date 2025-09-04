@@ -52,21 +52,21 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				'luxury-gold': {
-					DEFAULT: 'hsl(var(--luxury-gold))',
-					foreground: 'hsl(var(--luxury-gold-foreground))'
+				'luxury-champagne': {
+					DEFAULT: 'hsl(var(--luxury-champagne))',
+					foreground: 'hsl(var(--luxury-champagne-foreground))'
 				},
-				'luxury-platinum': {
-					DEFAULT: 'hsl(var(--luxury-platinum))',
-					foreground: 'hsl(var(--luxury-platinum-foreground))'
+				'luxury-cream': {
+					DEFAULT: 'hsl(var(--luxury-cream))',
+					foreground: 'hsl(var(--luxury-cream-foreground))'
 				},
-				'luxury-emerald': {
-					DEFAULT: 'hsl(var(--luxury-emerald))',
-					foreground: 'hsl(var(--luxury-emerald-foreground))'
+				'luxury-tan': {
+					DEFAULT: 'hsl(var(--luxury-tan))',
+					foreground: 'hsl(var(--luxury-tan-foreground))'
 				},
-				'luxury-rose': {
-					DEFAULT: 'hsl(var(--luxury-rose))',
-					foreground: 'hsl(var(--luxury-rose-foreground))'
+				'luxury-warm': {
+					DEFAULT: 'hsl(var(--luxury-warm))',
+					foreground: 'hsl(var(--luxury-warm-foreground))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -85,13 +85,13 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-luxury': 'var(--gradient-luxury)',
-				'gradient-gold': 'var(--gradient-gold)',
-				'gradient-platinum': 'var(--gradient-platinum)',
+				'gradient-champagne': 'var(--gradient-champagne)',
+				'gradient-cream': 'var(--gradient-cream)',
 				'gradient-hero': 'var(--gradient-hero)',
 			},
 			boxShadow: {
 				'luxury': 'var(--shadow-luxury)',
-				'gold': 'var(--shadow-gold)',
+				'champagne': 'var(--shadow-champagne)',
 				'elevated': 'var(--shadow-elevated)',
 			},
 			transitionTimingFunction: {

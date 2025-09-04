@@ -79,7 +79,7 @@ export const QuickAccess: React.FC<QuickAccessProps> = ({ onStartRetreat, onSear
             <Button 
               type="submit"
               className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              variant="luxury-emerald"
+              variant="luxury-tan"
             >
               Search
             </Button>
@@ -88,19 +88,19 @@ export const QuickAccess: React.FC<QuickAccessProps> = ({ onStartRetreat, onSear
 
         {/* Quick Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <Button variant="outline" className="hover:bg-luxury-platinum/20">
+          <Button variant="outline" className="hover:bg-luxury-cream/20">
             <TrendingUp className="w-4 h-4 mr-2" />
             Trending Now
           </Button>
-          <Button variant="outline" className="hover:bg-luxury-platinum/20">
+          <Button variant="outline" className="hover:bg-luxury-cream/20">
             <Clock className="w-4 h-4 mr-2" />
             Quick 5-Min Sessions
           </Button>
-          <Button variant="outline" className="hover:bg-luxury-platinum/20">
+          <Button variant="outline" className="hover:bg-luxury-cream/20">
             <Users className="w-4 h-4 mr-2" />
             Most Popular
           </Button>
-          <Button variant="outline" className="hover:bg-luxury-platinum/20">
+          <Button variant="outline" className="hover:bg-luxury-cream/20">
             <Sparkles className="w-4 h-4 mr-2" />
             New Releases
           </Button>
@@ -118,8 +118,8 @@ export const QuickAccess: React.FC<QuickAccessProps> = ({ onStartRetreat, onSear
                 className="group hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 overflow-hidden"
               >
                 <div className="relative overflow-hidden">
-                  <div className="w-full h-48 bg-gradient-platinum rounded-t-lg"></div>
-                  <Badge className="absolute top-3 left-3 bg-luxury-gold text-luxury-gold-foreground">
+                  <div className="w-full h-48 bg-gradient-cream rounded-t-lg"></div>
+                  <Badge className="absolute top-3 left-3 bg-luxury-champagne text-luxury-champagne-foreground">
                     ⭐ {retreat.rating}
                   </Badge>
                 </div>

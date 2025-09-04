@@ -52,15 +52,15 @@ export const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsPr
   onStartRecommendation 
 }) => {
   return (
-    <section className="py-16 bg-gradient-to-r from-luxury-platinum/10 to-luxury-emerald/10">
+    <section className="py-16 bg-gradient-to-r from-luxury-cream/10 to-luxury-tan/10">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="w-6 h-6 text-luxury-gold" />
+            <Sparkles className="w-6 h-6 text-luxury-champagne" />
             <h2 className="text-3xl font-playfair font-bold text-primary">
               Curated Just for You
             </h2>
-            <Sparkles className="w-6 h-6 text-luxury-gold" />
+            <Sparkles className="w-6 h-6 text-luxury-champagne" />
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             AI-powered recommendations based on your wellness profile and goals
@@ -75,17 +75,17 @@ export const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsPr
             >
               {/* Match Score Badge */}
               <div className="absolute top-4 right-4 z-10">
-                <Badge className="bg-luxury-gold text-luxury-gold-foreground font-semibold">
+                <Badge className="bg-luxury-champagne text-luxury-champagne-foreground font-semibold">
                   {recommendation.matchScore}% match
                 </Badge>
               </div>
 
               {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-luxury-emerald/10 opacity-50 group-hover:opacity-70 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-luxury-tan/10 opacity-50 group-hover:opacity-70 transition-opacity" />
 
               <CardContent className="relative p-6 space-y-4">
                 {/* Icon */}
-                <div className="w-12 h-12 bg-luxury-emerald/10 rounded-xl flex items-center justify-center text-luxury-emerald">
+                <div className="w-12 h-12 bg-luxury-tan/10 rounded-xl flex items-center justify-center text-luxury-tan">
                   {recommendation.icon}
                 </div>
 
@@ -102,7 +102,7 @@ export const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsPr
                     <Badge variant="outline" className="text-xs">
                       {recommendation.duration}
                     </Badge>
-                    <span className="text-luxury-emerald text-sm font-medium">
+                    <span className="text-luxury-tan text-sm font-medium">
                       {recommendation.benefit}
                     </span>
                   </div>
@@ -112,7 +112,7 @@ export const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsPr
                 <Button 
                   onClick={() => onStartRecommendation(recommendation.id)}
                   className="w-full bg-gradient-luxury hover:opacity-90 transition-opacity"
-                  variant="luxury-emerald"
+                  variant="luxury-tan"
                 >
                   Start This Journey
                 </Button>
@@ -126,7 +126,7 @@ export const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsPr
           <p className="text-muted-foreground mb-4">
             Want more personalized recommendations?
           </p>
-          <Button variant="outline" className="hover:bg-luxury-platinum/20">
+          <Button variant="outline" className="hover:bg-luxury-cream/20">
             Update My Wellness Profile
           </Button>
         </div>

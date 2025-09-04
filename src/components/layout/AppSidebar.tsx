@@ -43,7 +43,7 @@ export const AppSidebar: React.FC = () => {
   const location = useLocation();
 
   const getNavClassName = ({ isActive }: { isActive: boolean }) =>
-    isActive ? 'bg-luxury-emerald/10 text-luxury-emerald font-medium' : 'hover:bg-muted/50';
+    isActive ? 'bg-luxury-tan/10 text-luxury-tan font-medium' : 'hover:bg-muted/50';
 
   const hasSelectedRetreat = appState.retreat.selectedRetreatId !== null;
 

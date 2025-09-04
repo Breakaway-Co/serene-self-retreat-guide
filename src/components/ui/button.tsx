@@ -22,9 +22,9 @@ const buttonVariants = cva(
         nature: "bg-nature text-nature-foreground hover:bg-nature/90 shadow-gentle",
         calm: "bg-calm text-calm-foreground hover:bg-calm/90 shadow-gentle",
         earth: "bg-earth text-earth-foreground hover:bg-earth/90 shadow-gentle",
-        'luxury-gold': "bg-luxury-gold text-luxury-gold-foreground hover:bg-luxury-gold/90 shadow-gold",
-        'luxury-emerald': "bg-luxury-emerald text-luxury-emerald-foreground hover:bg-luxury-emerald/90 shadow-luxury",
-        'luxury-platinum': "bg-luxury-platinum text-luxury-platinum-foreground hover:bg-luxury-platinum/90",
+        'luxury-champagne': "bg-luxury-champagne text-luxury-champagne-foreground hover:bg-luxury-champagne/90 shadow-champagne",
+        'luxury-tan': "bg-luxury-tan text-luxury-tan-foreground hover:bg-luxury-tan/90 shadow-luxury",
+        'luxury-cream': "bg-luxury-cream text-luxury-cream-foreground hover:bg-luxury-cream/90",
       },
       size: {
         default: "h-10 px-4 py-2",
