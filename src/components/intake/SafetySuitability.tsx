@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, AlertTriangle, Phone } from "lucide-react";
@@ -56,9 +57,11 @@ const SafetySuitability = ({ data, updateData, onNext, onPrevious }: SafetySuita
   }
 
   // Update risk level when component loads or scores change
-  if (safety.riskLevel !== calculatedRiskLevel) {
-    updateSafety('riskLevel', calculatedRiskLevel);
-  }
+  useEffect(() => {
+    if (safety.riskLevel !== calculatedRiskLevel) {
+      updateSafety('riskLevel', calculatedRiskLevel);
+    }
+  }, [calculatedRiskLevel, safety.riskLevel]);
 
   const isHighRisk = safety.riskLevel === 'high' || 
                     (safety.contraindications || []).some(c => c !== "None of the above apply to me");
@@ -132,15 +135,15 @@ const SafetySuitability = ({ data, updateData, onNext, onPrevious }: SafetySuita
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="true" id="prof-yes" />
-                <label htmlFor="prof-yes" className="text-sm">
+                <Label htmlFor="prof-yes" className="text-sm">
                   Yes, I have a therapist, counselor, or psychiatrist I can contact
-                </label>
+                </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="false" id="prof-no" />
-                <label htmlFor="prof-no" className="text-sm">
+                <Label htmlFor="prof-no" className="text-sm">
                   No, I don't currently have professional mental health support
-                </label>
+                </Label>
               </div>
             </RadioGroup>
           </div>
@@ -153,15 +156,15 @@ const SafetySuitability = ({ data, updateData, onNext, onPrevious }: SafetySuita
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="true" id="support-yes" />
-                <label htmlFor="support-yes" className="text-sm">
+                <Label htmlFor="support-yes" className="text-sm">
                   Yes, I have people I can turn to for support
-                </label>
+                </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="false" id="support-no" />
-                <label htmlFor="support-no" className="text-sm">
+                <Label htmlFor="support-no" className="text-sm">
                   No, I feel quite isolated or lack support
-                </label>
+                </Label>
               </div>
             </RadioGroup>
           </div>
@@ -175,15 +178,15 @@ const SafetySuitability = ({ data, updateData, onNext, onPrevious }: SafetySuita
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="true" id="plan-yes" />
-                  <label htmlFor="plan-yes" className="text-sm">
+                  <Label htmlFor="plan-yes" className="text-sm">
                     Yes, I know what to do if I feel overwhelmed or unsafe
-                  </label>
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="false" id="plan-no" />
-                  <label htmlFor="plan-no" className="text-sm">
+                  <Label htmlFor="plan-no" className="text-sm">
                     No, I would benefit from help creating a safety plan
-                  </label>
+                  </Label>
                 </div>
               </RadioGroup>
             </div>
@@ -207,9 +210,9 @@ const SafetySuitability = ({ data, updateData, onNext, onPrevious }: SafetySuita
                   checked={(safety.contraindications || []).includes(contraindication)}
                   onCheckedChange={() => toggleContraindication(contraindication)}
                 />
-                <label htmlFor={contraindication} className="text-sm leading-relaxed">
+                <Label htmlFor={contraindication} className="text-sm leading-relaxed cursor-pointer">
                   {contraindication}
-                </label>
+                </Label>
               </div>
             ))}
           </div>
