@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { WellbeingScreeningData, IntakeData } from "@/types/intake";
 
@@ -156,25 +158,51 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
               <p className="font-medium text-sm">
                 {index + 1}. {question}
               </p>
-              <RadioGroup
-                value={currentResponses[index]?.toString() || ''}
-                onValueChange={(value) => updateResponse(index, parseInt(value))}
-              >
-                {responseOptions.map((option) => (
-                  <div key={option.value} className="flex items-center space-x-2">
-                    <RadioGroupItem 
-                      value={option.value.toString()} 
-                      id={`q${index}-${option.value}`} 
-                    />
-                    <label 
-                      htmlFor={`q${index}-${option.value}`} 
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </RadioGroup>
+{currentTool === 0 ? (
+                // PHQ-9 uses checkboxes for multiple selection
+                <div className="space-y-2">
+                  {responseOptions.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`q${index}-${option.value}`}
+                        checked={currentResponses[index] === option.value}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            updateResponse(index, option.value);
+                          }
+                        }}
+                      />
+                      <Label 
+                        htmlFor={`q${index}-${option.value}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                // GAD-7 uses radio buttons for single selection
+                <RadioGroup
+                  value={currentResponses[index]?.toString() || ''}
+                  onValueChange={(value) => updateResponse(index, parseInt(value))}
+                >
+                  {responseOptions.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <RadioGroupItem 
+                        value={option.value.toString()} 
+                        id={`q${index}-${option.value}`} 
+                      />
+                      <Label 
+                        htmlFor={`q${index}-${option.value}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {option.label}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
             </div>
           ))}
 
