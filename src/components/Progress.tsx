@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Progress as ProgressBar } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart3, Heart, Calendar, Trophy, BookOpen, TrendingUp } from "lucide-react";
 import { PersonalizedRetreat } from "@/types/retreat";
 import { usePersonalizedRetreat } from "@/hooks/usePersonalizedRetreat";
-import { ProgressTracking } from '@/components/ProgressTracking';
-import { AccessibilityEnhancements } from '@/components/AccessibilityEnhancements';
 
 interface ProgressProps {
   retreat: PersonalizedRetreat;
@@ -82,15 +79,6 @@ const Progress = ({ retreat }: ProgressProps) => {
           </CardDescription>
         </CardHeader>
       </Card>
-
-      <Tabs defaultValue="progress" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="progress">Progress & Stats</TabsTrigger>
-          <TabsTrigger value="tracking">Milestones & Certificates</TabsTrigger>
-          <TabsTrigger value="accessibility">Accessibility & Crisis Support</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="progress" className="space-y-6">
 
       {/* Progress Overview */}
       <div className="grid md:grid-cols-4 gap-4">
@@ -305,24 +293,6 @@ const Progress = ({ retreat }: ProgressProps) => {
           </Button>
         </CardContent>
       </Card>
-        </TabsContent>
-        
-        <TabsContent value="tracking" className="space-y-6">
-          <ProgressTracking retreat={retreat} progress={{ 
-            retreatId: retreat.baseRetreat.id,
-            currentDay: 1,
-            completedActivities: new Set(),
-            completedDays: new Set([1, 2, 3]), // Demo data
-            startDate: new Date(),
-            dailyCheckins: {},
-            overallProgress: 30
-          }} />
-        </TabsContent>
-        
-        <TabsContent value="accessibility" className="space-y-6">
-          <AccessibilityEnhancements />
-        </TabsContent>
-      </Tabs>
     </div>
   );
 };
