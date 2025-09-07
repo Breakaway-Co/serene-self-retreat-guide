@@ -1,8 +1,21 @@
 import { RetreatConfiguration } from '@/types/retreat';
 import { addictionsRecoveryRetreat } from './addictionsRetreatConfig';
+import { ptsdRecoveryRetreat } from './ptsdRetreatConfig';
+import { corporateBurnoutRetreat } from './burnoutRetreatConfig';
+import { griefHealingRetreat, griefParentChildRetreat } from './griefRetreatConfig';
+import { stressManagementRetreat } from './stressRetreatConfig';
+import { depressionSupportRetreat } from './depressionRetreatConfig';
+import { anxietyReliefRetreat } from './anxietyRetreatConfig';
 
 export const retreatConfigurations: Record<string, RetreatConfiguration> = {
   retreat_addictions_recovery: addictionsRecoveryRetreat,
+  ptsd_recovery: ptsdRecoveryRetreat,
+  corporate_burnout: corporateBurnoutRetreat,
+  grief_healing: griefHealingRetreat,
+  grief_parent_child: griefParentChildRetreat,
+  stress_management: stressManagementRetreat,
+  depression_support: depressionSupportRetreat,
+  anxiety_relief: anxietyReliefRetreat,
   inner_compass: {
     id: 'inner_compass',
     name: 'Inner Compass: Stress Recovery Retreat',
