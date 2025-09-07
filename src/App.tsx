@@ -13,6 +13,9 @@ import ActivitiesPage from "./pages/ActivitiesPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import ProgressPage from "./pages/ProgressPage";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/common/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -20,24 +23,27 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AppProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<AppLayout />}>
-                <Route index element={<Index />} />
-                <Route path="daily" element={<DailyProgramPage />} />
-                <Route path="activities" element={<ActivitiesPage />} />
-                <Route path="resources" element={<ResourcesPage />} />
-                <Route path="progress" element={<ProgressPage />} />
-              </Route>
-              <Route path="/intake" element={<IntakeAssessment />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </AppProvider>
+        <AuthProvider>
+          <AppProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<AppLayout />}>
+                  <Route index element={<Index />} />
+                  <Route path="daily" element={<ProtectedRoute><DailyProgramPage /></ProtectedRoute>} />
+                  <Route path="activities" element={<ProtectedRoute><ActivitiesPage /></ProtectedRoute>} />
+                  <Route path="resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
+                  <Route path="progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
+                </Route>
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/intake" element={<IntakeAssessment />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </AppProvider>
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   </ErrorBoundary>

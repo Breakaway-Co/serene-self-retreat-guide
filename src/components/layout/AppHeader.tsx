@@ -11,15 +11,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const AppHeader: React.FC = () => {
   const { state, actions } = useApp();
+  const { session, signOut } = useAuth();
 
   const toggleTheme = () => {
     actions.setTheme(state.ui.theme === 'light' ? 'dark' : 'light');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut();
     actions.resetUserData();
     window.location.href = '/';
   };
@@ -48,27 +51,33 @@ export const AppHeader: React.FC = () => {
             )}
           </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <User className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem disabled>
-                {state.user.hasCompletedIntake ? 'Assessment Complete' : 'No Assessment'}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => window.location.href = '/intake'}>
-                {state.user.hasCompletedIntake ? 'Retake Assessment' : 'Take Assessment'}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-destructive">
-                <LogOut className="h-4 w-4 mr-2" />
-                Reset Progress
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {!session ? (
+            <Button variant="outline" size="sm" onClick={() => (window.location.href = '/auth')}>
+              Sign In
+            </Button>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem disabled>
+                  {state.user.hasCompletedIntake ? 'Assessment Complete' : 'No Assessment'}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => (window.location.href = '/intake')}>
+                  {state.user.hasCompletedIntake ? 'Retake Assessment' : 'Take Assessment'}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </header>
