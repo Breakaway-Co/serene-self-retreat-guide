@@ -5,7 +5,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
   name: 'Addictions Recovery Program',
   description: 'A comprehensive, trauma-informed recovery program designed to support individuals overcoming substance and behavioral addictions through evidence-based practices.',
   shortDescription: 'Evidence-based recovery program for substance and behavioral addictions',
-  duration: 7, // 7-day intensive program
+  duration: 14, // 14-day comprehensive program
   focusAreas: [
     'Substance Addiction Recovery',
     'Behavioral Addiction Support', 
@@ -527,6 +527,492 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           type: 'healing',
           description: 'Create a personal commitment statement and identify your top 3 ongoing recovery actions',
           modifications: ['Written and artistic options', 'Digital and physical certificates']
+        }
+      ]
+    },
+    {
+      day: 8,
+      theme: 'Strengthening Craving Control',
+      focus: 'Advanced Urge Surfing and craving management techniques',
+      morning: [
+        {
+          id: 'som_box_breathing_day8',
+          time: '8:00 AM',
+          activity: 'Box Breathing Practice',
+          duration: '15 minutes',
+          type: 'somatic',
+          description: 'Advanced breathing practice for immediate craving management'
+        },
+        {
+          id: 'rx_b_08_spinach_feta_omelette',
+          time: '8:30 AM',
+          activity: 'Spinach & Feta Omelette',
+          duration: '35 minutes',
+          type: 'nutrition',
+          description: 'Protein-rich breakfast with B-vitamins for neurological support'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_craving_surf_advanced',
+          time: '2:00 PM',
+          activity: 'Advanced Craving Surfing',
+          duration: '90 minutes',
+          type: 'therapy',
+          description: 'Sophisticated techniques for managing intense cravings and urges',
+          modifications: ['In-the-moment practice tools', 'Emergency craving protocols']
+        },
+        {
+          id: 'rx_l_08_chickpea_curry',
+          time: '12:30 PM',
+          activity: 'Chickpea Curry',
+          duration: '45 minutes',
+          type: 'nutrition',
+          description: 'Warming, spiced meal with protein and complex flavors'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_emotional_release_day8',
+          time: '5:00 PM',
+          activity: 'Emotional Release Movement',
+          duration: '40 minutes',
+          type: 'movement',
+          description: 'Dynamic movement to process and release stored emotions'
+        },
+        {
+          id: 'rx_d_08_sweet_potato_salad',
+          time: '6:30 PM',
+          activity: 'Sweet Potato Salad',
+          duration: '35 minutes',
+          type: 'nutrition',
+          description: 'Nutrient-dense dinner with beta-carotene and fiber'
+        },
+        {
+          id: 'restore_yoga_nidra_day8',
+          time: '8:00 PM',
+          activity: 'Yoga Nidra Practice',
+          duration: '35 minutes',
+          type: 'healing',
+          description: 'Deep restorative practice to integrate craving management skills'
+        }
+      ]
+    },
+    {
+      day: 9,
+      theme: 'Deep Trigger Work',
+      focus: 'Rescripting High-Risk Scenarios and trauma-informed healing',
+      morning: [
+        {
+          id: 'som_grounding_54321_day9',
+          time: '8:00 AM',
+          activity: '5-4-3-2-1 Grounding Technique',
+          duration: '15 minutes',
+          type: 'somatic',
+          description: 'Stabilizing practice before deeper trauma work'
+        },
+        {
+          id: 'rx_b_09_mango_coconut_smoothie',
+          time: '8:30 AM',
+          activity: 'Mango Coconut Smoothie',
+          duration: '25 minutes',
+          type: 'nutrition',
+          description: 'Tropical smoothie with healthy fats and natural enzymes'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_trigger_rescripting',
+          time: '2:00 PM',
+          activity: 'Trigger Rescripting Therapy',
+          duration: '120 minutes',
+          type: 'therapy',
+          description: 'Advanced EMDR-informed techniques to reprocess traumatic triggers',
+          contraindications: ['Skip if feeling overwhelmed', 'Professional support recommended'],
+          modifications: ['Self-paced modules', 'Grounding breaks included']
+        },
+        {
+          id: 'rx_l_09_grilled_veg_wrap',
+          time: '12:30 PM',
+          activity: 'Grilled Vegetable Wrap',
+          duration: '30 minutes',
+          type: 'nutrition',
+          description: 'Light, portable lunch with colorful grilled vegetables'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_walking_meditation_day9',
+          time: '5:00 PM',
+          activity: 'Walking Meditation',
+          duration: '30 minutes',
+          type: 'movement',
+          description: 'Gentle movement to integrate and process therapeutic work'
+        },
+        {
+          id: 'rx_d_09_lentil_shepherds_pie',
+          time: '6:30 PM',
+          activity: 'Lentil Shepherd\'s Pie',
+          duration: '50 minutes',
+          type: 'nutrition',
+          description: 'Comforting, protein-rich dinner for emotional nourishment'
+        },
+        {
+          id: 'restore_pmr_day9',
+          time: '8:00 PM',
+          activity: 'Progressive Muscle Relaxation',
+          duration: '25 minutes',
+          type: 'somatic',
+          description: 'Gentle body relaxation to release tension from deep work'
+        }
+      ]
+    },
+    {
+      day: 10,
+      theme: 'Emotion Regulation Mastery',
+      focus: 'DBT Skills in Practice - advanced emotional regulation',
+      morning: [
+        {
+          id: 'som_resonance_breathing_day10',
+          time: '8:00 AM',
+          activity: 'Resonance Breathing Practice',
+          duration: '20 minutes',
+          type: 'somatic',
+          description: 'Refined breathing practice for emotional balance'
+        },
+        {
+          id: 'rx_b_10_berry_protein_bowl',
+          time: '8:30 AM',
+          activity: 'Berry Protein Bowl',
+          duration: '25 minutes',
+          type: 'nutrition',
+          description: 'Antioxidant-rich breakfast with plant-based proteins'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_emotion_regulation_advanced',
+          time: '2:00 PM',
+          activity: 'Advanced Emotion Regulation',
+          duration: '90 minutes',
+          type: 'therapy',
+          description: 'Dialectical Behavior Therapy (DBT) skills for managing intense emotions',
+          modifications: ['Interactive skill-building', 'Real-time practice scenarios']
+        },
+        {
+          id: 'rx_l_10_mediterranean_quinoa',
+          time: '12:30 PM',
+          activity: 'Mediterranean Quinoa Salad',
+          duration: '35 minutes',
+          type: 'nutrition',
+          description: 'Brain-healthy Mediterranean diet with omega-3 rich ingredients'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_gentle_yoga_day10',
+          time: '5:00 PM',
+          activity: 'Gentle Yoga Practice',
+          duration: '45 minutes',
+          type: 'movement',
+          description: 'Yoga practice focused on emotional regulation through movement'
+        },
+        {
+          id: 'rx_d_10_tomato_lentil_soup',
+          time: '6:30 PM',
+          activity: 'Tomato Lentil Soup',
+          duration: '40 minutes',
+          type: 'nutrition',
+          description: 'Warming soup with lycopene and plant protein'
+        },
+        {
+          id: 'restore_sound_bath_day10',
+          time: '8:00 PM',
+          activity: 'Sound Bath Restoration',
+          duration: '30 minutes',
+          type: 'healing',
+          description: 'Vibrational healing to harmonize emotional energy'
+        }
+      ]
+    },
+    {
+      day: 11,
+      theme: 'Relapse Prevention Master Plan',
+      focus: 'Long-Term Safeguards and comprehensive prevention planning',
+      morning: [
+        {
+          id: 'som_box_breathing_day11',
+          time: '8:00 AM',
+          activity: 'Box Breathing Practice',
+          duration: '15 minutes',
+          type: 'somatic',
+          description: 'Centering practice for strategic planning work'
+        },
+        {
+          id: 'rx_b_11_green_smoothie',
+          time: '8:30 AM',
+          activity: 'Green Smoothie',
+          duration: '20 minutes',
+          type: 'nutrition',
+          description: 'Nutrient-dense green smoothie with superfoods and adaptogens'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_relapse_prevention_master',
+          time: '2:00 PM',
+          activity: 'Master Relapse Prevention Plan',
+          duration: '120 minutes',
+          type: 'therapy',
+          description: 'Comprehensive long-term prevention strategy with multiple contingency plans',
+          modifications: ['Digital planning tools', 'Professional support integration', 'Family involvement options']
+        },
+        {
+          id: 'rx_l_11_roast_veg_salad',
+          time: '12:30 PM',
+          activity: 'Roasted Vegetable Salad',
+          duration: '40 minutes',
+          type: 'nutrition',
+          description: 'Seasonal roasted vegetables with healing herbs and spices'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_emotional_release_day11',
+          time: '5:00 PM',
+          activity: 'Emotional Release Movement',
+          duration: '40 minutes',
+          type: 'movement',
+          description: 'Movement practice to release any remaining stored trauma'
+        },
+        {
+          id: 'rx_d_11_chickpea_stew',
+          time: '6:30 PM',
+          activity: 'Chickpea Stew',
+          duration: '45 minutes',
+          type: 'nutrition',
+          description: 'Hearty, warming stew with protein and healing spices'
+        },
+        {
+          id: 'restore_yoga_nidra_day11',
+          time: '8:00 PM',
+          activity: 'Yoga Nidra Practice',
+          duration: '35 minutes',
+          type: 'healing',
+          description: 'Deep integration practice for prevention planning'
+        }
+      ]
+    },
+    {
+      day: 12,
+      theme: 'Purpose & Future Vision',
+      focus: 'Life Beyond Addiction - creating meaningful future goals',
+      morning: [
+        {
+          id: 'som_grounding_54321_day12',
+          time: '8:00 AM',
+          activity: '5-4-3-2-1 Grounding Technique',
+          duration: '15 minutes',
+          type: 'somatic',
+          description: 'Grounding practice for visionary work'
+        },
+        {
+          id: 'rx_b_12_overnight_oats',
+          time: '8:30 AM',
+          activity: 'Overnight Oats with Berries',
+          duration: '15 minutes',
+          type: 'nutrition',
+          description: 'Prepared overnight oats with antioxidants and fiber'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_future_vision',
+          time: '2:00 PM',
+          activity: 'Future Vision Workshop',
+          duration: '90 minutes',
+          type: 'therapy',
+          description: 'Creating a compelling vision for life in recovery with concrete goals',
+          modifications: ['Creative visualization tools', 'Goal-setting frameworks', 'Vision board creation']
+        },
+        {
+          id: 'rx_l_12_pasta_salad',
+          time: '12:30 PM',
+          activity: 'Whole Grain Pasta Salad',
+          duration: '35 minutes',
+          type: 'nutrition',
+          description: 'Energizing pasta salad with vegetables and healthy fats'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_walking_meditation_day12',
+          time: '5:00 PM',
+          activity: 'Walking Meditation',
+          duration: '30 minutes',
+          type: 'movement',
+          description: 'Mindful movement to embody future vision'
+        },
+        {
+          id: 'rx_d_12_veggie_curry',
+          time: '6:30 PM',
+          activity: 'Vegetable Curry',
+          duration: '45 minutes',
+          type: 'nutrition',
+          description: 'Aromatic curry with healing spices and colorful vegetables'
+        },
+        {
+          id: 'restore_pmr_day12',
+          time: '8:00 PM',
+          activity: 'Progressive Muscle Relaxation',
+          duration: '25 minutes',
+          type: 'somatic',
+          description: 'Relaxation practice to anchor future vision in the body'
+        }
+      ]
+    },
+    {
+      day: 13,
+      theme: 'Community & Connection',
+      focus: 'Building Support Networks and healthy relationships',
+      morning: [
+        {
+          id: 'som_resonance_breathing_day13',
+          time: '8:00 AM',
+          activity: 'Resonance Breathing Practice',
+          duration: '20 minutes',
+          type: 'somatic',
+          description: 'Breathing practice to prepare for connection work'
+        },
+        {
+          id: 'rx_b_13_scrambled_eggs_spinach',
+          time: '8:30 AM',
+          activity: 'Scrambled Eggs with Spinach',
+          duration: '25 minutes',
+          type: 'nutrition',
+          description: 'Protein-rich breakfast with iron and B-vitamins'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_support_networks',
+          time: '2:00 PM',
+          activity: 'Building Support Networks',
+          duration: '90 minutes',
+          type: 'therapy',
+          description: 'Strategies for building and maintaining healthy support systems',
+          modifications: ['Communication skills practice', 'Boundary setting tools', 'Community resource mapping']
+        },
+        {
+          id: 'rx_l_13_grain_bowl',
+          time: '12:30 PM',
+          activity: 'Ancient Grain Bowl',
+          duration: '40 minutes',
+          type: 'nutrition',
+          description: 'Nutrient-dense bowl with ancient grains and fresh vegetables'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_gentle_yoga_day13',
+          time: '5:00 PM',
+          activity: 'Gentle Yoga Practice',
+          duration: '45 minutes',
+          type: 'movement',
+          description: 'Heart-opening yoga practice to cultivate connection and compassion'
+        },
+        {
+          id: 'rx_d_13_stir_fry_tofu',
+          time: '6:30 PM',
+          activity: 'Vegetable Stir-Fry with Tofu',
+          duration: '40 minutes',
+          type: 'nutrition',
+          description: 'Protein-rich stir-fry with colorful vegetables and healing ginger'
+        },
+        {
+          id: 'restore_sound_bath_day13',
+          time: '8:00 PM',
+          activity: 'Sound Bath Restoration',
+          duration: '30 minutes',
+          type: 'healing',
+          description: 'Group healing sounds to foster sense of connection'
+        }
+      ]
+    },
+    {
+      day: 14,
+      theme: 'Graduation & New Beginnings',
+      focus: 'Integration & Commitment - celebrating transformation and committing to ongoing recovery',
+      morning: [
+        {
+          id: 'som_integration_breathing',
+          time: '8:00 AM',
+          activity: 'Integration Breathing Practice',
+          duration: '25 minutes',
+          type: 'somatic',
+          description: 'Special breathing practice to integrate all 14 days of learning'
+        },
+        {
+          id: 'rx_b_14_celebration_parfait',
+          time: '8:30 AM',
+          activity: 'Celebration Breakfast Parfait',
+          duration: '30 minutes',
+          type: 'nutrition',
+          description: 'Special breakfast to celebrate completion with superfoods and natural sweetness'
+        }
+      ],
+      afternoon: [
+        {
+          id: 'therapy_integration_ceremony',
+          time: '2:00 PM',
+          activity: 'Integration & Graduation Ceremony',
+          duration: '120 minutes',
+          type: 'therapy',
+          description: 'Comprehensive review of progress, creation of ongoing recovery plan, and celebration ceremony',
+          modifications: ['Digital certificate creation', 'Personal achievement portfolio', 'Ongoing support resource access']
+        },
+        {
+          id: 'rx_l_14_celebration_salad',
+          time: '12:30 PM',
+          activity: 'Celebration Rainbow Salad',
+          duration: '40 minutes',
+          type: 'nutrition',
+          description: 'Colorful, celebratory salad representing the full spectrum of healing'
+        }
+      ],
+      evening: [
+        {
+          id: 'movement_celebration_dance',
+          time: '5:00 PM',
+          activity: 'Celebration Movement',
+          duration: '30 minutes',
+          type: 'movement',
+          description: 'Joyful movement practice to celebrate transformation and embodied healing'
+        },
+        {
+          id: 'rx_d_14_feast_bowl',
+          time: '6:30 PM',
+          activity: 'Graduation Feast Bowl',
+          duration: '50 minutes',
+          type: 'nutrition',
+          description: 'Special meal combining favorite elements from the 14-day nutritional journey'
+        },
+        {
+          id: 'restore_gratitude_meditation',
+          time: '7:30 PM',
+          activity: 'Gratitude Meditation',
+          duration: '20 minutes',
+          type: 'healing',
+          description: 'Meditation to honor the journey and cultivate gratitude for healing'
+        },
+        {
+          id: 'closure_commitment_ritual',
+          time: '8:00 PM',
+          activity: 'Final Commitment Ritual',
+          duration: '45 minutes',
+          type: 'healing',
+          description: 'Sacred ceremony to commit to ongoing recovery and celebrate transformation',
+          modifications: ['Written commitments', 'Digital memory book', 'Personal sacred objects creation']
         }
       ]
     }
