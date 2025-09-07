@@ -159,7 +159,7 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
                 {index + 1}. {question}
               </p>
 {currentTool === 0 ? (
-                // PHQ-9 uses checkboxes for multiple selection
+                // PHQ-9 uses checkboxes for single selection per question
                 <div className="space-y-2">
                   {responseOptions.map((option) => (
                     <div key={option.value} className="flex items-center space-x-2">
@@ -169,12 +169,18 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
                         onCheckedChange={(checked) => {
                           if (checked) {
                             updateResponse(index, option.value);
+                          } else if (currentResponses[index] === option.value) {
+                            // Allow unchecking by setting to undefined
+                            const updatedResponses = [...currentResponses];
+                            updatedResponses[index] = undefined;
+                            updateScreening(currentToolData.responseKey, updatedResponses);
+                            updateScreening(currentToolData.scoreKey, updatedResponses.reduce((sum, response) => sum + (response || 0), 0));
                           }
                         }}
                       />
                       <Label 
                         htmlFor={`q${index}-${option.value}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                       >
                         {option.label}
                       </Label>
