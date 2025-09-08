@@ -158,57 +158,27 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
               <p className="font-medium text-sm">
                 {index + 1}. {question}
               </p>
-{currentTool === 0 ? (
-                // PHQ-9 uses checkboxes for single selection per question
-                <div className="space-y-2">
-                  {responseOptions.map((option) => (
-                    <div key={option.value} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`q${index}-${option.value}`}
-                        checked={currentResponses[index] === option.value}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            updateResponse(index, option.value);
-                          } else if (currentResponses[index] === option.value) {
-                            // Allow unchecking by setting to undefined
-                            const updatedResponses = [...currentResponses];
-                            updatedResponses[index] = undefined;
-                            updateScreening(currentToolData.responseKey, updatedResponses);
-                            updateScreening(currentToolData.scoreKey, updatedResponses.reduce((sum, response) => sum + (response || 0), 0));
-                          }
-                        }}
-                      />
-                      <Label 
-                        htmlFor={`q${index}-${option.value}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                      >
-                        {option.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                // GAD-7 uses radio buttons for single selection
-                <RadioGroup
-                  value={currentResponses[index]?.toString() || ''}
-                  onValueChange={(value) => updateResponse(index, parseInt(value))}
-                >
-                  {responseOptions.map((option) => (
-                    <div key={option.value} className="flex items-center space-x-2">
-                      <RadioGroupItem 
-                        value={option.value.toString()} 
-                        id={`q${index}-${option.value}`} 
-                      />
-                      <Label 
-                        htmlFor={`q${index}-${option.value}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {option.label}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              )}
+              {/* Both PHQ-9 and GAD-7 use radio buttons for single selection per question */}
+              <RadioGroup
+                value={currentResponses[index]?.toString() || ''}
+                onValueChange={(value) => updateResponse(index, parseInt(value))}
+                className="space-y-2"
+              >
+                {responseOptions.map((option) => (
+                  <div key={option.value} className="flex items-center space-x-2">
+                    <RadioGroupItem 
+                      value={option.value.toString()} 
+                      id={`q${index}-${option.value}`}
+                    />
+                    <Label 
+                      htmlFor={`q${index}-${option.value}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      {option.label}
+                    </Label>
+                  </div>
+                ))}
+              </RadioGroup>
             </div>
           ))}
 
