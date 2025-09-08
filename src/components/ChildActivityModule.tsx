@@ -406,6 +406,8 @@ const ChildActivityModule = ({ module, onBack, onComplete }: ChildActivityModule
               <div className="p-6 bg-healing/10 rounded-lg border border-healing/20">
                 <h4 className="font-medium text-healing mb-4 text-center">🎵 Peaceful Listening Time</h4>
                 <AudioGuidance
+                  guideId="child-peaceful-listening"
+                  guideName="Peaceful Listening Time"
                   activityType="rest"
                   instructions={[
                     "Let's start with three gentle breaths together",

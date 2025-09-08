@@ -129,6 +129,8 @@ const ActivityGuide = ({
           {showAudio && audioInstructions && (
             <div className="mb-4">
               <AudioGuidance
+                guideId={`activity-guide-${activityType}`}
+                guideName={`${activityType.replace('-', ' ')} Guide`}
                 activityType={activityType}
                 instructions={audioInstructions}
               />

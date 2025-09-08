@@ -746,6 +746,8 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
       {/* Audio Guidance for meditation/breathwork activities */}
       {(currentGuide.type === "somatic-intervention" || currentGuide.type === "healing" || currentGuide.type === "mindfulness") && (
         <AudioGuidance 
+          guideId={currentGuide.id}
+          guideName={currentGuide.name}
           activityType={currentGuide.type}
           instructions={currentGuide.steps.map(step => step.instruction)}
           onAudioComplete={() => {

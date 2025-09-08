@@ -1,1 +1,18 @@
 project_id = "cexzvbjpuourvxdvadec"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[auth]
+enabled = true
+port = 54322
+
+[functions.generate-audio-session]
+verify_jwt = false
+
+[functions.process-activity-guide]
+verify_jwt = false
