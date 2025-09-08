@@ -5,6 +5,7 @@ import { Heart, Brain, RefreshCw, Compass, Waves, Shield } from "lucide-react";
 import { retreatConfigurations } from "@/data/retreatConfigurations";
 import { IntakeData } from "@/types/intake";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface RetreatSelectorProps {
   onSelectRetreat: (retreatId: string) => void;
@@ -13,6 +14,7 @@ interface RetreatSelectorProps {
 const RetreatSelector = ({ onSelectRetreat }: RetreatSelectorProps) => {
   const [recommendedRetreat, setRecommendedRetreat] = useState<string | null>(null);
   const [intakeData, setIntakeData] = useState<IntakeData | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user has completed intake for recommendations
@@ -162,7 +164,7 @@ const RetreatSelector = ({ onSelectRetreat }: RetreatSelectorProps) => {
             </p>
             <Button 
               variant="nature" 
-              onClick={() => window.location.href = '/intake'}
+              onClick={() => navigate('/intake')}
             >
               Take Assessment First
             </Button>

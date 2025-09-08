@@ -5,20 +5,20 @@ import { SubscriptionPlans } from '@/components/SubscriptionPlans';
 import { QuickAccess } from '@/components/QuickAccess';
 import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
 import { useApp } from "@/contexts/AppContext";
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Play, Users, Award, Sparkles } from 'lucide-react';
 import heroImage from '@/assets/hero-retreat-dashboard.jpg';
 
 const Index = () => {
   const { state } = useApp();
+  const navigate = useNavigate();
 
   const handleStartRetreat = () => {
-    // Navigate to retreat selection or onboarding
-    window.location.href = '/intake';
+    navigate('/intake');
   };
 
   const handleSelectPlan = (planId: string) => {
-    // Navigate to auth page for subscription
-    window.location.href = '/auth';
+    navigate('/auth');
   };
 
   const handleStartRecommendation = (id: string) => {

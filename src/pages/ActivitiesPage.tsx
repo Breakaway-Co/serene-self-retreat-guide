@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Play, CheckCircle, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ActivitiesPage: React.FC = () => {
   const { state, actions } = useApp();
   const { currentRetreat } = usePersonalizedRetreat();
+  const navigate = useNavigate();
 
   if (!state.retreat.selectedRetreatId) {
     return (
@@ -21,7 +23,7 @@ const ActivitiesPage: React.FC = () => {
           </AlertDescription>
         </Alert>
         <Button 
-          onClick={() => window.location.href = '/'} 
+          onClick={() => navigate('/')} 
           className="mt-4"
           variant="outline"
         >

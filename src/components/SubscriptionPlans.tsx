@@ -193,7 +193,7 @@ export const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({ onSelectPl
             All plans include a 14-day free trial. Cancel anytime.
           </p>
            <p className="text-sm text-muted-foreground">
-             Questions? <button onClick={() => window.location.href = '/auth'} className="text-primary hover:underline">Contact our wellness concierge</button>
+             Questions? <button onClick={() => {}} className="text-primary hover:underline">Contact our wellness concierge</button>
            </p>
         </div>
       </div>

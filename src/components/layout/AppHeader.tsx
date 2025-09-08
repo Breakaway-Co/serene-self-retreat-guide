@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useApp } from '@/contexts/AppContext';
+import { useNavigate } from 'react-router-dom';
 import { Moon, Sun, User, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
@@ -16,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 export const AppHeader: React.FC = () => {
   const { state, actions } = useApp();
   const { session, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const toggleTheme = () => {
     actions.setTheme(state.ui.theme === 'light' ? 'dark' : 'light');
@@ -24,7 +26,7 @@ export const AppHeader: React.FC = () => {
   const handleLogout = async () => {
     await signOut();
     actions.resetUserData();
-    window.location.href = '/';
+    navigate('/');
   };
 
   return (
@@ -52,7 +54,7 @@ export const AppHeader: React.FC = () => {
           </Button>
 
           {!session ? (
-            <Button variant="outline" size="sm" onClick={() => (window.location.href = '/auth')}>
+            <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
               Sign In
             </Button>
           ) : (
@@ -67,7 +69,7 @@ export const AppHeader: React.FC = () => {
                   {state.user.hasCompletedIntake ? 'Assessment Complete' : 'No Assessment'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => (window.location.href = '/intake')}>
+                <DropdownMenuItem onClick={() => navigate('/intake')}>
                   {state.user.hasCompletedIntake ? 'Retake Assessment' : 'Take Assessment'}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

@@ -6,10 +6,12 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const DailyProgramPage: React.FC = () => {
   const { state } = useApp();
   const { currentRetreat } = usePersonalizedRetreat();
+  const navigate = useNavigate();
 
   if (!state.retreat.selectedRetreatId) {
     return (
@@ -20,7 +22,7 @@ const DailyProgramPage: React.FC = () => {
           </AlertDescription>
         </Alert>
         <Button 
-          onClick={() => window.location.href = '/'} 
+          onClick={() => navigate('/')} 
           className="mt-4"
           variant="outline"
         >
