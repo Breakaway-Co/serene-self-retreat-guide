@@ -210,6 +210,7 @@ serve(async (req) => {
         status: 202,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
+    }
 
     // Get audio blob
     const audioBlob = await audioResponse.blob();
