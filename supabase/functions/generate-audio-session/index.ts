@@ -100,6 +100,7 @@ serve(async (req) => {
       const errorText = await audioResponse.text();
       console.error('ElevenLabs error:', errorText);
       
+      // Log error
       await supabase.from('generation_logs').insert({
         session_id: sessionDbId,
         log_level: 'error',
@@ -107,9 +108,66 @@ serve(async (req) => {
         details: { error: errorText, status: audioResponse.status }
       });
 
+      // Mark this session as failed
       await supabase.from('audio_sessions').update({
         status: 'failed'
       }).eq('id', sessionDbId);
+
+      // Try fallback: return last known good audio for this session_id
+      try {
+        const { data: cached } = await supabase
+          .from('audio_sessions')
+          .select('id, audio_url, duration_seconds, breath_cycle_count, metadata')
+          .eq('session_id', sessionId)
+          .eq('status', 'completed')
+          .order('generated_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (cached?.audio_url) {
+          await supabase.from('generation_logs').insert({
+            session_id: sessionDbId,
+            log_level: 'warn',
+            message: 'Fallback to cached audio served after generation failure',
+            details: { cachedSessionId: cached.id, cachedUrl: cached.audio_url }
+          });
+
+          // Best-effort: enqueue for later regeneration (self-healing)
+          try {
+            await supabase.from('audio_generation_queue').insert({
+              session_id: sessionId,
+              session_name: sessionName,
+              session_type: sessionType,
+              activity_type: activityType,
+              master_script: masterScript,
+              voice_id: voiceId || 'SAz9YHcvj6GT2YYXdXww',
+              metadata: { ...(metadata || {}), scheduledFrom: 'generate-audio-session-fallback' },
+              priority: 5,
+              scheduled_for: new Date(Date.now() + 60 * 60 * 1000).toISOString(), // retry in 1h
+              is_pregenerated: false,
+              tags: ['auto-retry', 'fallback-served']
+            });
+          } catch (_e) {
+            // ignore enqueue errors
+          }
+
+          return new Response(JSON.stringify({
+            success: true,
+            sessionId: cached.id,
+            audioUrl: cached.audio_url,
+            duration: cached.duration_seconds,
+            metadata: {
+              ...(cached.metadata || {}),
+              fallback: true,
+              fallback_reason: 'generation_failed'
+            }
+          }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch (_e) {
+        // ignore fallback errors and continue to throw
+      }
 
       throw new Error(`ElevenLabs API error: ${errorText}`);
     }
