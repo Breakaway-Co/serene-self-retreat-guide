@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Progress from '@/components/Progress';
 import { useApp } from '@/contexts/AppContext';
 import { usePersonalizedRetreat } from '@/hooks/usePersonalizedRetreat';
@@ -10,8 +10,17 @@ import { useNavigate } from 'react-router-dom';
 
 const ProgressPage: React.FC = () => {
   const { state } = useApp();
-  const { currentRetreat } = usePersonalizedRetreat();
+  const { currentRetreat, startRetreat } = usePersonalizedRetreat();
   const navigate = useNavigate();
+
+  // Initialize retreat when selectedRetreatId is available
+  useEffect(() => {
+    if (state.retreat.selectedRetreatId && !currentRetreat) {
+      const savedIntake = localStorage.getItem('intake_data');
+      const intakeData = savedIntake ? JSON.parse(savedIntake) : undefined;
+      startRetreat(state.retreat.selectedRetreatId, intakeData);
+    }
+  }, [state.retreat.selectedRetreatId, currentRetreat, startRetreat]);
 
   if (!state.retreat.selectedRetreatId) {
     return (
