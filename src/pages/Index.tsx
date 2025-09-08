@@ -23,7 +23,7 @@ const Index = () => {
 
   const handleStartRecommendation = (id: string) => {
     console.log('Starting recommendation:', id);
-    // Navigate to specific retreat
+    navigate('/retreats');
   };
 
   const handleSearch = (query: string) => {
@@ -67,6 +67,7 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 size="lg"
+                onClick={() => navigate('/retreats')}
                 className="text-white border-white/30 hover:bg-white/10 text-lg px-8 py-6"
               >
                 Explore Programs

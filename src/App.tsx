@@ -12,6 +12,7 @@ import DailyProgramPage from "./pages/DailyProgram";
 import ActivitiesPage from "./pages/ActivitiesPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import ProgressPage from "./pages/ProgressPage";
+import RetreatsPage from "./pages/RetreatsPage";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -31,6 +32,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<AppLayout />}>
                   <Route index element={<Index />} />
+                  <Route path="retreats" element={<RetreatsPage />} />
                   <Route path="daily" element={<ProtectedRoute><DailyProgramPage /></ProtectedRoute>} />
                   <Route path="activities" element={<ProtectedRoute><ActivitiesPage /></ProtectedRoute>} />
                   <Route path="resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
