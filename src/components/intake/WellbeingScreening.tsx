@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { WellbeingScreeningData, IntakeData } from "@/types/intake";
+import { useProgressPersistence } from "@/hooks/useProgressPersistence";
+import { useAuth } from "@/contexts/AuthContext";
+import { CheckCircle, Wifi, WifiOff, Save } from "lucide-react";
 
 interface WellbeingScreeningProps {
   data: IntakeData;
@@ -17,13 +20,31 @@ interface WellbeingScreeningProps {
 }
 
 const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingScreeningProps) => {
+  const { user } = useAuth();
   const [screening, setScreening] = useState<WellbeingScreeningData>(data.wellbeingScreening || {});
   const [currentTool, setCurrentTool] = useState(0);
+  const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  
+  // Progress persistence hook
+  const { progressState, updateProgress, isLoading, isSaving, isOnline } = useProgressPersistence({
+    section: 'wellbeing_screening',
+    debounceMs: 500,
+    enableOfflineCache: true,
+  });
 
   const updateScreening = (field: keyof WellbeingScreeningData, value: any) => {
     const updated = { ...screening, [field]: value };
     setScreening(updated);
     updateData('wellbeingScreening', updated);
+    
+    // Auto-save progress if user is authenticated
+    if (user) {
+      updateProgress({
+        progressData: { ...progressState.progressData, [field]: value },
+        currentStep: getCurrentOverallStep(),
+        totalSteps: getTotalSteps(),
+      });
+    }
   };
 
   const phq9Questions = [
@@ -72,8 +93,73 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
     }
   ];
 
+  // Helper functions for progress tracking
+  const getCurrentOverallStep = () => {
+    const currentResponses = screening[tools[currentTool].responseKey] as number[] || [];
+    const answeredInCurrentTool = currentResponses.filter(r => r !== undefined).length;
+    const previousToolsQuestions = tools.slice(0, currentTool).reduce((sum, tool) => sum + tool.questions.length, 0);
+    return previousToolsQuestions + answeredInCurrentTool;
+  };
+
+  const getTotalSteps = () => {
+    return tools.reduce((sum, tool) => sum + tool.questions.length, 0);
+  };
+
+  const getFirstIncompleteQuestion = () => {
+    for (let toolIndex = 0; toolIndex < tools.length; toolIndex++) {
+      const responses = screening[tools[toolIndex].responseKey] as number[] || [];
+      for (let questionIndex = 0; questionIndex < tools[toolIndex].questions.length; questionIndex++) {
+        if (responses[questionIndex] === undefined) {
+          return { toolIndex, questionIndex };
+        }
+      }
+    }
+    return null;
+  };
+
   const currentToolData = tools[currentTool];
   const currentResponses = screening[currentToolData.responseKey] as number[] || [];
+
+  // Restore progress on component mount
+  useEffect(() => {
+    if (!isLoading && user && progressState.progressData) {
+      // Restore screening data from progress
+      const restoredScreening = { ...screening };
+      Object.keys(progressState.progressData).forEach(key => {
+        if (key in restoredScreening) {
+          (restoredScreening as any)[key] = progressState.progressData[key];
+        }
+      });
+      setScreening(restoredScreening);
+      updateData('wellbeingScreening', restoredScreening);
+
+      // Navigate to the last incomplete question
+      const incomplete = getFirstIncompleteQuestion();
+      if (incomplete) {
+        setCurrentTool(incomplete.toolIndex);
+        // Scroll to the incomplete question after a short delay
+        setTimeout(() => {
+          scrollToQuestion(incomplete.questionIndex);
+        }, 100);
+      }
+    }
+  }, [isLoading, user, progressState.progressData]);
+
+  // Scroll to specific question
+  const scrollToQuestion = (questionIndex: number) => {
+    const questionRef = questionRefs.current[questionIndex];
+    if (questionRef) {
+      questionRef.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+      });
+      // Focus the first radio button for accessibility
+      const firstRadio = questionRef.querySelector('input[type="radio"]') as HTMLInputElement;
+      if (firstRadio) {
+        firstRadio.focus();
+      }
+    }
+  };
 
   const updateResponse = (questionIndex: number, value: number) => {
     const updatedResponses = [...currentResponses];
@@ -92,6 +178,13 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
     if (currentTool < tools.length - 1) {
       setCurrentTool(currentTool + 1);
     } else {
+      // Mark as completed in progress
+      if (user) {
+        updateProgress({
+          isCompleted: true,
+          currentStep: getTotalSteps(),
+        });
+      }
       onNext();
     }
   };
@@ -123,13 +216,39 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
   const toolProgress = ((currentTool + 1) / tools.length) * 100;
   const questionProgress = (currentResponses.filter(r => r !== undefined).length / currentToolData.questions.length) * 100;
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="text-sm text-muted-foreground">Loading your progress...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Tool Progress */}
+      {/* Status and Progress Bar */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium">Assessment Progress</span>
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">Assessment Progress</span>
+              {user && (
+                <div className="flex items-center gap-2">
+                  {isOnline ? (
+                    <Wifi className="h-4 w-4 text-green-600" />
+                  ) : (
+                    <WifiOff className="h-4 w-4 text-orange-600" />
+                  )}
+                  {isSaving && <Save className="h-4 w-4 text-blue-600 animate-pulse" />}
+                  {progressState.lastSavedAt && !isSaving && (
+                    <Badge variant="secondary" className="text-xs">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Saved
+                    </Badge>
+                  )}
+                </div>
+              )}
+            </div>
             <span className="text-sm text-muted-foreground">
               Tool {currentTool + 1} of {tools.length}
             </span>
@@ -154,8 +273,12 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
         </CardHeader>
         <CardContent className="space-y-6">
           {currentToolData.questions.map((question, index) => (
-            <div key={index} className="space-y-3">
-              <p className="font-medium text-sm">
+            <div 
+              key={index} 
+              className="space-y-3 p-4 rounded-lg border border-border/50 bg-background/50"
+              ref={(el) => (questionRefs.current[index] = el)}
+            >
+              <p className="font-medium text-sm" id={`question-${currentTool}-${index}`}>
                 {index + 1}. {question}
               </p>
               {/* Both PHQ-9 and GAD-7 use radio buttons for single selection per question */}
@@ -163,15 +286,17 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
                 value={currentResponses[index]?.toString() || ''}
                 onValueChange={(value) => updateResponse(index, parseInt(value))}
                 className="space-y-2"
+                aria-labelledby={`question-${currentTool}-${index}`}
+                aria-required="true"
               >
                 {responseOptions.map((option) => (
                   <div key={option.value} className="flex items-center space-x-2">
                     <RadioGroupItem 
                       value={option.value.toString()} 
-                      id={`q${index}-${option.value}`}
+                      id={`q${currentTool}-${index}-${option.value}`}
                     />
                     <Label 
-                      htmlFor={`q${index}-${option.value}`}
+                      htmlFor={`q${currentTool}-${index}-${option.value}`}
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                     >
                       {option.label}
