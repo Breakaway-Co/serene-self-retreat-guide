@@ -166,11 +166,50 @@ serve(async (req) => {
           });
         }
       } catch (_e) {
-        // ignore fallback errors and continue to throw
+        // ignore fallback errors
       }
 
-      throw new Error(`ElevenLabs API error: ${errorText}`);
-    }
+      // As a last resort: enqueue for later regeneration and return 202 Accepted to avoid 500s
+      try {
+        await supabase.from('audio_generation_queue').insert({
+          session_id: sessionId,
+          session_name: sessionName,
+          session_type: sessionType,
+          activity_type: activityType,
+          master_script: masterScript,
+          voice_id: voiceId || 'SAz9YHcvj6GT2YYXdXww',
+          metadata: { ...(metadata || {}), scheduledFrom: 'generate-audio-session-no-cache' },
+          priority: 7,
+          scheduled_for: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // retry in 2h
+          is_pregenerated: false,
+          tags: ['auto-retry', 'no-cache']
+        });
+      } catch (_e) {
+        // ignore enqueue errors
+      }
+
+      await supabase.from('generation_logs').insert({
+        session_id: sessionDbId,
+        log_level: 'warn',
+        message: 'Audio generation queued due to provider failure',
+        details: { status: audioResponse.status, error: errorText }
+      });
+
+      return new Response(JSON.stringify({
+        success: true,
+        queued: true,
+        sessionId: sessionDbId,
+        audioUrl: null,
+        duration: null,
+        metadata: {
+          fallback: false,
+          reason: 'queued_after_generation_failure',
+          provider_error: errorText
+        }
+      }), {
+        status: 202,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
 
     // Get audio blob
     const audioBlob = await audioResponse.blob();
