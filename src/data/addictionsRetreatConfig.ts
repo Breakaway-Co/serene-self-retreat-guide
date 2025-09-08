@@ -52,6 +52,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Resonance Breathing Practice',
           duration: '20 minutes',
           type: 'somatic',
+          guideId: 'gentle-wake-up-breathing',
           description: 'Calming breathwork to stabilize the nervous system and create inner safety',
           modifications: ['Seated option', 'Paced guidance available']
         },
@@ -72,6 +73,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Introduction to Craving Surfing',
           duration: '90 minutes',
           type: 'therapy',
+          guideId: 'emotion-regulation-techniques',
           description: 'Learn foundational techniques for riding out cravings without acting on them',
           contraindications: ['Skip if overwhelmed'],
           modifications: ['Self-paced modules', 'Break into shorter segments']
@@ -92,6 +94,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Gentle Yoga for Recovery',
           duration: '45 minutes',
           type: 'movement',
+          guideId: 'grounding-exercises-outdoors',
           description: 'Trauma-informed yoga practice to reconnect with the body safely',
           modifications: ['Chair-based options', 'Audio-only guidance']
         },
@@ -109,6 +112,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Sound Bath Restoration',
           duration: '30 minutes',
           type: 'healing',
+          guideId: 'trauma-informed-body-scan',
           description: 'Vibrational healing to release tension and promote deep relaxation'
         }
       ]
@@ -124,6 +128,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Box Breathing Practice',
           duration: '15 minutes',
           type: 'somatic',
+          guideId: 'gentle-wake-up-breathing',
           description: 'Four-count breathing to build emotional regulation skills'
         },
         {
@@ -142,6 +147,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Personal Trigger Mapping',
           duration: '90 minutes',
           type: 'therapy',
+          guideId: 'emotion-regulation-techniques',
           description: 'Comprehensive exploration of personal triggers, warning signs, and patterns',
           modifications: ['Written and visual options', 'Break into shorter segments']
         },
@@ -177,6 +183,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Yoga Nidra Practice',
           duration: '35 minutes',
           type: 'healing',
+          guideId: 'trauma-informed-body-scan',
           description: 'Deep relaxation practice for nervous system restoration'
         }
       ]
