@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { 
   Play, 
@@ -21,7 +22,15 @@ import {
   AlertTriangle,
   BarChart3,
   Users,
-  Settings
+  Settings,
+  PlayCircle,
+  Zap,
+  TrendingUp,
+  Calendar,
+  Activity,
+  FileAudio,
+  Repeat,
+  Heart
 } from 'lucide-react';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -44,6 +53,46 @@ interface AudioSession {
   generated_at?: string;
   created_at: string;
   updated_at: string;
+  generation_queue_id?: string;
+  tags?: string[];
+  retry_count: number;
+  is_pregenerated: boolean;
+  release_date?: string;
+  processing_time_seconds?: number;
+}
+
+interface QueueItem {
+  id: string;
+  session_id: string;
+  session_name: string;
+  session_type: string;
+  activity_type: string;
+  status: string;
+  priority: number;
+  retry_count: number;
+  max_retries: number;
+  last_error?: string;
+  scheduled_for?: string;
+  started_at?: string;
+  completed_at?: string;
+  processing_time_seconds?: number;
+  is_pregenerated: boolean;
+  release_date?: string;
+  compliance_flag: boolean;
+  tags?: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+interface QueueStats {
+  total: number;
+  pending: number;
+  in_progress: number;
+  completed: number;
+  failed: number;
+  retrying: number;
+  recovered: number;
+  pre_generated: number;
 }
 
 interface GenerationLog {
@@ -57,12 +106,15 @@ interface GenerationLog {
 
 const AdminDashboard: React.FC = () => {
   const [sessions, setSessions] = useState<AudioSession[]>([]);
+  const [queueItems, setQueueItems] = useState<QueueItem[]>([]);
   const [logs, setLogs] = useState<GenerationLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<{ status?: string; type?: string; search?: string }>({});
+  const [queueFilter, setQueueFilter] = useState<{ status?: string; search?: string }>({});
   const [currentAudio, setCurrentAudio] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
+  const [isProcessingQueue, setIsProcessingQueue] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -84,17 +136,29 @@ const AdminDashboard: React.FC = () => {
       const { data: sessionsData, error: sessionsError } = await supabase
         .from('audio_sessions')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(100);
 
       if (sessionsError) throw sessionsError;
       setSessions(sessionsData || []);
+
+      // Load queue items
+      const { data: queueData, error: queueError } = await supabase
+        .from('audio_generation_queue')
+        .select('*')
+        .order('priority', { ascending: false })
+        .order('created_at', { ascending: true })
+        .limit(100);
+
+      if (queueError) throw queueError;
+      setQueueItems(queueData || []);
 
       // Load recent logs
       const { data: logsData, error: logsError } = await supabase
         .from('generation_logs')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(100);
+        .limit(200);
 
       if (logsError) throw logsError;
       setLogs(logsData || []);
@@ -123,11 +187,30 @@ const AdminDashboard: React.FC = () => {
         },
         (payload) => {
           if (payload.eventType === 'INSERT') {
-            setSessions(prev => [payload.new as AudioSession, ...prev]);
+            setSessions(prev => [payload.new as AudioSession, ...prev.slice(0, 99)]);
           } else if (payload.eventType === 'UPDATE') {
             setSessions(prev => 
               prev.map(session => 
                 session.id === payload.new.id ? payload.new as AudioSession : session
+              )
+            );
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'audio_generation_queue'
+        },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setQueueItems(prev => [payload.new as QueueItem, ...prev.slice(0, 99)]);
+          } else if (payload.eventType === 'UPDATE') {
+            setQueueItems(prev => 
+              prev.map(item => 
+                item.id === payload.new.id ? payload.new as QueueItem : item
               )
             );
           }
@@ -141,7 +224,7 @@ const AdminDashboard: React.FC = () => {
           table: 'generation_logs'
         },
         (payload) => {
-          setLogs(prev => [payload.new as GenerationLog, ...prev.slice(0, 99)]);
+          setLogs(prev => [payload.new as GenerationLog, ...prev.slice(0, 199)]);
         }
       )
       .subscribe();
@@ -153,6 +236,12 @@ const AdminDashboard: React.FC = () => {
     if (filter.status && session.status !== filter.status) return false;
     if (filter.type && session.session_type !== filter.type) return false;
     if (filter.search && !session.session_name.toLowerCase().includes(filter.search.toLowerCase())) return false;
+    return true;
+  });
+
+  const filteredQueueItems = queueItems.filter(item => {
+    if (queueFilter.status && item.status !== queueFilter.status) return false;
+    if (queueFilter.search && !item.session_name.toLowerCase().includes(queueFilter.search.toLowerCase())) return false;
     return true;
   });
 
@@ -236,12 +325,76 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const processQueue = async () => {
+    try {
+      setIsProcessingQueue(true);
+      const { error } = await supabase.functions.invoke('seamless-audio-processor', {
+        body: { action: 'process_queue' }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Queue Processing Started',
+        description: 'Audio generation queue is being processed'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Queue Processing Failed',
+        description: error.message,
+        variant: 'destructive'
+      });
+    } finally {
+      setIsProcessingQueue(false);
+    }
+  };
+
+  const generateSeamlessSession = async (retreatId: string, activityId: string) => {
+    try {
+      const { error } = await supabase.functions.invoke('seamless-content-pipeline', {
+        body: {
+          action: 'merge_retreat_session',
+          retreatId,
+          activityId,
+          customizations: {
+            intensity: 'moderate',
+            duration: 'medium'
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Seamless Session Queued',
+        description: 'Session has been added to the generation queue'
+      });
+    } catch (error: any) {
+      toast({
+        title: 'Session Generation Failed',
+        description: error.message,
+        variant: 'destructive'
+      });
+    }
+  };
+
   const stats = {
     total: sessions.length,
     completed: sessions.filter(s => s.status === 'completed').length,
     failed: sessions.filter(s => s.status === 'failed').length,
     generating: sessions.filter(s => s.status === 'generating').length,
     pending: sessions.filter(s => s.status === 'pending').length
+  };
+
+  const queueStats: QueueStats = {
+    total: queueItems.length,
+    pending: queueItems.filter(q => q.status === 'pending').length,
+    in_progress: queueItems.filter(q => q.status === 'in_progress').length,
+    completed: queueItems.filter(q => q.status === 'completed').length,
+    failed: queueItems.filter(q => q.status === 'failed').length,
+    retrying: queueItems.filter(q => q.status === 'retrying').length,
+    recovered: queueItems.filter(q => q.status === 'recovered').length,
+    pre_generated: queueItems.filter(q => q.status === 'pre_generated').length
   };
 
   if (isLoading) {
