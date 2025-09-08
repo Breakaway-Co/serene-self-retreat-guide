@@ -283,7 +283,7 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
               </p>
               {/* Both PHQ-9 and GAD-7 use radio buttons for single selection per question */}
               <RadioGroup
-                value={currentResponses[index]?.toString() || ''}
+                value={currentResponses[index] !== undefined ? currentResponses[index].toString() : undefined}
                 onValueChange={(value) => updateResponse(index, parseInt(value))}
                 className="space-y-2"
                 aria-labelledby={`question-${currentTool}-${index}`}
