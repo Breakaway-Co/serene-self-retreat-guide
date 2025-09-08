@@ -38,6 +38,132 @@ export type Database = {
         }
         Relationships: []
       }
+      audio_generation_queue: {
+        Row: {
+          activity_type: string
+          audit_notes: string | null
+          completed_at: string | null
+          compliance_flag: boolean | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_pregenerated: boolean | null
+          language: string | null
+          last_error: string | null
+          master_script: string
+          max_retries: number
+          metadata: Json | null
+          priority: number
+          processing_time_seconds: number | null
+          release_date: string | null
+          retry_count: number
+          scheduled_for: string | null
+          session_id: string
+          session_name: string
+          session_type: string
+          started_at: string | null
+          status: string
+          tags: string[] | null
+          updated_at: string
+          voice_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          audit_notes?: string | null
+          completed_at?: string | null
+          compliance_flag?: boolean | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_pregenerated?: boolean | null
+          language?: string | null
+          last_error?: string | null
+          master_script: string
+          max_retries?: number
+          metadata?: Json | null
+          priority?: number
+          processing_time_seconds?: number | null
+          release_date?: string | null
+          retry_count?: number
+          scheduled_for?: string | null
+          session_id: string
+          session_name: string
+          session_type: string
+          started_at?: string | null
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+          voice_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          audit_notes?: string | null
+          completed_at?: string | null
+          compliance_flag?: boolean | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_pregenerated?: boolean | null
+          language?: string | null
+          last_error?: string | null
+          master_script?: string
+          max_retries?: number
+          metadata?: Json | null
+          priority?: number
+          processing_time_seconds?: number | null
+          release_date?: string | null
+          retry_count?: number
+          scheduled_for?: string | null
+          session_id?: string
+          session_name?: string
+          session_type?: string
+          started_at?: string | null
+          status?: string
+          tags?: string[] | null
+          updated_at?: string
+          voice_id?: string | null
+        }
+        Relationships: []
+      }
+      audio_generation_stats: {
+        Row: {
+          avg_processing_time_seconds: number | null
+          created_at: string
+          date: string
+          id: string
+          peak_queue_size: number | null
+          total_failed: number | null
+          total_generated: number | null
+          total_pregenerated: number | null
+          total_recovered: number | null
+          total_retried: number | null
+        }
+        Insert: {
+          avg_processing_time_seconds?: number | null
+          created_at?: string
+          date: string
+          id?: string
+          peak_queue_size?: number | null
+          total_failed?: number | null
+          total_generated?: number | null
+          total_pregenerated?: number | null
+          total_recovered?: number | null
+          total_retried?: number | null
+        }
+        Update: {
+          avg_processing_time_seconds?: number | null
+          created_at?: string
+          date?: string
+          id?: string
+          peak_queue_size?: number | null
+          total_failed?: number | null
+          total_generated?: number | null
+          total_pregenerated?: number | null
+          total_recovered?: number | null
+          total_retried?: number | null
+        }
+        Relationships: []
+      }
       audio_sessions: {
         Row: {
           activity_type: string
@@ -50,14 +176,20 @@ export type Database = {
           difficulty_level: string | null
           duration_seconds: number | null
           generated_at: string | null
+          generation_queue_id: string | null
           id: string
+          is_pregenerated: boolean | null
           language: string | null
           master_script: string
           metadata: Json | null
+          processing_time_seconds: number | null
+          release_date: string | null
+          retry_count: number | null
           session_id: string
           session_name: string
           session_type: string
           status: string
+          tags: string[] | null
           updated_at: string | null
           voice_id: string | null
         }
@@ -72,14 +204,20 @@ export type Database = {
           difficulty_level?: string | null
           duration_seconds?: number | null
           generated_at?: string | null
+          generation_queue_id?: string | null
           id?: string
+          is_pregenerated?: boolean | null
           language?: string | null
           master_script: string
           metadata?: Json | null
+          processing_time_seconds?: number | null
+          release_date?: string | null
+          retry_count?: number | null
           session_id: string
           session_name: string
           session_type: string
           status?: string
+          tags?: string[] | null
           updated_at?: string | null
           voice_id?: string | null
         }
@@ -94,45 +232,72 @@ export type Database = {
           difficulty_level?: string | null
           duration_seconds?: number | null
           generated_at?: string | null
+          generation_queue_id?: string | null
           id?: string
+          is_pregenerated?: boolean | null
           language?: string | null
           master_script?: string
           metadata?: Json | null
+          processing_time_seconds?: number | null
+          release_date?: string | null
+          retry_count?: number | null
           session_id?: string
           session_name?: string
           session_type?: string
           status?: string
+          tags?: string[] | null
           updated_at?: string | null
           voice_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "audio_sessions_generation_queue_id_fkey"
+            columns: ["generation_queue_id"]
+            isOneToOne: false
+            referencedRelation: "audio_generation_queue"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       generation_logs: {
         Row: {
+          category: string | null
           created_at: string | null
           details: Json | null
           id: string
           log_level: string
           message: string
+          queue_id: string | null
           session_id: string | null
         }
         Insert: {
+          category?: string | null
           created_at?: string | null
           details?: Json | null
           id?: string
           log_level: string
           message: string
+          queue_id?: string | null
           session_id?: string | null
         }
         Update: {
+          category?: string | null
           created_at?: string | null
           details?: Json | null
           id?: string
           log_level?: string
           message?: string
+          queue_id?: string | null
           session_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "generation_logs_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: false
+            referencedRelation: "audio_generation_queue"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "generation_logs_session_id_fkey"
             columns: ["session_id"]
@@ -204,6 +369,98 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      queue_processor_state: {
+        Row: {
+          concurrent_limit: number | null
+          created_at: string
+          id: string
+          is_paused: boolean | null
+          is_running: boolean | null
+          last_heartbeat: string | null
+          last_processed_queue_id: string | null
+          processor_name: string
+          total_failures: number | null
+          total_processed: number | null
+          updated_at: string
+        }
+        Insert: {
+          concurrent_limit?: number | null
+          created_at?: string
+          id?: string
+          is_paused?: boolean | null
+          is_running?: boolean | null
+          last_heartbeat?: string | null
+          last_processed_queue_id?: string | null
+          processor_name: string
+          total_failures?: number | null
+          total_processed?: number | null
+          updated_at?: string
+        }
+        Update: {
+          concurrent_limit?: number | null
+          created_at?: string
+          id?: string
+          is_paused?: boolean | null
+          is_running?: boolean | null
+          last_heartbeat?: string | null
+          last_processed_queue_id?: string | null
+          processor_name?: string
+          total_failures?: number | null
+          total_processed?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      session_pregeneration_schedule: {
+        Row: {
+          activity_id: string
+          created_at: string
+          generation_queue_id: string | null
+          id: string
+          is_generated: boolean | null
+          is_scheduled: boolean | null
+          pregenerate_hours_before: number
+          retreat_id: string
+          scheduled_release_date: string
+          session_name: string
+          updated_at: string
+        }
+        Insert: {
+          activity_id: string
+          created_at?: string
+          generation_queue_id?: string | null
+          id?: string
+          is_generated?: boolean | null
+          is_scheduled?: boolean | null
+          pregenerate_hours_before?: number
+          retreat_id: string
+          scheduled_release_date: string
+          session_name: string
+          updated_at?: string
+        }
+        Update: {
+          activity_id?: string
+          created_at?: string
+          generation_queue_id?: string | null
+          id?: string
+          is_generated?: boolean | null
+          is_scheduled?: boolean | null
+          pregenerate_hours_before?: number
+          retreat_id?: string
+          scheduled_release_date?: string
+          session_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_pregeneration_schedule_generation_queue_id_fkey"
+            columns: ["generation_queue_id"]
+            isOneToOne: false
+            referencedRelation: "audio_generation_queue"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
