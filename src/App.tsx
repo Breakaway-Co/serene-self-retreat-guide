@@ -13,6 +13,7 @@ import ActivitiesPage from "./pages/ActivitiesPage";
 import ResourcesPage from "./pages/ResourcesPage";
 import ProgressPage from "./pages/ProgressPage";
 import RetreatsPage from "./pages/RetreatsPage";
+import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -40,6 +41,7 @@ const App = () => (
                 </Route>
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/intake" element={<IntakeAssessment />} />
+                <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

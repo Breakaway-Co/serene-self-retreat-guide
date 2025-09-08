@@ -14,6 +14,134 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string | null
+          id: string
+          permissions: Json | null
+          role: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          permissions?: Json | null
+          role?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          permissions?: Json | null
+          role?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      audio_sessions: {
+        Row: {
+          activity_type: string
+          audio_url: string | null
+          audit_notes: string | null
+          breath_cycle_count: number | null
+          compliance_flag: boolean | null
+          created_at: string | null
+          created_by: string | null
+          difficulty_level: string | null
+          duration_seconds: number | null
+          generated_at: string | null
+          id: string
+          language: string | null
+          master_script: string
+          metadata: Json | null
+          session_id: string
+          session_name: string
+          session_type: string
+          status: string
+          updated_at: string | null
+          voice_id: string | null
+        }
+        Insert: {
+          activity_type: string
+          audio_url?: string | null
+          audit_notes?: string | null
+          breath_cycle_count?: number | null
+          compliance_flag?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          difficulty_level?: string | null
+          duration_seconds?: number | null
+          generated_at?: string | null
+          id?: string
+          language?: string | null
+          master_script: string
+          metadata?: Json | null
+          session_id: string
+          session_name: string
+          session_type: string
+          status?: string
+          updated_at?: string | null
+          voice_id?: string | null
+        }
+        Update: {
+          activity_type?: string
+          audio_url?: string | null
+          audit_notes?: string | null
+          breath_cycle_count?: number | null
+          compliance_flag?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          difficulty_level?: string | null
+          duration_seconds?: number | null
+          generated_at?: string | null
+          id?: string
+          language?: string | null
+          master_script?: string
+          metadata?: Json | null
+          session_id?: string
+          session_name?: string
+          session_type?: string
+          status?: string
+          updated_at?: string | null
+          voice_id?: string | null
+        }
+        Relationships: []
+      }
+      generation_logs: {
+        Row: {
+          created_at: string | null
+          details: Json | null
+          id: string
+          log_level: string
+          message: string
+          session_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          log_level: string
+          message: string
+          session_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          log_level?: string
+          message?: string
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generation_logs_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "audio_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       intake_progress: {
         Row: {
           created_at: string
