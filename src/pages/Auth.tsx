@@ -66,6 +66,11 @@ const Auth: React.FC = () => {
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
             <TabsContent value="signin">
+              <div className="bg-secondary/20 p-4 rounded-lg mb-4">
+                <h4 className="font-semibold text-sm mb-2">Test Login Credentials:</h4>
+                <p className="text-xs text-muted-foreground">Email: test@example.com</p>
+                <p className="text-xs text-muted-foreground">Password: password123</p>
+              </div>
               <form onSubmit={handleSignIn} className="space-y-4 mt-4">
                 <div className="space-y-2">
                   <Label htmlFor="signin-email">Email</Label>

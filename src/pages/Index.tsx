@@ -17,9 +17,8 @@ const Index = () => {
   };
 
   const handleSelectPlan = (planId: string) => {
-    // Handle subscription selection
-    console.log('Selected plan:', planId);
-    // This would integrate with Stripe for payment processing
+    // Navigate to auth page for subscription
+    window.location.href = '/auth';
   };
 
   const handleStartRecommendation = (id: string) => {
