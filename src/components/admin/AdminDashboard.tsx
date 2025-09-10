@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { ProductionTracker } from './ProductionTracker';
 import { 
   Play, 
   Pause, 
@@ -485,6 +486,7 @@ const AdminDashboard: React.FC = () => {
           <TabsList>
             <TabsTrigger value="sessions">Audio Sessions</TabsTrigger>
             <TabsTrigger value="logs">Generation Logs</TabsTrigger>
+            <TabsTrigger value="production">Production Tracker</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -657,6 +659,10 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="production" className="space-y-4">
+            <ProductionTracker />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-4">
