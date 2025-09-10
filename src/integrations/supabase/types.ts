@@ -412,6 +412,92 @@ export type Database = {
         }
         Relationships: []
       }
+      retreat_modules: {
+        Row: {
+          accessibility_captions: boolean
+          accessibility_transcript: boolean
+          area_name: string
+          content_included: boolean
+          created_at: string
+          delivery_audio: boolean
+          delivery_live: boolean
+          delivery_pdf: boolean
+          delivery_video: boolean
+          module_id: string
+          outcome_defined: boolean
+          retreat_id: string
+          updated_at: string
+        }
+        Insert: {
+          accessibility_captions?: boolean
+          accessibility_transcript?: boolean
+          area_name: string
+          content_included?: boolean
+          created_at?: string
+          delivery_audio?: boolean
+          delivery_live?: boolean
+          delivery_pdf?: boolean
+          delivery_video?: boolean
+          module_id?: string
+          outcome_defined?: boolean
+          retreat_id: string
+          updated_at?: string
+        }
+        Update: {
+          accessibility_captions?: boolean
+          accessibility_transcript?: boolean
+          area_name?: string
+          content_included?: boolean
+          created_at?: string
+          delivery_audio?: boolean
+          delivery_live?: boolean
+          delivery_pdf?: boolean
+          delivery_video?: boolean
+          module_id?: string
+          outcome_defined?: boolean
+          retreat_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retreat_modules_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreats"
+            referencedColumns: ["retreat_id"]
+          },
+        ]
+      }
+      retreats: {
+        Row: {
+          completeness_score: number | null
+          created_at: string
+          launch_date: string | null
+          retreat_id: string
+          retreat_name: string
+          risk_flag: string | null
+          updated_at: string
+        }
+        Insert: {
+          completeness_score?: number | null
+          created_at?: string
+          launch_date?: string | null
+          retreat_id?: string
+          retreat_name: string
+          risk_flag?: string | null
+          updated_at?: string
+        }
+        Update: {
+          completeness_score?: number | null
+          created_at?: string
+          launch_date?: string | null
+          retreat_id?: string
+          retreat_name?: string
+          risk_flag?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       session_pregeneration_schedule: {
         Row: {
           activity_id: string
@@ -467,7 +553,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      recalculate_retreat_completeness: {
+        Args: { recalc_retreat_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
