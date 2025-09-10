@@ -78,17 +78,30 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
         throw new Error(error.message);
       }
 
-      if (data.success) {
-        // Poll for completion if still generating
-        if (data.status === 'generating') {
-          pollForCompletion(data.sessionId);
-        } else if (data.status === 'completed') {
-          setAudioSession(data);
+      if (data?.success) {
+        // If audio is ready immediately
+        if (data.audioUrl && data.sessionId) {
+          setAudioSession({
+            id: data.sessionId,
+            session_id: data.sessionId,
+            session_name: guideName,
+            audio_url: data.audioUrl,
+            duration_seconds: data.duration ?? undefined,
+            status: 'completed',
+            metadata: data.metadata ?? {},
+          });
           toast({
             title: 'Audio Ready!',
             description: 'Your seamless meditation session is ready to play.'
           });
+        } else if (data.sessionId) {
+          // Otherwise poll the DB until it completes
+          pollForCompletion(data.sessionId);
+        } else {
+          throw new Error('Unexpected response from audio generator');
         }
+      } else {
+        throw new Error(data?.error || 'Failed to generate audio');
       }
     } catch (error: any) {
       console.error('Error generating audio:', error);
