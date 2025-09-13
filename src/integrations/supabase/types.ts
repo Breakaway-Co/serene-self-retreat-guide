@@ -259,6 +259,241 @@ export type Database = {
           },
         ]
       }
+      compliance_checks: {
+        Row: {
+          action_required: boolean | null
+          check_type: string | null
+          compliance_status: string | null
+          content_id: string | null
+          created_at: string | null
+          findings: string[] | null
+          id: string
+          recommendations: string[] | null
+          resolution_date: string | null
+          retreat_id: string | null
+          review_date: string | null
+          reviewer_id: string | null
+        }
+        Insert: {
+          action_required?: boolean | null
+          check_type?: string | null
+          compliance_status?: string | null
+          content_id?: string | null
+          created_at?: string | null
+          findings?: string[] | null
+          id?: string
+          recommendations?: string[] | null
+          resolution_date?: string | null
+          retreat_id?: string | null
+          review_date?: string | null
+          reviewer_id?: string | null
+        }
+        Update: {
+          action_required?: boolean | null
+          check_type?: string | null
+          compliance_status?: string | null
+          content_id?: string | null
+          created_at?: string | null
+          findings?: string[] | null
+          id?: string
+          recommendations?: string[] | null
+          resolution_date?: string | null
+          retreat_id?: string | null
+          review_date?: string | null
+          reviewer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "compliance_checks_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content_library"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "compliance_checks_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_library: {
+        Row: {
+          asset_id: string | null
+          compliance_reviewed: boolean | null
+          content_type: string
+          created_at: string | null
+          duration_seconds: number | null
+          evidence_based_verified: boolean | null
+          file_size_bytes: number | null
+          file_url: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          reviewer_notes: string | null
+          tags: string[] | null
+          title: string
+          transcript: string | null
+          trauma_informed_reviewed: boolean | null
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          asset_id?: string | null
+          compliance_reviewed?: boolean | null
+          content_type: string
+          created_at?: string | null
+          duration_seconds?: number | null
+          evidence_based_verified?: boolean | null
+          file_size_bytes?: number | null
+          file_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          reviewer_notes?: string | null
+          tags?: string[] | null
+          title: string
+          transcript?: string | null
+          trauma_informed_reviewed?: boolean | null
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          asset_id?: string | null
+          compliance_reviewed?: boolean | null
+          content_type?: string
+          created_at?: string | null
+          duration_seconds?: number | null
+          evidence_based_verified?: boolean | null
+          file_size_bytes?: number | null
+          file_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          reviewer_notes?: string | null
+          tags?: string[] | null
+          title?: string
+          transcript?: string | null
+          trauma_informed_reviewed?: boolean | null
+          updated_at?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_library_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "production_assets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crisis_protocols: {
+        Row: {
+          created_at: string | null
+          follow_up_scheduled: boolean | null
+          id: string
+          intervention_taken: string[] | null
+          notes: string | null
+          professional_contacted: boolean | null
+          protocol_activated_at: string | null
+          resolution_status: string | null
+          risk_level: string | null
+          trigger_type: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          follow_up_scheduled?: boolean | null
+          id?: string
+          intervention_taken?: string[] | null
+          notes?: string | null
+          professional_contacted?: boolean | null
+          protocol_activated_at?: string | null
+          resolution_status?: string | null
+          risk_level?: string | null
+          trigger_type: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          follow_up_scheduled?: boolean | null
+          id?: string
+          intervention_taken?: string[] | null
+          notes?: string | null
+          professional_contacted?: boolean | null
+          protocol_activated_at?: string | null
+          resolution_status?: string | null
+          risk_level?: string | null
+          trigger_type?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_checkins: {
+        Row: {
+          challenges: string[] | null
+          checkin_date: string
+          created_at: string | null
+          crisis_flag: boolean | null
+          energy_level: number | null
+          gratitude_entries: string[] | null
+          id: string
+          mood_rating: number | null
+          needs_support: boolean | null
+          reflection_notes: string | null
+          sleep_quality: number | null
+          stress_level: number | null
+          user_retreat_id: string | null
+          wins: string[] | null
+        }
+        Insert: {
+          challenges?: string[] | null
+          checkin_date: string
+          created_at?: string | null
+          crisis_flag?: boolean | null
+          energy_level?: number | null
+          gratitude_entries?: string[] | null
+          id?: string
+          mood_rating?: number | null
+          needs_support?: boolean | null
+          reflection_notes?: string | null
+          sleep_quality?: number | null
+          stress_level?: number | null
+          user_retreat_id?: string | null
+          wins?: string[] | null
+        }
+        Update: {
+          challenges?: string[] | null
+          checkin_date?: string
+          created_at?: string | null
+          crisis_flag?: boolean | null
+          energy_level?: number | null
+          gratitude_entries?: string[] | null
+          id?: string
+          mood_rating?: number | null
+          needs_support?: boolean | null
+          reflection_notes?: string | null
+          sleep_quality?: number | null
+          stress_level?: number | null
+          user_retreat_id?: string | null
+          wins?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_checkins_user_retreat_id_fkey"
+            columns: ["user_retreat_id"]
+            isOneToOne: false
+            referencedRelation: "user_retreats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       generation_logs: {
         Row: {
           category: string | null
@@ -307,6 +542,60 @@ export type Database = {
           },
         ]
       }
+      intake_assessments: {
+        Row: {
+          completed_at: string | null
+          consent_data: Json | null
+          created_at: string | null
+          demographics_data: Json | null
+          goals_data: Json | null
+          id: string
+          is_completed: boolean | null
+          lifestyle_data: Json | null
+          presenting_concerns_data: Json | null
+          retreat_recommendations: Json | null
+          risk_assessment: Json | null
+          safety_data: Json | null
+          updated_at: string | null
+          user_id: string | null
+          wellbeing_screening_data: Json | null
+        }
+        Insert: {
+          completed_at?: string | null
+          consent_data?: Json | null
+          created_at?: string | null
+          demographics_data?: Json | null
+          goals_data?: Json | null
+          id?: string
+          is_completed?: boolean | null
+          lifestyle_data?: Json | null
+          presenting_concerns_data?: Json | null
+          retreat_recommendations?: Json | null
+          risk_assessment?: Json | null
+          safety_data?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+          wellbeing_screening_data?: Json | null
+        }
+        Update: {
+          completed_at?: string | null
+          consent_data?: Json | null
+          created_at?: string | null
+          demographics_data?: Json | null
+          goals_data?: Json | null
+          id?: string
+          is_completed?: boolean | null
+          lifestyle_data?: Json | null
+          presenting_concerns_data?: Json | null
+          retreat_recommendations?: Json | null
+          risk_assessment?: Json | null
+          safety_data?: Json | null
+          updated_at?: string | null
+          user_id?: string | null
+          wellbeing_screening_data?: Json | null
+        }
+        Relationships: []
+      }
       intake_progress: {
         Row: {
           created_at: string
@@ -343,6 +632,116 @@ export type Database = {
           total_steps?: number | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      production_assets: {
+        Row: {
+          assigned_to: string | null
+          completion_date: string | null
+          created_at: string | null
+          day_module: string
+          download_link: string | null
+          edit_task: string | null
+          estimated_hours: number | null
+          format: string
+          id: string
+          internal_storage_path: string | null
+          notes: string | null
+          original_file_name: string
+          priority: string | null
+          retreat_id: string | null
+          source: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          completion_date?: string | null
+          created_at?: string | null
+          day_module: string
+          download_link?: string | null
+          edit_task?: string | null
+          estimated_hours?: number | null
+          format: string
+          id?: string
+          internal_storage_path?: string | null
+          notes?: string | null
+          original_file_name: string
+          priority?: string | null
+          retreat_id?: string | null
+          source: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          completion_date?: string | null
+          created_at?: string | null
+          day_module?: string
+          download_link?: string | null
+          edit_task?: string | null
+          estimated_hours?: number | null
+          format?: string
+          id?: string
+          internal_storage_path?: string | null
+          notes?: string | null
+          original_file_name?: string
+          priority?: string | null
+          retreat_id?: string | null
+          source?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_assets_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_referrals: {
+        Row: {
+          created_at: string | null
+          follow_up_date: string | null
+          id: string
+          notes: string | null
+          reason: string
+          recommended_providers: Json | null
+          referral_status: string | null
+          referral_type: string | null
+          updated_at: string | null
+          urgency_level: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          follow_up_date?: string | null
+          id?: string
+          notes?: string | null
+          reason: string
+          recommended_providers?: Json | null
+          referral_status?: string | null
+          referral_type?: string | null
+          updated_at?: string | null
+          urgency_level?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          follow_up_date?: string | null
+          id?: string
+          notes?: string | null
+          reason?: string
+          recommended_providers?: Json | null
+          referral_status?: string | null
+          referral_type?: string | null
+          updated_at?: string | null
+          urgency_level?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -412,6 +811,196 @@ export type Database = {
         }
         Relationships: []
       }
+      retreat_activities: {
+        Row: {
+          activity_name: string
+          activity_type: string | null
+          contraindications: string[] | null
+          created_at: string | null
+          day_number: number
+          description: string | null
+          difficulty_level: string | null
+          duration_minutes: number | null
+          evidence_base: string | null
+          id: string
+          instructions: string | null
+          is_optional: boolean | null
+          modifications: string[] | null
+          required_materials: string[] | null
+          retreat_id: string | null
+          time_slot: string
+          trauma_considerations: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          activity_name: string
+          activity_type?: string | null
+          contraindications?: string[] | null
+          created_at?: string | null
+          day_number: number
+          description?: string | null
+          difficulty_level?: string | null
+          duration_minutes?: number | null
+          evidence_base?: string | null
+          id?: string
+          instructions?: string | null
+          is_optional?: boolean | null
+          modifications?: string[] | null
+          required_materials?: string[] | null
+          retreat_id?: string | null
+          time_slot: string
+          trauma_considerations?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          activity_name?: string
+          activity_type?: string | null
+          contraindications?: string[] | null
+          created_at?: string | null
+          day_number?: number
+          description?: string | null
+          difficulty_level?: string | null
+          duration_minutes?: number | null
+          evidence_base?: string | null
+          id?: string
+          instructions?: string | null
+          is_optional?: boolean | null
+          modifications?: string[] | null
+          required_materials?: string[] | null
+          retreat_id?: string | null
+          time_slot?: string
+          trauma_considerations?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retreat_activities_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      retreat_configurations: {
+        Row: {
+          contraindications: string[] | null
+          created_at: string | null
+          description: string | null
+          duration_days: number
+          evidence_based_therapies: string[] | null
+          focus_areas: string[] | null
+          id: string
+          is_active: boolean | null
+          name: string
+          principles: string[] | null
+          requires_supervision: boolean | null
+          risk_level: string | null
+          short_description: string | null
+          slug: string
+          target_conditions: string[] | null
+          trauma_informed_adaptations: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          contraindications?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          duration_days: number
+          evidence_based_therapies?: string[] | null
+          focus_areas?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          principles?: string[] | null
+          requires_supervision?: boolean | null
+          risk_level?: string | null
+          short_description?: string | null
+          slug: string
+          target_conditions?: string[] | null
+          trauma_informed_adaptations?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          contraindications?: string[] | null
+          created_at?: string | null
+          description?: string | null
+          duration_days?: number
+          evidence_based_therapies?: string[] | null
+          focus_areas?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          principles?: string[] | null
+          requires_supervision?: boolean | null
+          risk_level?: string | null
+          short_description?: string | null
+          slug?: string
+          target_conditions?: string[] | null
+          trauma_informed_adaptations?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      retreat_effectiveness: {
+        Row: {
+          analysis_period_end: string | null
+          analysis_period_start: string | null
+          average_outcome_improvement: number | null
+          average_satisfaction: number | null
+          common_challenges: string[] | null
+          completion_rate: number | null
+          created_at: string | null
+          id: string
+          recommended_improvements: string[] | null
+          retreat_id: string | null
+          success_factors: string[] | null
+          total_completions: number | null
+          total_enrollments: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          analysis_period_end?: string | null
+          analysis_period_start?: string | null
+          average_outcome_improvement?: number | null
+          average_satisfaction?: number | null
+          common_challenges?: string[] | null
+          completion_rate?: number | null
+          created_at?: string | null
+          id?: string
+          recommended_improvements?: string[] | null
+          retreat_id?: string | null
+          success_factors?: string[] | null
+          total_completions?: number | null
+          total_enrollments?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          analysis_period_end?: string | null
+          analysis_period_start?: string | null
+          average_outcome_improvement?: number | null
+          average_satisfaction?: number | null
+          common_challenges?: string[] | null
+          completion_rate?: number | null
+          created_at?: string | null
+          id?: string
+          recommended_improvements?: string[] | null
+          retreat_id?: string | null
+          success_factors?: string[] | null
+          total_completions?: number | null
+          total_enrollments?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retreat_effectiveness_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       retreat_modules: {
         Row: {
           accessibility_captions: boolean
@@ -468,6 +1057,69 @@ export type Database = {
           },
         ]
       }
+      retreat_progress: {
+        Row: {
+          activity_id: string | null
+          challenges_encountered: string[] | null
+          completed_at: string | null
+          completion_time_minutes: number | null
+          created_at: string | null
+          day_number: number
+          id: string
+          insights: string | null
+          notes: string | null
+          status: string | null
+          updated_at: string | null
+          user_rating: number | null
+          user_retreat_id: string | null
+        }
+        Insert: {
+          activity_id?: string | null
+          challenges_encountered?: string[] | null
+          completed_at?: string | null
+          completion_time_minutes?: number | null
+          created_at?: string | null
+          day_number: number
+          id?: string
+          insights?: string | null
+          notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_rating?: number | null
+          user_retreat_id?: string | null
+        }
+        Update: {
+          activity_id?: string | null
+          challenges_encountered?: string[] | null
+          completed_at?: string | null
+          completion_time_minutes?: number | null
+          created_at?: string | null
+          day_number?: number
+          id?: string
+          insights?: string | null
+          notes?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_rating?: number | null
+          user_retreat_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retreat_progress_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "retreat_progress_user_retreat_id_fkey"
+            columns: ["user_retreat_id"]
+            isOneToOne: false
+            referencedRelation: "user_retreats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       retreats: {
         Row: {
           completeness_score: number | null
@@ -495,6 +1147,166 @@ export type Database = {
           retreat_name?: string
           risk_flag?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      risk_assessments: {
+        Row: {
+          assessment_id: string | null
+          contraindications: string[] | null
+          created_at: string | null
+          crisis_intervention_needed: boolean | null
+          id: string
+          intervention_recommendations: string[] | null
+          overall_risk_level: string | null
+          professional_referral_required: boolean | null
+          protective_factors: Json | null
+          risk_factors: Json | null
+          safety_plan_needed: boolean | null
+          self_harm_risk: boolean | null
+          substance_abuse_risk: boolean | null
+          suicide_risk: boolean | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          assessment_id?: string | null
+          contraindications?: string[] | null
+          created_at?: string | null
+          crisis_intervention_needed?: boolean | null
+          id?: string
+          intervention_recommendations?: string[] | null
+          overall_risk_level?: string | null
+          professional_referral_required?: boolean | null
+          protective_factors?: Json | null
+          risk_factors?: Json | null
+          safety_plan_needed?: boolean | null
+          self_harm_risk?: boolean | null
+          substance_abuse_risk?: boolean | null
+          suicide_risk?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          assessment_id?: string | null
+          contraindications?: string[] | null
+          created_at?: string | null
+          crisis_intervention_needed?: boolean | null
+          id?: string
+          intervention_recommendations?: string[] | null
+          overall_risk_level?: string | null
+          professional_referral_required?: boolean | null
+          protective_factors?: Json | null
+          risk_factors?: Json | null
+          safety_plan_needed?: boolean | null
+          self_harm_risk?: boolean | null
+          substance_abuse_risk?: boolean | null
+          suicide_risk?: boolean | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "risk_assessments_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "intake_assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      screening_results: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          interpretation: string | null
+          max_score: number
+          recommendations: string[] | null
+          risk_flags: string[] | null
+          risk_level: string | null
+          score: number
+          session_id: string | null
+          tool_id: string
+          tool_name: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          interpretation?: string | null
+          max_score: number
+          recommendations?: string[] | null
+          risk_flags?: string[] | null
+          risk_level?: string | null
+          score: number
+          session_id?: string | null
+          tool_id: string
+          tool_name: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          interpretation?: string | null
+          max_score?: number
+          recommendations?: string[] | null
+          risk_flags?: string[] | null
+          risk_level?: string | null
+          score?: number
+          session_id?: string | null
+          tool_id?: string
+          tool_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "screening_results_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "screening_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      screening_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          crisis_flags: boolean | null
+          id: string
+          overall_risk_level: string | null
+          professional_referral_needed: boolean | null
+          recommendations: string[] | null
+          referrals: string[] | null
+          session_type: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          crisis_flags?: boolean | null
+          id?: string
+          overall_risk_level?: string | null
+          professional_referral_needed?: boolean | null
+          recommendations?: string[] | null
+          referrals?: string[] | null
+          session_type: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          crisis_flags?: boolean | null
+          id?: string
+          overall_risk_level?: string | null
+          professional_referral_needed?: boolean | null
+          recommendations?: string[] | null
+          referrals?: string[] | null
+          session_type?: string
+          updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -544,6 +1356,230 @@ export type Database = {
             columns: ["generation_queue_id"]
             isOneToOne: false
             referencedRelation: "audio_generation_queue"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trauma_informed_flags: {
+        Row: {
+          alternative_content_id: string | null
+          content_id: string | null
+          created_at: string | null
+          description: string
+          flag_type: string | null
+          id: string
+          recommendations: string[] | null
+          reviewed_by: string | null
+          severity: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          alternative_content_id?: string | null
+          content_id?: string | null
+          created_at?: string | null
+          description: string
+          flag_type?: string | null
+          id?: string
+          recommendations?: string[] | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          alternative_content_id?: string | null
+          content_id?: string | null
+          created_at?: string | null
+          description?: string
+          flag_type?: string | null
+          id?: string
+          recommendations?: string[] | null
+          reviewed_by?: string | null
+          severity?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trauma_informed_flags_alternative_content_id_fkey"
+            columns: ["alternative_content_id"]
+            isOneToOne: false
+            referencedRelation: "content_library"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trauma_informed_flags_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content_library"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_outcomes: {
+        Row: {
+          created_at: string | null
+          custom_metrics: Json | null
+          gad7_score: number | null
+          id: string
+          measurement_date: string | null
+          measurement_type: string | null
+          notes: string | null
+          phq9_score: number | null
+          retreat_id: string | null
+          stress_score: number | null
+          user_id: string | null
+          wellbeing_score: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          custom_metrics?: Json | null
+          gad7_score?: number | null
+          id?: string
+          measurement_date?: string | null
+          measurement_type?: string | null
+          notes?: string | null
+          phq9_score?: number | null
+          retreat_id?: string | null
+          stress_score?: number | null
+          user_id?: string | null
+          wellbeing_score?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          custom_metrics?: Json | null
+          gad7_score?: number | null
+          id?: string
+          measurement_date?: string | null
+          measurement_type?: string | null
+          notes?: string | null
+          phq9_score?: number | null
+          retreat_id?: string | null
+          stress_score?: number | null
+          user_id?: string | null
+          wellbeing_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_outcomes_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_preferences: {
+        Row: {
+          accessibility_needs: string[] | null
+          communication_preferences: Json | null
+          created_at: string | null
+          id: string
+          intensity_preference: string | null
+          notification_settings: Json | null
+          preferred_modalities: string[] | null
+          privacy_settings: Json | null
+          time_commitment_preference: string | null
+          trigger_warnings: string[] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          accessibility_needs?: string[] | null
+          communication_preferences?: Json | null
+          created_at?: string | null
+          id?: string
+          intensity_preference?: string | null
+          notification_settings?: Json | null
+          preferred_modalities?: string[] | null
+          privacy_settings?: Json | null
+          time_commitment_preference?: string | null
+          trigger_warnings?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          accessibility_needs?: string[] | null
+          communication_preferences?: Json | null
+          created_at?: string | null
+          id?: string
+          intensity_preference?: string | null
+          notification_settings?: Json | null
+          preferred_modalities?: string[] | null
+          privacy_settings?: Json | null
+          time_commitment_preference?: string | null
+          trigger_warnings?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_retreats: {
+        Row: {
+          actual_end_date: string | null
+          additional_support: string[] | null
+          completion_percentage: number | null
+          created_at: string | null
+          expected_end_date: string | null
+          gentle_mode: boolean | null
+          id: string
+          intake_assessment_id: string | null
+          personalization_data: Json | null
+          retreat_id: string | null
+          skip_activities: string[] | null
+          start_date: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          actual_end_date?: string | null
+          additional_support?: string[] | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          expected_end_date?: string | null
+          gentle_mode?: boolean | null
+          id?: string
+          intake_assessment_id?: string | null
+          personalization_data?: Json | null
+          retreat_id?: string | null
+          skip_activities?: string[] | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          actual_end_date?: string | null
+          additional_support?: string[] | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          expected_end_date?: string | null
+          gentle_mode?: boolean | null
+          id?: string
+          intake_assessment_id?: string | null
+          personalization_data?: Json | null
+          retreat_id?: string | null
+          skip_activities?: string[] | null
+          start_date?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_retreats_intake_assessment_id_fkey"
+            columns: ["intake_assessment_id"]
+            isOneToOne: false
+            referencedRelation: "intake_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_retreats_retreat_id_fkey"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
             referencedColumns: ["id"]
           },
         ]
