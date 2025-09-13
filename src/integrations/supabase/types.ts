@@ -747,21 +747,27 @@ export type Database = {
       }
       profiles: {
         Row: {
+          accessibility_needs: string[] | null
           created_at: string
+          demographics_data: Json | null
           email: string | null
           full_name: string | null
           id: string
           updated_at: string
         }
         Insert: {
+          accessibility_needs?: string[] | null
           created_at?: string
+          demographics_data?: Json | null
           email?: string | null
           full_name?: string | null
           id: string
           updated_at?: string
         }
         Update: {
+          accessibility_needs?: string[] | null
           created_at?: string
+          demographics_data?: Json | null
           email?: string | null
           full_name?: string | null
           id?: string
