@@ -3,8 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Clock, CheckCircle, PlayCircle, Calendar, BookOpen } from "lucide-react";
+import { Clock, CheckCircle, PlayCircle, Calendar, BookOpen, MessageSquare } from "lucide-react";
 import ActivityGuides from "./ActivityGuides";
+import UniversalActivityResponse from "./UniversalActivityResponse";
 import { PersonalizedRetreat } from "@/types/retreat";
 import { usePersonalizedRetreat } from "@/hooks/usePersonalizedRetreat";
 
@@ -15,6 +16,7 @@ interface DailyProgramProps {
 const DailyProgram = ({ retreat }: DailyProgramProps) => {
   const [selectedDay, setSelectedDay] = useState(1);
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
+  const [selectedActivityForResponse, setSelectedActivityForResponse] = useState<any | null>(null);
   const { progress, completeActivity } = usePersonalizedRetreat();
 
   // If an activity is selected, show the guide
@@ -24,6 +26,35 @@ const DailyProgram = ({ retreat }: DailyProgramProps) => {
         selectedActivity={selectedActivity} 
         onBack={() => setSelectedActivity(null)} 
       />
+    );
+  }
+
+  // If an activity is selected for response, show the response form
+  if (selectedActivityForResponse) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => setSelectedActivityForResponse(null)}
+          >
+            ← Back to Program
+          </Button>
+          <h2 className="text-lg font-semibold">Activity Response</h2>
+        </div>
+        
+        <UniversalActivityResponse
+          activityId={selectedActivityForResponse.id}
+          activityName={selectedActivityForResponse.activity}
+          activityType={selectedActivityForResponse.type}
+          userRetreatId={progress?.retreatId || ''}
+          dayNumber={selectedDay}
+          onSave={() => {
+            completeActivity(selectedActivityForResponse.id);
+            setSelectedActivityForResponse(null);
+          }}
+        />
+      </div>
     );
   }
 
@@ -102,17 +133,28 @@ const DailyProgram = ({ retreat }: DailyProgramProps) => {
                         <Clock className="w-4 h-4" />
                         <span className="text-sm">{activity.duration}</span>
                       </div>
-                      {activity.guideId && (
+                      <div className="flex gap-2">
+                        {activity.guideId && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setSelectedActivity(activity.guideId)}
+                            className="h-8"
+                          >
+                            <BookOpen className="w-4 h-4 mr-1" />
+                            Guide
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => setSelectedActivity(activity.guideId)}
+                          onClick={() => setSelectedActivityForResponse(activity)}
                           className="h-8"
                         >
-                          <BookOpen className="w-4 h-4 mr-1" />
-                          Guide
+                          <MessageSquare className="w-4 h-4 mr-1" />
+                          Respond
                         </Button>
-                      )}
+                      </div>
                     </div>
                   </div>
                 </div>

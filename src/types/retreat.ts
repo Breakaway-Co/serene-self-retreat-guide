@@ -8,6 +8,11 @@ export interface RetreatActivity {
   description?: string;
   contraindications?: string[];
   modifications?: string[];
+  responsePrompts?: {
+    questions?: string[];
+    reflectionAreas?: string[];
+    trackingMetrics?: string[];
+  };
 }
 
 export interface RetreatDay {

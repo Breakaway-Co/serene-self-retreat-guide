@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_responses: {
+        Row: {
+          activity_id: string
+          completed_at: string
+          created_at: string
+          day_number: number
+          id: string
+          response_data: Json
+          response_type: string
+          updated_at: string
+          user_retreat_id: string
+        }
+        Insert: {
+          activity_id: string
+          completed_at?: string
+          created_at?: string
+          day_number: number
+          id?: string
+          response_data?: Json
+          response_type: string
+          updated_at?: string
+          user_retreat_id: string
+        }
+        Update: {
+          activity_id?: string
+          completed_at?: string
+          created_at?: string
+          day_number?: number
+          id?: string
+          response_data?: Json
+          response_type?: string
+          updated_at?: string
+          user_retreat_id?: string
+        }
+        Relationships: []
+      }
       admin_users: {
         Row: {
           created_at: string | null
