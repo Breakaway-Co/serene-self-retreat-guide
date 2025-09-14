@@ -1760,6 +1760,18 @@ export type Database = {
         Args: { p_user_retreat_id: string }
         Returns: number
       }
+      create_test_intake_assessment: {
+        Args: { p_user_id: string }
+        Returns: string
+      }
+      create_test_user_retreat: {
+        Args: { p_retreat_slug: string; p_user_id: string }
+        Returns: string
+      }
+      promote_user_to_admin: {
+        Args: { user_email: string }
+        Returns: undefined
+      }
       recalculate_retreat_completeness: {
         Args: { recalc_retreat_id: string }
         Returns: undefined
