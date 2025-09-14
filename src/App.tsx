@@ -15,6 +15,7 @@ import ProgressPage from "./pages/ProgressPage";
 import RetreatsPage from "./pages/RetreatsPage";
 import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
+import ProfilePage from "./pages/ProfilePage";
 import Auth from "./pages/Auth";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/common/ProtectedRoute";
@@ -33,11 +34,12 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<AppLayout />}>
                   <Route index element={<Index />} />
-                  <Route path="retreats" element={<RetreatsPage />} />
+                  <Route path="retreats" element={<ProtectedRoute><RetreatsPage /></ProtectedRoute>} />
                   <Route path="daily" element={<ProtectedRoute><DailyProgramPage /></ProtectedRoute>} />
                   <Route path="activities" element={<ProtectedRoute><ActivitiesPage /></ProtectedRoute>} />
                   <Route path="resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
                   <Route path="progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
+                  <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                 </Route>
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/intake" element={<IntakeAssessment />} />
