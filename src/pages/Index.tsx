@@ -6,7 +6,7 @@ import { QuickAccess } from '@/components/QuickAccess';
 import { PersonalizedRecommendations } from '@/components/PersonalizedRecommendations';
 import { useApp } from "@/contexts/AppContext";
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Play, Users, Award, Sparkles } from 'lucide-react';
+import { ArrowRight, Play, Users, Award, Sparkles, TestTube } from 'lucide-react';
 import heroImage from '@/assets/hero-retreat-dashboard.jpg';
 
 const Index = () => {
@@ -71,6 +71,15 @@ const Index = () => {
                 className="text-white border-white/30 hover:bg-white/10 text-lg px-8 py-6"
               >
                 Explore Programs
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => navigate('/test-accounts')}
+                className="text-white border-white/30 hover:bg-white/10 text-lg px-8 py-6"
+              >
+                <TestTube className="w-5 h-5 mr-2" />
+                Test Accounts
               </Button>
             </div>
           </div>
