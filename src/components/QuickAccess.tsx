@@ -18,7 +18,7 @@ interface PopularRetreat {
 
 const popularRetreats: PopularRetreat[] = [
   {
-    id: 'stress-relief',
+    id: 'corporate_burnout',
     title: 'Executive Stress Relief',
     category: 'Stress Management',
     duration: '7 days',
