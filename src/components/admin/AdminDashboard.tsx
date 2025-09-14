@@ -11,6 +11,8 @@ import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { ProductionTracker } from './ProductionTracker';
 import LearningModuleScheduler from './LearningModuleScheduler';
+import EngagementDashboard from '../analytics/EngagementDashboard';
+import ComplianceReports from '../analytics/ComplianceReports';
 import { 
   Play, 
   Pause, 
@@ -489,6 +491,8 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="logs">Generation Logs</TabsTrigger>
             <TabsTrigger value="production">Production Tracker</TabsTrigger>
             <TabsTrigger value="scheduler">Learning Module Scheduler</TabsTrigger>
+            <TabsTrigger value="analytics">Engagement Analytics</TabsTrigger>
+            <TabsTrigger value="compliance">Compliance Reports</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -669,6 +673,14 @@ const AdminDashboard: React.FC = () => {
 
           <TabsContent value="scheduler" className="space-y-4">
             <LearningModuleScheduler />
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-4">
+            <EngagementDashboard />
+          </TabsContent>
+
+          <TabsContent value="compliance" className="space-y-4">
+            <ComplianceReports />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-4">
