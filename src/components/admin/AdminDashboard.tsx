@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { ProductionTracker } from './ProductionTracker';
+import LearningModuleScheduler from './LearningModuleScheduler';
 import { 
   Play, 
   Pause, 
@@ -487,6 +488,7 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="sessions">Audio Sessions</TabsTrigger>
             <TabsTrigger value="logs">Generation Logs</TabsTrigger>
             <TabsTrigger value="production">Production Tracker</TabsTrigger>
+            <TabsTrigger value="scheduler">Learning Module Scheduler</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
@@ -663,6 +665,10 @@ const AdminDashboard: React.FC = () => {
 
           <TabsContent value="production" className="space-y-4">
             <ProductionTracker />
+          </TabsContent>
+
+          <TabsContent value="scheduler" className="space-y-4">
+            <LearningModuleScheduler />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-4">
