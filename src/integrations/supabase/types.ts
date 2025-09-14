@@ -545,6 +545,13 @@ export type Database = {
             referencedRelation: "user_retreats"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_daily_checkins_user_retreat_id"
+            columns: ["user_retreat_id"]
+            isOneToOne: false
+            referencedRelation: "user_retreats"
+            referencedColumns: ["id"]
+          },
         ]
       }
       generation_logs: {
@@ -647,7 +654,15 @@ export type Database = {
           user_id?: string | null
           wellbeing_screening_data?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_intake_assessments_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       intake_progress: {
         Row: {
@@ -933,6 +948,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_retreat_activities_retreat_id"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "retreat_activities_retreat_id_fkey"
             columns: ["retreat_id"]
             isOneToOne: false
@@ -1096,6 +1118,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_retreat_engagement_user_retreat_id"
+            columns: ["user_retreat_id"]
+            isOneToOne: false
+            referencedRelation: "user_retreats"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "retreat_engagement_user_retreat_id_fkey"
             columns: ["user_retreat_id"]
             isOneToOne: false
@@ -1207,6 +1236,20 @@ export type Database = {
           user_retreat_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_retreat_progress_activity_id"
+            columns: ["activity_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_retreat_progress_user_retreat_id"
+            columns: ["user_retreat_id"]
+            isOneToOne: false
+            referencedRelation: "user_retreats"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "retreat_progress_activity_id_fkey"
             columns: ["activity_id"]
@@ -1671,6 +1714,27 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_user_retreats_intake_id"
+            columns: ["intake_assessment_id"]
+            isOneToOne: false
+            referencedRelation: "intake_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_user_retreats_retreat_id"
+            columns: ["retreat_id"]
+            isOneToOne: false
+            referencedRelation: "retreat_configurations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_user_retreats_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "user_retreats_intake_assessment_id_fkey"
             columns: ["intake_assessment_id"]
