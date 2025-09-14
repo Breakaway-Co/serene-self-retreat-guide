@@ -521,6 +521,332 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
         "Stop if you experience muscle cramps or sharp pain",
         "If anxiety increases, focus on just the release phase without tensing"
       ]
+    },
+    "trauma-safe-breathing": {
+      id: "trauma-safe-breathing",
+      name: "Trauma-Safe Grounding Breathwork",
+      type: "somatic-intervention",
+      description: "Gentle respiratory technique designed specifically for trauma survivors to promote nervous system regulation without triggering hypervigilance",
+      evidenceBasis: "Based on Trauma-Sensitive Mindfulness (Treleaven, 2018) and Somatic Experiencing principles (Levine, 2010). Emphasizes choice, control, and nervous system safety",
+      traumaInformed: "Allows complete control over breathing patterns and can be stopped at any time if triggering",
+      benefits: [
+        "Regulates nervous system safely",
+        "Reduces hyperarousal",
+        "Increases sense of control",
+        "Grounds in present moment"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Find a position where you feel safe and supported - sitting, standing, or lying down.",
+          duration: "1 minute",
+          tip: "Your comfort and sense of safety are more important than any 'correct' position"
+        },
+        {
+          step: 2,
+          instruction: "Place one hand on your chest, one on your belly, or keep hands wherever feels comfortable.",
+          duration: "30 seconds",
+          tip: "Some trauma survivors prefer not to touch their body - that's completely fine"
+        },
+        {
+          step: 3,
+          instruction: "Breathe normally and just notice your natural breath rhythm without changing it.",
+          duration: "2 minutes",
+          tip: "There's no need to control your breathing - just observe"
+        },
+        {
+          step: 4,
+          instruction: "If it feels safe, gently lengthen your exhale by 1-2 seconds.",
+          duration: "5 minutes",
+          tip: "Only do this if it feels comfortable - forced breathing can trigger trauma responses"
+        },
+        {
+          step: 5,
+          instruction: "Return to natural breathing and notice how your body feels now.",
+          duration: "1 minute",
+          tip: "Any sensation is normal - tingling, warmth, calm, or even anxiety"
+        }
+      ],
+      modifications: [
+        "Keep eyes open if closing them feels unsafe",
+        "Breathe through mouth if nose breathing triggers panic",
+        "Stop and ground in your environment if you feel disconnected",
+        "Use counting or humming if breath focus is triggering"
+      ],
+      safetyNotes: [
+        "Stop immediately if you feel dizzy, panicky, or disconnected",
+        "Trauma survivors may feel vulnerable during breathing exercises",
+        "It's normal for emotions to arise - this is part of healing",
+        "Never force any breathing pattern that doesn't feel safe"
+      ]
+    },
+    "grounding-5432": {
+      id: "grounding-5432",
+      name: "5-4-3-2-1 Trauma Grounding Technique",
+      type: "grounding",
+      description: "Sensory-based grounding technique that helps trauma survivors reconnect with the present moment and reduce dissociation",
+      evidenceBasis: "Grounded in trauma-informed care principles and sensory integration therapy. Helps activate the prefrontal cortex to override limbic system activation",
+      traumaInformed: "Uses external focus to prevent re-traumatization and allows choice in what senses to engage",
+      benefits: [
+        "Reduces dissociation",
+        "Anchors in present moment",
+        "Activates rational brain",
+        "Provides sense of control"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Name 5 things you can see around you. Look for details - colors, shapes, textures.",
+          duration: "2 minutes",
+          tip: "Focus on neutral objects rather than anything that might be triggering"
+        },
+        {
+          step: 2,
+          instruction: "Name 4 things you can physically touch or feel. Notice textures, temperatures.",
+          duration: "2 minutes",
+          tip: "You can touch your clothes, a chair, the ground - whatever feels safe"
+        },
+        {
+          step: 3,
+          instruction: "Name 3 things you can hear. Include distant and nearby sounds.",
+          duration: "2 minutes",
+          tip: "Traffic, birds, air conditioning, your own breathing - all sounds count"
+        },
+        {
+          step: 4,
+          instruction: "Name 2 things you can smell. If you can't smell anything, that's okay too.",
+          duration: "1 minute",
+          tip: "Some people have difficulty with smell after trauma - this is normal"
+        },
+        {
+          step: 5,
+          instruction: "Name 1 thing you can taste, or take a sip of water to activate taste.",
+          duration: "1 minute",
+          tip: "Even the taste of your own mouth counts"
+        },
+        {
+          step: 6,
+          instruction: "Take three natural breaths and notice if you feel more present.",
+          duration: "1 minute",
+          tip: "Even small increases in presence are meaningful progress"
+        }
+      ],
+      modifications: [
+        "Skip any sense that feels triggering (especially touch or smell)",
+        "Use only sight and sound if other senses are overwhelming",
+        "Add movement by wiggling fingers or toes",
+        "Repeat the sequence if needed for stronger grounding"
+      ],
+      safetyNotes: [
+        "Some trauma survivors have altered sensory experiences",
+        "It's okay if you can't access all five senses",
+        "Stop if any sense brings up traumatic memories",
+        "This technique may initially increase anxiety before it helps"
+      ]
+    },
+    "window-of-tolerance": {
+      id: "window-of-tolerance",
+      name: "Window of Tolerance Education",
+      type: "psychoeducation",
+      description: "Educational module about nervous system regulation and the concept of optimal arousal zones for trauma recovery",
+      evidenceBasis: "Based on Dan Siegel's Window of Tolerance concept and Polyvagal Theory (Porges). Core concept in trauma-informed therapy",
+      traumaInformed: "Normalizes trauma responses and provides framework for understanding nervous system reactions",
+      benefits: [
+        "Normalizes trauma responses",
+        "Provides language for experiences",
+        "Reduces self-blame",
+        "Increases self-awareness"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Learn about your nervous system: Sympathetic (fight/flight), Parasympathetic (rest/digest), and Dorsal Vagal (freeze/shutdown).",
+          duration: "5 minutes",
+          tip: "Think of these as automatic responses designed to keep you safe"
+        },
+        {
+          step: 2,
+          instruction: "Understand your Window of Tolerance - the zone where you feel calm, alert, and able to think clearly.",
+          duration: "5 minutes",
+          tip: "Everyone's window is different, and trauma can make windows narrower"
+        },
+        {
+          step: 3,
+          instruction: "Identify Hyperarousal signs: anxiety, panic, anger, racing thoughts, restlessness.",
+          duration: "5 minutes",
+          tip: "This is when your nervous system is revved up beyond your window"
+        },
+        {
+          step: 4,
+          instruction: "Identify Hypoarousal signs: numbness, disconnection, depression, fatigue, brain fog.",
+          duration: "5 minutes",
+          tip: "This is when your nervous system has shut down below your window"
+        },
+        {
+          step: 5,
+          instruction: "Practice recognizing your current state: In window, above window, or below window.",
+          duration: "3 minutes",
+          tip: "Just noticing without judgment is the first step to regulation"
+        },
+        {
+          step: 6,
+          instruction: "Learn that healing involves gradually widening your window of tolerance.",
+          duration: "2 minutes",
+          tip: "This happens slowly and safely with practice and support"
+        }
+      ],
+      modifications: [
+        "Use visual aids or diagrams if available",
+        "Connect concepts to personal experiences when ready",
+        "Take breaks if information feels overwhelming",
+        "Focus on just one concept per session if needed"
+      ],
+      safetyNotes: [
+        "This is education, not therapy - seek professional help for processing",
+        "Some people may feel validated while others may feel overwhelmed",
+        "It's normal to move in and out of your window throughout the day",
+        "Having a narrow window doesn't mean you're broken - it means you've survived"
+      ]
+    },
+    "safe-place-visualization": {
+      id: "safe-place-visualization",
+      name: "Safe Place Visualization",
+      type: "visualization",
+      description: "Trauma-informed guided imagery to create an internal sense of safety and calm",
+      evidenceBasis: "Fundamental technique in EMDR therapy and trauma treatment. Creates positive neural pathways and emotional regulation resources",
+      traumaInformed: "Emphasizes complete control over the visualization and ability to stop anytime",
+      benefits: [
+        "Creates internal safety resource",
+        "Provides refuge during difficult moments",
+        "Strengthens positive neural pathways",
+        "Increases sense of personal agency"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Find a comfortable position where you feel safe right now.",
+          duration: "1 minute",
+          tip: "You can keep your eyes open or closed - whatever feels safer"
+        },
+        {
+          step: 2,
+          instruction: "Think of a place where you feel completely safe and peaceful. This can be real or imaginary.",
+          duration: "2 minutes",
+          tip: "Popular choices: beach, forest, childhood room, grandmother's kitchen, fantasy places"
+        },
+        {
+          step: 3,
+          instruction: "Visualize what you see in this place. Notice colors, lighting, objects, and scenery.",
+          duration: "3 minutes",
+          tip: "If visualization is difficult, just think about the place or describe it in words"
+        },
+        {
+          step: 4,
+          instruction: "Notice what you hear in your safe place - sounds, music, silence, nature sounds.",
+          duration: "2 minutes",
+          tip: "Some people's safe places are completely quiet, and that's perfect too"
+        },
+        {
+          step: 5,
+          instruction: "Feel what you might touch - textures, temperatures, surfaces.",
+          duration: "2 minutes",
+          tip: "Sand, soft blankets, warm sun, cool breeze - whatever feels comforting"
+        },
+        {
+          step: 6,
+          instruction: "Notice any smells or tastes that make this place special.",
+          duration: "1 minute",
+          tip: "Fresh air, flowers, baking bread - or no particular scents at all"
+        },
+        {
+          step: 7,
+          instruction: "Most importantly, feel the emotions of being in this safe place.",
+          duration: "3 minutes",
+          tip: "Peace, calm, security, love, contentment - whatever safety feels like to you"
+        },
+        {
+          step: 8,
+          instruction: "Know that you can return to this place anytime you need to feel safe.",
+          duration: "1 minute",
+          tip: "This place exists within you and no one can take it away"
+        }
+      ],
+      modifications: [
+        "Use photos or artwork if visualization is difficult",
+        "Create multiple safe places for different needs",
+        "Include protective figures or animals if desired",
+        "Focus on just one sense if full visualization is overwhelming"
+      ],
+      safetyNotes: [
+        "If you can't think of a safe place, you can imagine one or use guided imagery",
+        "Some trauma survivors struggle with visualization - that's normal",
+        "Stop if the exercise brings up unsafe or traumatic memories",
+        "Your safe place should never include people who have hurt you"
+      ]
+    },
+    "distress-tolerance": {
+      id: "distress-tolerance",
+      name: "Distress Tolerance Skills Training",
+      type: "coping-skills",
+      description: "Evidence-based techniques from Dialectical Behavior Therapy for managing intense emotions without making them worse",
+      evidenceBasis: "Core component of DBT developed by Marsha Linehan. Extensively researched for trauma, BPD, and emotional dysregulation",
+      traumaInformed: "Acknowledges that some distress cannot be solved immediately and focuses on surviving crisis moments safely",
+      benefits: [
+        "Prevents impulsive harmful behaviors",
+        "Reduces emotional intensity over time",
+        "Builds confidence in handling difficult emotions",
+        "Provides practical crisis survival tools"
+      ],
+      steps: [
+        {
+          step: 1,
+          instruction: "Recognize that you're in emotional distress and rate intensity 1-10.",
+          duration: "1 minute",
+          tip: "Naming and rating creates distance between you and the emotion"
+        },
+        {
+          step: 2,
+          instruction: "Use TIPP for immediate relief: Temperature (cold water on face), Intense exercise (30 sec), Paced breathing, Progressive muscle relaxation.",
+          duration: "5 minutes",
+          tip: "These change your body chemistry quickly to reduce emotional intensity"
+        },
+        {
+          step: 3,
+          instruction: "Practice Distraction with ACCEPTS: Activities, Contributing, Comparisons, Emotions (opposite), Push away, Thoughts, Sensations.",
+          duration: "10 minutes",
+          tip: "Choose one that feels most accessible right now"
+        },
+        {
+          step: 4,
+          instruction: "Use Self-Soothing with five senses: See something beautiful, Hear calming sounds, Smell something pleasant, Taste something soothing, Touch something comforting.",
+          duration: "10 minutes",
+          tip: "This activates your parasympathetic nervous system"
+        },
+        {
+          step: 5,
+          instruction: "Practice Radical Acceptance: 'This moment is painful AND I can survive it.'",
+          duration: "3 minutes",
+          tip: "Acceptance doesn't mean liking it - just acknowledging reality"
+        },
+        {
+          step: 6,
+          instruction: "Rate your distress again and notice any changes.",
+          duration: "1 minute",
+          tip: "Even small decreases show these skills are working"
+        }
+      ],
+      modifications: [
+        "Start with just one TIPP technique if feeling overwhelmed",
+        "Create a personalized distraction list ahead of time",
+        "Use gentle self-soothing if trauma affects sensory experiences",
+        "Practice acceptance phrases that feel authentic to you"
+      ],
+      safetyNotes: [
+        "These are crisis survival skills, not long-term solutions",
+        "If having thoughts of self-harm, reach out for professional help immediately",
+        "Some emotions require action (like fear in dangerous situations)",
+        "Building distress tolerance takes practice - be patient with yourself"
+      ]
     }
   };
 
