@@ -390,6 +390,59 @@ export type Database = {
           },
         ]
       }
+      crisis_interventions: {
+        Row: {
+          automated_response: Json | null
+          created_at: string | null
+          crisis_protocol_id: string | null
+          follow_up_required: boolean | null
+          human_contacted: boolean | null
+          id: string
+          intervention_type: string
+          notes: string | null
+          resolution_status: string | null
+          severity_level: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          automated_response?: Json | null
+          created_at?: string | null
+          crisis_protocol_id?: string | null
+          follow_up_required?: boolean | null
+          human_contacted?: boolean | null
+          id?: string
+          intervention_type: string
+          notes?: string | null
+          resolution_status?: string | null
+          severity_level: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          automated_response?: Json | null
+          created_at?: string | null
+          crisis_protocol_id?: string | null
+          follow_up_required?: boolean | null
+          human_contacted?: boolean | null
+          id?: string
+          intervention_type?: string
+          notes?: string | null
+          resolution_status?: string | null
+          severity_level?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crisis_interventions_crisis_protocol_id_fkey"
+            columns: ["crisis_protocol_id"]
+            isOneToOne: false
+            referencedRelation: "crisis_protocols"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crisis_protocols: {
         Row: {
           created_at: string | null
@@ -1007,6 +1060,50 @@ export type Database = {
           },
         ]
       }
+      retreat_engagement: {
+        Row: {
+          activities_completed: number | null
+          activities_skipped: number | null
+          created_at: string | null
+          difficulty_ratings: Json | null
+          engagement_date: string
+          id: string
+          notes: string | null
+          time_spent_minutes: number | null
+          user_retreat_id: string | null
+        }
+        Insert: {
+          activities_completed?: number | null
+          activities_skipped?: number | null
+          created_at?: string | null
+          difficulty_ratings?: Json | null
+          engagement_date?: string
+          id?: string
+          notes?: string | null
+          time_spent_minutes?: number | null
+          user_retreat_id?: string | null
+        }
+        Update: {
+          activities_completed?: number | null
+          activities_skipped?: number | null
+          created_at?: string | null
+          difficulty_ratings?: Json | null
+          engagement_date?: string
+          id?: string
+          notes?: string | null
+          time_spent_minutes?: number | null
+          user_retreat_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retreat_engagement_user_retreat_id_fkey"
+            columns: ["user_retreat_id"]
+            isOneToOne: false
+            referencedRelation: "user_retreats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       retreat_modules: {
         Row: {
           accessibility_captions: boolean
@@ -1595,6 +1692,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_retreat_progress: {
+        Args: { p_user_retreat_id: string }
+        Returns: number
+      }
       recalculate_retreat_completeness: {
         Args: { recalc_retreat_id: string }
         Returns: undefined
