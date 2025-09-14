@@ -524,18 +524,41 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
     }
   };
 
+  // Check if the selected activity guide exists
   const currentGuide = activityGuides[selectedActivity];
   
   if (!currentGuide) {
     return (
-      <Card className="shadow-gentle">
-        <CardContent className="pt-6 text-center">
-          <p>Activity guide not found.</p>
-          <Button onClick={onBack} variant="outline" className="mt-4">
-            Back to Schedule
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={onBack}>
+              ← Back to Program
+            </Button>
+          </div>
+          
+          <Card className="shadow-gentle">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5" />
+                Activity Guide Not Available
+              </CardTitle>
+              <CardDescription>
+                This activity guide is currently being developed. Please check back soon!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                We're working on creating comprehensive guides for all activities. 
+                In the meantime, you can still participate in the activity using your own approach or seeking guidance from a healthcare professional.
+              </p>
+              <Button onClick={onBack} variant="healing">
+                Return to Daily Program
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     );
   }
 
