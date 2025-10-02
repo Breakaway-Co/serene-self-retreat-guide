@@ -18,6 +18,9 @@ import NotFound from "./pages/NotFound";
 import ProfilePage from "./pages/ProfilePage";
 import Auth from "./pages/Auth";
 import TestAccountsPage from "./pages/TestAccountsPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import Disclaimer from "./pages/Disclaimer";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/common/ProtectedRoute";
 
@@ -41,6 +44,10 @@ const App = () => (
                   <Route path="resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
                   <Route path="progress" element={<ProtectedRoute><ProgressPage /></ProtectedRoute>} />
                   <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                  {/* Legal Pages */}
+                  <Route path="privacy" element={<PrivacyPolicy />} />
+                  <Route path="terms" element={<TermsOfService />} />
+                  <Route path="disclaimer" element={<Disclaimer />} />
                 </Route>
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/intake" element={<IntakeAssessment />} />
