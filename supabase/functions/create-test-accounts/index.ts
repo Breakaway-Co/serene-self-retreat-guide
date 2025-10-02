@@ -82,6 +82,9 @@ serve(async (req) => {
         console.error(`Error creating ${account.email}:`, authError);
         results.push({
           email: account.email,
+          password: account.password,
+          role: account.role,
+          description: account.description,
           success: false,
           error: authError.message
         });
