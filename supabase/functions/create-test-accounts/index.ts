@@ -80,6 +80,22 @@ serve(async (req) => {
 
       if (authError) {
         console.error(`Error creating ${account.email}:`, authError);
+        
+        // If user already exists, just return success with credentials
+        if (authError.code === 'email_exists') {
+          console.log(`Account ${account.email} already exists - returning credentials`);
+          results.push({
+            email: account.email,
+            password: account.password,
+            role: account.role,
+            description: account.description,
+            success: true,
+            note: 'Account already exists'
+          });
+          continue;
+        }
+        
+        // For other errors, return failure
         results.push({
           email: account.email,
           password: account.password,
