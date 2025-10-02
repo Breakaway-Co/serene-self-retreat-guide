@@ -9,7 +9,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Eye, EyeOff, Heart, Shield, Lock, ArrowLeft } from 'lucide-react';
+import { Eye, EyeOff, Heart, Shield, Lock, ArrowLeft, TestTube } from 'lucide-react';
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
@@ -148,15 +148,25 @@ const Auth: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
-        {/* Back to Home */}
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Home
-        </Button>
+        {/* Navigation Buttons */}
+        <div className="flex gap-3">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Home
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/test-accounts')}
+            className="flex items-center gap-2"
+          >
+            <TestTube className="h-4 w-4" />
+            Test Accounts
+          </Button>
+        </div>
 
         {/* Header */}
         <div className="text-center space-y-2">
