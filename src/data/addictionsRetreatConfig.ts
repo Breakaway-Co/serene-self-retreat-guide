@@ -73,7 +73,7 @@ export const addictionsRecoveryRetreat: RetreatConfiguration = {
           activity: 'Introduction to Craving Surfing',
           duration: '90 minutes',
           type: 'therapy',
-          guideId: 'emotion-regulation-techniques',
+          guideId: 'urge-surfing-technique',
           description: 'Learn foundational techniques for riding out cravings without acting on them',
           contraindications: ['Skip if overwhelmed'],
           modifications: ['Self-paced modules', 'Break into shorter segments']

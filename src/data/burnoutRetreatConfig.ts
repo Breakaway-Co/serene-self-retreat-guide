@@ -19,7 +19,7 @@ export const corporateBurnoutRetreat: RetreatConfiguration = {
       focus: 'Understanding burnout patterns and beginning energy restoration',
       morning: [
         { id: '1-energy-audit', time: '6:30 AM', activity: 'Energy Audit Assessment', duration: '20 min', type: 'reflection', description: 'Map energy drains and sources' },
-        { id: '1-executive-breathing', time: '6:50 AM', activity: 'Executive Stress Breathing', duration: '10 min', type: 'mindfulness', guideId: 'executive-breathing' },
+        { id: '1-executive-breathing', time: '6:50 AM', activity: 'Executive Stress Breathing', duration: '10 min', type: 'mindfulness', guideId: 'gentle-wake-up-breathing' },
         { id: '1-power-breakfast', time: '7:00 AM', activity: 'High-Performance Breakfast', duration: '25 min', type: 'nutrition', description: 'Sustained energy nutrition' },
         { id: '1-movement-reset', time: '7:30 AM', activity: 'Morning Movement Reset', duration: '20 min', type: 'movement', modifications: ['Desk-friendly options', '5-minute minimum'] }
       ],
@@ -27,7 +27,7 @@ export const corporateBurnoutRetreat: RetreatConfiguration = {
         { id: '1-strategic-lunch', time: '12:00 PM', activity: 'Strategic Lunch Break', duration: '30 min', type: 'nutrition', description: 'Mindful eating away from work' },
         { id: '1-burnout-education', time: '1:00 PM', activity: 'Understanding Burnout Cycles', duration: '25 min', type: 'therapy', guideId: 'burnout-cycle-education' },
         { id: '1-boundary-assessment', time: '1:30 PM', activity: 'Professional Boundary Assessment', duration: '20 min', type: 'therapy' },
-        { id: '1-values-clarification', time: '2:00 PM', activity: 'Core Values Clarification', duration: '25 min', type: 'reflection', guideId: 'values-clarification' },
+        { id: '1-values-clarification', time: '2:00 PM', activity: 'Core Values Clarification', duration: '25 min', type: 'reflection', guideId: 'core-values-identification' },
         { id: '1-micro-recovery', time: '2:30 PM', activity: 'Micro-Recovery Techniques', duration: '15 min', type: 'healing' }
       ],
       evening: [

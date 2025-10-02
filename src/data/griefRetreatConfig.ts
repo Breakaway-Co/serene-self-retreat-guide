@@ -19,15 +19,15 @@ export const griefHealingRetreat: RetreatConfiguration = {
       focus: 'Gently acknowledging loss and creating sacred space for grief',
       morning: [
         { id: '1-grief-check', time: '8:30 AM', activity: 'Gentle Grief Check-In', duration: '15 min', type: 'reflection', description: 'Honor where you are today', modifications: ['Optional', 'No pressure'] },
-        { id: '1-breath-of-compassion', time: '8:45 AM', activity: 'Breath of Self-Compassion', duration: '10 min', type: 'mindfulness', guideId: 'compassionate-breathing' },
+        { id: '1-breath-of-compassion', time: '8:45 AM', activity: 'Breath of Self-Compassion', duration: '10 min', type: 'mindfulness', guideId: 'gentle-wake-up-breathing' },
         { id: '1-nourishing-breakfast', time: '9:00 AM', activity: 'Gentle Nourishment', duration: '30 min', type: 'nutrition', description: 'Comfort foods that nourish', modifications: ['Simple options available'] },
         { id: '1-gentle-movement', time: '9:30 AM', activity: 'Gentle Movement for Grief', duration: '15 min', type: 'movement', modifications: ['Chair-based', 'Rest when needed'] }
       ],
       afternoon: [
         { id: '1-comfort-lunch', time: '12:30 PM', activity: 'Comfort Lunch Preparation', duration: '25 min', type: 'nutrition' },
         { id: '1-grief-education', time: '1:30 PM', activity: 'Understanding Grief', duration: '20 min', type: 'therapy', guideId: 'grief-education' },
-        { id: '1-memory-honoring', time: '2:00 PM', activity: 'Memory Honoring Practice', duration: '25 min', type: 'healing', guideId: 'memory-honoring' },
-        { id: '1-sacred-space', time: '2:30 PM', activity: 'Creating Sacred Space', duration: '20 min', type: 'creative', guideId: 'sacred-space-creation' },
+        { id: '1-memory-honoring', time: '2:00 PM', activity: 'Memory Honoring Practice', duration: '25 min', type: 'healing', guideId: 'narrative-therapy-letter-writing' },
+        { id: '1-sacred-space', time: '2:30 PM', activity: 'Creating Sacred Space', duration: '20 min', type: 'creative', guideId: 'inner-sanctuary-visualization' },
         { id: '1-nature-support', time: '3:00 PM', activity: 'Nature Support', duration: '20 min', type: 'nature', modifications: ['Indoor options available'] }
       ],
       evening: [
@@ -50,7 +50,7 @@ export const griefHealingRetreat: RetreatConfiguration = {
       afternoon: [
         { id: '2-mindful-lunch', time: '12:30 PM', activity: 'Mindful Lunch Practice', duration: '25 min', type: 'nutrition' },
         { id: '2-feeling-safe', time: '1:30 PM', activity: 'Creating Safety for Feelings', duration: '25 min', type: 'therapy' },
-        { id: '2-tears-healing', time: '2:00 PM', activity: 'The Healing Power of Tears', duration: '20 min', type: 'healing', guideId: 'tears-healing' },
+        { id: '2-tears-healing', time: '2:00 PM', activity: 'The Healing Power of Tears', duration: '20 min', type: 'healing', guideId: 'emotion-regulation-techniques' },
         { id: '2-letter-writing', time: '2:30 PM', activity: 'Letter to Your Loved One', duration: '25 min', type: 'creative' },
         { id: '2-garden-time', time: '3:00 PM', activity: 'Garden Meditation', duration: '20 min', type: 'nature' }
       ],

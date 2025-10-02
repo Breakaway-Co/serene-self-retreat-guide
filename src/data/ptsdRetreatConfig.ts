@@ -67,7 +67,7 @@ export const ptsdRecoveryRetreat: RetreatConfiguration = {
       focus: 'Developing internal resources and self-soothing capabilities',
       morning: [
         { id: '3-resource-check', time: '8:00 AM', activity: 'Internal Resources Check-In', duration: '10 min', type: 'reflection' },
-        { id: '3-bilateral-breathing', time: '8:15 AM', activity: 'Bilateral Breathing Exercise', duration: '15 min', type: 'mindfulness', guideId: 'bilateral-breathing' },
+        { id: '3-bilateral-breathing', time: '8:15 AM', activity: 'Bilateral Breathing Exercise', duration: '15 min', type: 'mindfulness', guideId: 'bilateral-stimulation-practice' },
         { id: '3-recovery-breakfast', time: '8:30 AM', activity: 'Recovery-Supporting Breakfast', duration: '30 min', type: 'nutrition' },
         { id: '3-strength-movement', time: '9:00 AM', activity: 'Gentle Strength Building', duration: '20 min', type: 'movement' }
       ],
@@ -145,7 +145,7 @@ export const ptsdRecoveryRetreat: RetreatConfiguration = {
       ],
       afternoon: [
         { id: '6-inspiration-lunch', time: '12:30 PM', activity: 'Inspiration-Fueling Lunch', duration: '30 min', type: 'nutrition' },
-        { id: '6-art-therapy', time: '1:30 PM', activity: 'Trauma-Informed Art Therapy', duration: '35 min', type: 'creative', guideId: 'trauma-art-therapy' },
+        { id: '6-art-therapy', time: '1:30 PM', activity: 'Trauma-Informed Art Therapy', duration: '35 min', type: 'creative', guideId: 'expressive-art-processing' },
         { id: '6-narrative-therapy', time: '2:15 PM', activity: 'Narrative Therapy Writing', duration: '25 min', type: 'creative' },
         { id: '6-music-healing', time: '2:50 PM', activity: 'Music for Healing', duration: '20 min', type: 'creative' },
         { id: '6-creative-nature', time: '3:20 PM', activity: 'Creative Nature Collection', duration: '25 min', type: 'nature' }

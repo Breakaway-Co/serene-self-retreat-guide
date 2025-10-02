@@ -25,13 +25,13 @@ export const depressionSupportRetreat: RetreatConfiguration = {
       ],
       afternoon: [
         { id: '1-simple-lunch', time: '12:30 PM', activity: 'Simple Lunch', duration: '20 min', type: 'nutrition', modifications: ['Prepared foods ok', 'Focus on convenience'] },
-        { id: '1-depression-education', time: '1:30 PM', activity: 'Understanding Depression Gently', duration: '15 min', type: 'therapy', guideId: 'gentle-depression-education' },
+        { id: '1-depression-education', time: '1:30 PM', activity: 'Understanding Depression Gently', duration: '15 min', type: 'therapy', guideId: 'emotion-regulation-techniques' },
         { id: '1-one-activity', time: '2:00 PM', activity: 'One Small Pleasant Activity', duration: '15 min', type: 'healing', description: 'Anything that brings tiny bit of pleasure' },
         { id: '1-sunlight-moment', time: '2:30 PM', activity: 'Sunlight Moment', duration: '10 min', type: 'nature', modifications: ['Window sitting counts', 'Even 2 minutes helps'] }
       ],
       evening: [
         { id: '1-easy-dinner', time: '6:30 PM', activity: 'Easy Evening Meal', duration: '25 min', type: 'nutrition', modifications: ['Takeout is fine', 'Simple foods'] },
-        { id: '1-self-compassion', time: '7:30 PM', activity: 'Self-Compassion Practice', duration: '10 min', type: 'reflection', guideId: 'self-compassion-depression' },
+        { id: '1-self-compassion', time: '7:30 PM', activity: 'Self-Compassion Practice', duration: '10 min', type: 'reflection', guideId: 'self-compassion-meditation' },
         { id: '1-gentle-stretch', time: '8:00 PM', activity: 'Gentle Evening Stretch', duration: '10 min', type: 'movement' },
         { id: '1-sleep-support', time: '8:30 PM', activity: 'Sleep Support Meditation', duration: '15 min', type: 'mindfulness' }
       ]
@@ -48,7 +48,7 @@ export const depressionSupportRetreat: RetreatConfiguration = {
       ],
       afternoon: [
         { id: '2-mood-lunch', time: '12:30 PM', activity: 'Mood-Boosting Lunch', duration: '25 min', type: 'nutrition' },
-        { id: '2-activity-scheduling', time: '1:30 PM', activity: 'Gentle Activity Scheduling', duration: '20 min', type: 'therapy', guideId: 'behavioral-activation' },
+        { id: '2-activity-scheduling', time: '1:30 PM', activity: 'Gentle Activity Scheduling', duration: '20 min', type: 'therapy', guideId: 'core-values-identification' },
         { id: '2-accomplishment', time: '2:00 PM', activity: 'One Small Accomplishment', duration: '20 min', type: 'healing', description: 'Any task completion counts' },
         { id: '2-nature-connection', time: '2:30 PM', activity: 'Gentle Nature Connection', duration: '15 min', type: 'nature' }
       ],
