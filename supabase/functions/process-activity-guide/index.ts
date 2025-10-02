@@ -16,11 +16,236 @@ interface ActivityGuideRequest {
   };
 }
 
-// Activity guides with step-by-step instructions
+// Activity guides with step-by-step instructions - mapped from ActivityGuides.tsx
 const activityGuides: Record<string, any> = {
+  // Life Upgrade Retreat Guides
+  "welcome_grounding": {
+    name: "Welcome & Grounding Ritual",
+    type: "mindfulness",
+    steps: [
+      "Find a comfortable seated position. Close your eyes or soften your gaze.",
+      "Take three deep breaths, exhaling with a gentle sigh.",
+      "Scan your body from head to toe, noticing without changing anything.",
+      "Place your hands on your heart and belly. Feel the warmth.",
+      "Set an intention: 'I am here for my healing and growth.'",
+      "Return to natural breathing and gently open your eyes."
+    ],
+    timings: ["1 min", "1 min", "5 min", "3 min", "2 min", "1 min"],
+    tips: [
+      "Notice where your body contacts the chair or floor",
+      "The sigh activates the vagus nerve for relaxation",
+      "Just observe - no need to relax or fix anything",
+      "This self-touch activates self-compassion circuits",
+      "This is your intention for the journey",
+      "Welcome back to the present moment"
+    ]
+  },
+  "life_upgrade_intro": {
+    name: "Introduction to Life Upgrade Process",
+    type: "therapy",
+    steps: [
+      "Read or listen to overview of the 6-step process",
+      "Step 1 - Awareness: Notice limiting beliefs without judgment",
+      "Step 2 - Acceptance: Meet yourself with compassion where you are",
+      "Step 3 - Release: Let go of beliefs that no longer serve you",
+      "Step 4 - Choose: Select new, empowering beliefs",
+      "Step 5 - Integrate: Practice and embody new beliefs",
+      "Step 6 - Embody: Live from your new truth",
+      "Reflect on which step feels most relevant today"
+    ],
+    timings: ["10 min", "3 min", "3 min", "3 min", "3 min", "3 min", "3 min", "2 min"],
+    tips: [
+      "This is your roadmap for transformation",
+      "Just observing creates distance from beliefs",
+      "Acceptance doesn't mean giving up - it means starting truthfully",
+      "Release is a gentle letting go",
+      "Choose beliefs that serve your highest good",
+      "Integration takes practice and patience",
+      "Embodiment is living your truth",
+      "There's no wrong answer - trust yourself"
+    ]
+  },
+  "belief_inventory": {
+    name: "Belief Inventory Journal",
+    type: "reflection",
+    steps: [
+      "Set up your journal with four categories: Self, Relationships, Success, Worthiness",
+      "For each category, write: 'I believe...' and complete the sentence 5 times",
+      "Circle the beliefs that feel most charged or powerful",
+      "For each circled belief, ask: Where did this come from?",
+      "Ask: How has this belief served me? How has it limited me?"
+    ],
+    timings: ["2 min", "15 min", "3 min", "5 min", "5 min"],
+    tips: [
+      "Set up your framework",
+      "Write quickly without censoring",
+      "Notice emotional charge",
+      "Understand the origin",
+      "Beliefs often have both protective and limiting aspects"
+    ]
+  },
+  "step1_awareness": {
+    name: "Step 1: Awareness Practice",
+    type: "therapy",
+    steps: [
+      "Sit comfortably with your journal",
+      "Think of a recent challenging situation",
+      "What thoughts arose? What beliefs were underneath?",
+      "Notice how these beliefs felt in your body",
+      "Practice saying: 'I'm having the thought that...' before each belief",
+      "Write: 'This belief is a pattern, not the truth about who I am'"
+    ],
+    timings: ["1 min", "3 min", "10 min", "5 min", "5 min", "3 min"],
+    tips: [
+      "Get comfortable",
+      "Choose something mildly difficult, not overwhelming",
+      "Example: 'I made a mistake' → belief: 'I'm not good enough'",
+      "Tune into physical sensations",
+      "This creates psychological distance",
+      "Affirm the truth - beliefs are patterns, not identity"
+    ]
+  },
+  "eft_basics": {
+    name: "EFT Tapping Introduction",
+    type: "healing",
+    steps: [
+      "Learn the 8 tapping points: top of head, eyebrow, side of eye, under eye, under nose, chin, collarbone, under arm",
+      "Rate your stress level 0-10",
+      "Setup statement: Tap karate chop point while saying 'Even though [problem], I deeply and completely accept myself' (3x)",
+      "Tap each point 5-7 times while repeating a reminder phrase about the problem",
+      "Take a deep breath and rate your stress again 0-10",
+      "Repeat rounds until stress reduces to 3 or below"
+    ],
+    timings: ["5 min", "1 min", "2 min", "7 min", "2 min", "10 min"],
+    tips: [
+      "Learn the points systematically",
+      "Establish baseline",
+      "Example: 'This anxiety' or 'This belief'",
+      "Tap gently and consistently",
+      "Notice the shift",
+      "Stop if emotions escalate beyond your window of tolerance"
+    ]
+  },
+  "self_compassion_meditation": {
+    name: "Self-Compassion Meditation",
+    type: "mindfulness",
+    steps: [
+      "Sit comfortably and place your hands on your heart",
+      "Think of yourself struggling with something",
+      "Say silently: 'This is a moment of suffering'",
+      "Say: 'Suffering is a part of life' or 'Others feel this too'",
+      "Say: 'May I be kind to myself' and 'May I give myself the compassion I need'",
+      "Breathe naturally, hands on heart, for several minutes",
+      "Imagine sending yourself loving energy with each breath"
+    ],
+    timings: ["1 min", "2 min", "1 min", "2 min", "3 min", "5 min", "3 min"],
+    tips: [
+      "Feel the warmth and gentle pressure",
+      "Start with something mild, not your deepest wound",
+      "Mindfulness: acknowledging the difficulty",
+      "Common humanity: you're not alone",
+      "Self-kindness: offering yourself care",
+      "Let compassion flow",
+      "Send loving energy to yourself"
+    ]
+  },
+
+  // Wisdom Development Retreat Guides  
+  "arrival_meditation": {
+    name: "Arrival & Centering Meditation",
+    type: "mindfulness",
+    steps: [
+      "Find a comfortable seated position with spine gently upright",
+      "Close your eyes or lower your gaze softly",
+      "Take three intentional breaths, exhaling fully",
+      "Allow your breath to return to its natural rhythm",
+      "Notice sensations in your body without changing them",
+      "When thoughts arise, gently return to the breath",
+      "Slowly deepen your breath and gently open your eyes"
+    ],
+    timings: ["1 min", "30 sec", "1 min", "2 min", "5 min", "8 min", "1 min"],
+    tips: [
+      "Align your posture gently",
+      "Choose what feels safest",
+      "Exhale completely to release",
+      "Let go of breath control",
+      "Just observe - feet on floor, seat on chair, breath moving",
+      "This is the practice - returning, not perfect stillness",
+      "Transition gently back"
+    ]
+  },
+  "the_method_intro": {
+    name: "Introduction to The Method",
+    type: "therapy",
+    steps: [
+      "Read overview: The Method helps you access your inner wisdom in six steps",
+      "PAUSE: Learn to create space before reacting",
+      "NOTICE: Develop neutral observation of thoughts, feelings, sensations",
+      "FEEL: Drop into body sensations and emotional awareness",
+      "ASK: Pose clear questions to your inner wisdom",
+      "LISTEN: Receive answers without forcing or editing",
+      "TRUST: Act on your inner knowing"
+    ],
+    timings: ["3 min", "5 min", "5 min", "5 min", "5 min", "5 min", "5 min"],
+    tips: [
+      "Understand the framework",
+      "Even a micro-pause changes outcomes",
+      "Observe without judgment",
+      "Wisdom speaks through the body",
+      "Ask clear, open questions",
+      "First thought is often wisest",
+      "Trust builds over time"
+    ]
+  },
+  "body_wisdom_scan": {
+    name: "Body Wisdom Scanning",
+    type: "somatic",
+    steps: [
+      "Lie down or sit comfortably",
+      "Scan head: notice any sensations without judgment",
+      "Scan throat and chest: notice communication and heart sensations",
+      "Scan belly/gut: notice your 'gut feelings'",
+      "Ask your body: 'What are you trying to tell me?'",
+      "Listen without forcing - notice any images, words, or knowings that arise",
+      "Thank your body for its wisdom"
+    ],
+    timings: ["1 min", "2 min", "3 min", "3 min", "4 min", "5 min", "1 min"],
+    tips: [
+      "Get comfortable",
+      "Tingling, warmth, coolness, tightness, ease",
+      "These areas hold emotional wisdom",
+      "The gut has more neurons than the spinal cord",
+      "Ask with genuine curiosity",
+      "Receive without judgment",
+      "Express gratitude"
+    ]
+  },
+  "method_pause": {
+    name: "The Method Practice: Pause",
+    type: "mindfulness",
+    steps: [
+      "Think of a situation where you typically react quickly",
+      "Visualize that situation arising again",
+      "Practice pausing: Take one full breath before responding",
+      "In the pause, notice: What am I feeling? What do I need?",
+      "Repeat with different scenarios",
+      "Set intention: 'I will practice pausing today'"
+    ],
+    timings: ["2 min", "2 min", "5 min", "5 min", "10 min", "2 min"],
+    tips: [
+      "Choose a specific situation",
+      "Make it vivid",
+      "Count: 1...2...3...4 in, 1...2...3...4 out",
+      "Pause creates choice",
+      "Practice makes progress",
+      "Set your intention"
+    ]
+  },
+
+  // Generic/Shared Guides
   "gentle-wake-up-breathing": {
     name: "Clinical Breathwork Protocol",
-    type: "somatic-intervention",
+    type: "somatic",
     steps: [
       "Remain lying down in bed. Place one hand on your chest, one on your belly.",
       "Without forcing anything, take a natural breath in through your nose for 4 seconds.",
@@ -41,7 +266,7 @@ const activityGuides: Record<string, any> = {
   },
   "emotion-regulation-techniques": {
     name: "Clinical Emotion Regulation Protocol",
-    type: "dialectical-behavioral-therapy",
+    type: "therapy",
     steps: [
       "Name the emotion you're feeling right now without judgment.",
       "Rate the intensity of this emotion on a scale of 1-10.",
