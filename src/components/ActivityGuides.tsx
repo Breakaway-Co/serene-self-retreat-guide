@@ -39,6 +39,222 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
   const { toast } = useToast();
 
   const activityGuides: Record<string, ActivityGuide> = {
+    // Life Upgrade Retreat Guides
+    "welcome_grounding": {
+      id: "welcome_grounding",
+      name: "Welcome & Grounding Ritual",
+      type: "mindfulness",
+      description: "A gentle breathing and body scan practice to arrive fully present and grounded",
+      evidenceBasis: "Combines evidence-based mindfulness meditation (MBSR) with somatic awareness practices",
+      traumaInformed: "Emphasizes choice, control, and gentle awareness without forcing",
+      benefits: ["Activates present-moment awareness", "Reduces anticipatory anxiety", "Grounds you in your body", "Sets intention for the journey"],
+      steps: [
+        { step: 1, instruction: "Find a comfortable seated position. Close your eyes or soften your gaze.", duration: "1 min", tip: "Notice where your body contacts the chair or floor" },
+        { step: 2, instruction: "Take three deep breaths, exhaling with a gentle sigh.", duration: "1 min", tip: "The sigh activates the vagus nerve for relaxation" },
+        { step: 3, instruction: "Scan your body from head to toe, noticing without changing anything.", duration: "5 min", tip: "Just observe - no need to relax or fix anything" },
+        { step: 4, instruction: "Place your hands on your heart and belly. Feel the warmth.", duration: "3 min", tip: "This self-touch activates self-compassion circuits" },
+        { step: 5, instruction: "Set an intention: 'I am here for my healing and growth.'", duration: "2 min" },
+        { step: 6, instruction: "Return to natural breathing and gently open your eyes.", duration: "1 min" }
+      ],
+      modifications: ["Can be done lying down", "Use guided audio if preferred", "Shorten to 5 minutes if needed"],
+      safetyNotes: ["Stop if you feel dissociated or overwhelmed", "Eyes can stay open if closing them feels unsafe"]
+    },
+    "life_upgrade_intro": {
+      id: "life_upgrade_intro",
+      name: "Introduction to Life Upgrade Process",
+      type: "therapy",
+      description: "Understanding the 6 steps: Awareness, Acceptance, Release, Choose, Integrate, Embody",
+      evidenceBasis: "Integrates CBT, ACT, and neuroscience principles of belief change",
+      traumaInformed: "Emphasizes self-pacing and non-judgment throughout",
+      benefits: ["Understand the transformation process", "Learn sustainable change methods", "Build hope and motivation", "Create a roadmap for growth"],
+      steps: [
+        { step: 1, instruction: "Read or listen to overview of the 6-step process", duration: "10 min" },
+        { step: 2, instruction: "Step 1 - Awareness: Notice limiting beliefs without judgment", duration: "3 min", tip: "Just observing creates distance from beliefs" },
+        { step: 3, instruction: "Step 2 - Acceptance: Meet yourself with compassion where you are", duration: "3 min", tip: "Acceptance doesn't mean giving up - it means starting truthfully" },
+        { step: 4, instruction: "Step 3 - Release: Let go of beliefs that no longer serve you", duration: "3 min" },
+        { step: 5, instruction: "Step 4 - Choose: Select new, empowering beliefs", duration: "3 min" },
+        { step: 6, instruction: "Step 5 - Integrate: Practice and embody new beliefs", duration: "3 min" },
+        { step: 7, instruction: "Step 6 - Embody: Live from your new truth", duration: "3 min" },
+        { step: 8, instruction: "Reflect on which step feels most relevant today", duration: "2 min" }
+      ],
+      modifications: ["Take notes in a journal", "Discuss with a support person", "Revisit this guide anytime"],
+      safetyNotes: ["This is a framework, not a rigid path", "You may cycle through steps multiple times"]
+    },
+    "belief_inventory": {
+      id: "belief_inventory",
+      name: "Belief Inventory Journal",
+      type: "reflection",
+      description: "Identify current beliefs about self, relationships, success, and worthiness",
+      evidenceBasis: "Based on cognitive therapy core belief identification techniques",
+      traumaInformed: "Non-judgmental exploration with self-compassion",
+      benefits: ["Gain clarity on underlying beliefs", "Identify patterns", "Understand belief origins", "Create baseline for transformation"],
+      steps: [
+        { step: 1, instruction: "Set up your journal with four categories: Self, Relationships, Success, Worthiness", duration: "2 min" },
+        { step: 2, instruction: "For each category, write: 'I believe...' and complete the sentence 5 times", duration: "15 min", tip: "Write quickly without censoring" },
+        { step: 3, instruction: "Circle the beliefs that feel most charged or powerful", duration: "3 min" },
+        { step: 4, instruction: "For each circled belief, ask: Where did this come from?", duration: "5 min" },
+        { step: 5, instruction: "Ask: How has this belief served me? How has it limited me?", duration: "5 min", tip: "Beliefs often have both protective and limiting aspects" }
+      ],
+      modifications: ["Voice record instead of writing", "Start with just one category", "Use prompts if stuck"],
+      safetyNotes: ["This may bring up emotions - that's normal", "Take breaks as needed", "You don't need to fix or change anything today"]
+    },
+    "step1_awareness": {
+      id: "step1_awareness",
+      name: "Step 1: Awareness Practice",
+      type: "therapy",
+      description: "Guided exploration of how beliefs show up in daily life through observation without judgment",
+      evidenceBasis: "Mindful awareness combined with cognitive observation techniques",
+      traumaInformed: "Gentle noticing without shame or judgment",
+      benefits: ["Develop observer mind", "See beliefs as thoughts, not facts", "Reduce automatic reactions", "Build self-understanding"],
+      steps: [
+        { step: 1, instruction: "Sit comfortably with your journal", duration: "1 min" },
+        { step: 2, instruction: "Think of a recent challenging situation", duration: "3 min", tip: "Choose something mildly difficult, not overwhelming" },
+        { step: 3, instruction: "What thoughts arose? What beliefs were underneath?", duration: "10 min", tip: "Example: 'I made a mistake' → belief: 'I'm not good enough'" },
+        { step: 4, instruction: "Notice how these beliefs felt in your body", duration: "5 min" },
+        { step: 5, instruction: "Practice saying: 'I'm having the thought that...' before each belief", duration: "5 min", tip: "This creates psychological distance" },
+        { step: 6, instruction: "Write: 'This belief is a pattern, not the truth about who I am'", duration: "3 min" }
+      ],
+      modifications: ["Start with very small situations", "Use prompts like 'I noticed...'", "Draw or map beliefs visually"],
+      safetyNotes: ["Stay with mild-moderate situations", "Ground yourself if overwhelmed", "Remember: awareness is the first step, not the whole journey"]
+    },
+    "eft_basics": {
+      id: "eft_basics",
+      name: "EFT Tapping Introduction",
+      type: "healing",
+      description: "Learn basic tapping points and sequence for emotional regulation",
+      evidenceBasis: "EFT (Emotional Freedom Technique) shows efficacy in reducing anxiety, stress, and trauma symptoms",
+      traumaInformed: "Self-paced, can be stopped anytime, emphasizes choice",
+      benefits: ["Reduces emotional intensity", "Regulates nervous system", "Provides portable self-soothing tool", "Addresses beliefs somatically"],
+      steps: [
+        { step: 1, instruction: "Learn the 8 tapping points: top of head, eyebrow, side of eye, under eye, under nose, chin, collarbone, under arm", duration: "5 min" },
+        { step: 2, instruction: "Rate your stress level 0-10", duration: "1 min" },
+        { step: 3, instruction: "Setup statement: Tap karate chop point while saying 'Even though [problem], I deeply and completely accept myself' (3x)", duration: "2 min" },
+        { step: 4, instruction: "Tap each point 5-7 times while repeating a reminder phrase about the problem", duration: "7 min", tip: "Example: 'This anxiety' or 'This belief'" },
+        { step: 5, instruction: "Take a deep breath and rate your stress again 0-10", duration: "2 min" },
+        { step: 6, instruction: "Repeat rounds until stress reduces to 3 or below", duration: "10 min" }
+      ],
+      modifications: ["Tap gently or even just touch points", "Silently think phrases if speaking feels uncomfortable", "Focus on breath if tapping feels too activating"],
+      safetyNotes: ["Stop if emotions escalate beyond your window of tolerance", "EFT can bring up emotions - this is normal", "Work with a practitioner for trauma-focused tapping"]
+    },
+    "self_compassion_meditation": {
+      id: "self_compassion_meditation",
+      name: "Self-Compassion Meditation",
+      type: "mindfulness",
+      description: "Guided meditation to cultivate kindness toward yourself",
+      evidenceBasis: "Based on Kristin Neff's self-compassion research showing benefits for mental health and well-being",
+      traumaInformed: "Gentle, optional touch, emphasizes self-kindness over self-criticism",
+      benefits: ["Reduces self-criticism", "Increases emotional resilience", "Activates care-giving circuits", "Builds secure internal relationship"],
+      steps: [
+        { step: 1, instruction: "Sit comfortably and place your hands on your heart", duration: "1 min", tip: "Feel the warmth and gentle pressure" },
+        { step: 2, instruction: "Think of yourself struggling with something", duration: "2 min", tip: "Start with something mild, not your deepest wound" },
+        { step: 3, instruction: "Say silently: 'This is a moment of suffering'", duration: "1 min", tip: "Mindfulness: acknowledging the difficulty" },
+        { step: 4, instruction: "Say: 'Suffering is a part of life' or 'Others feel this too'", duration: "2 min", tip: "Common humanity: you're not alone" },
+        { step: 5, instruction: "Say: 'May I be kind to myself' and 'May I give myself the compassion I need'", duration: "3 min", tip: "Self-kindness: offering yourself care" },
+        { step: 6, instruction: "Breathe naturally, hands on heart, for several minutes", duration: "5 min" },
+        { step: 7, instruction: "Imagine sending yourself loving energy with each breath", duration: "3 min" }
+      ],
+      modifications: ["Use different hand placement if heart feels too vulnerable", "Shorten to 5 minutes", "Write the phrases in your journal"],
+      safetyNotes: ["Stop if you feel flooded with emotion", "It's okay if this feels awkward at first", "Self-compassion is a skill that builds over time"]
+    },
+    // Wisdom Development Retreat Guides
+    "arrival_meditation": {
+      id: "arrival_meditation",
+      name: "Arrival & Centering Meditation",
+      type: "mindfulness",
+      description: "Silent meditation to arrive in present moment awareness",
+      evidenceBasis: "Based on MBSR (Mindfulness-Based Stress Reduction) protocols",
+      traumaInformed: "Gentle arrival practice with choice and control",
+      benefits: ["Present-moment awareness", "Nervous system calming", "Inner stillness", "Mental clarity"],
+      steps: [
+        { step: 1, instruction: "Find a comfortable seated position with spine gently upright", duration: "1 min" },
+        { step: 2, instruction: "Close your eyes or lower your gaze softly", duration: "30 sec", tip: "Choose what feels safest" },
+        { step: 3, instruction: "Take three intentional breaths, exhaling fully", duration: "1 min" },
+        { step: 4, instruction: "Allow your breath to return to its natural rhythm", duration: "2 min" },
+        { step: 5, instruction: "Notice sensations in your body without changing them", duration: "5 min", tip: "Just observe - feet on floor, seat on chair, breath moving" },
+        { step: 6, instruction: "When thoughts arise, gently return to the breath", duration: "8 min", tip: "This is the practice - returning, not perfect stillness" },
+        { step: 7, instruction: "Slowly deepen your breath and gently open your eyes", duration: "1 min" }
+      ],
+      modifications: ["Can be done lying down", "Use shorter periods", "Add gentle music"],
+      safetyNotes: ["Normal to have many thoughts", "Can open eyes anytime", "No right or wrong experience"]
+    },
+    "the_method_intro": {
+      id: "the_method_intro",
+      name: "Introduction to The Method",
+      type: "therapy",
+      description: "Understanding The Method: Pause, Notice, Feel, Ask, Listen, Trust",
+      evidenceBasis: "Integrates mindfulness, somatic awareness, and intuitive intelligence research",
+      traumaInformed: "Self-paced exploration with emphasis on body wisdom",
+      benefits: ["Learn six-step wisdom access process", "Develop inner guidance system", "Build self-trust", "Access intuition reliably"],
+      steps: [
+        { step: 1, instruction: "Read overview: The Method helps you access your inner wisdom in six steps", duration: "3 min" },
+        { step: 2, instruction: "PAUSE: Learn to create space before reacting", duration: "5 min", tip: "Even a micro-pause changes outcomes" },
+        { step: 3, instruction: "NOTICE: Develop neutral observation of thoughts, feelings, sensations", duration: "5 min" },
+        { step: 4, instruction: "FEEL: Drop into body sensations and emotional awareness", duration: "5 min", tip: "Wisdom speaks through the body" },
+        { step: 5, instruction: "ASK: Pose clear questions to your inner wisdom", duration: "5 min" },
+        { step: 6, instruction: "LISTEN: Receive answers without forcing or editing", duration: "5 min", tip: "First thought is often wisest" },
+        { step: 7, instruction: "TRUST: Act on your inner knowing", duration: "5 min" }
+      ],
+      modifications: ["Journal each step", "Practice with low-stakes decisions first", "Revisit this guide often"],
+      safetyNotes: ["Start with small decisions", "Trust builds over time", "Professional guidance for major life decisions"]
+    },
+    "body_wisdom_scan": {
+      id: "body_wisdom_scan",
+      name: "Body Wisdom Scanning",
+      type: "somatic",
+      description: "Learning to read body signals and sensations as wisdom",
+      evidenceBasis: "Based on somatic experiencing and interoception research",
+      traumaInformed: "Gentle body awareness with choice to disconnect if needed",
+      benefits: ["Develop interoceptive awareness", "Access body-based wisdom", "Recognize early signals", "Trust physical sensations"],
+      steps: [
+        { step: 1, instruction: "Lie down or sit comfortably", duration: "1 min" },
+        { step: 2, instruction: "Scan head: notice any sensations without judgment", duration: "2 min", tip: "Tingling, warmth, coolness, tightness, ease" },
+        { step: 3, instruction: "Scan throat and chest: notice communication and heart sensations", duration: "3 min", tip: "These areas hold emotional wisdom" },
+        { step: 4, instruction: "Scan belly/gut: notice your 'gut feelings'", duration: "3 min", tip: "The gut has more neurons than the spinal cord" },
+        { step: 5, instruction: "Ask your body: 'What are you trying to tell me?'", duration: "4 min" },
+        { step: 6, instruction: "Listen without forcing - notice any images, words, or knowings that arise", duration: "5 min" },
+        { step: 7, instruction: "Thank your body for its wisdom", duration: "1 min" }
+      ],
+      modifications: ["Focus on just one area", "Keep eyes open", "Use guided audio"],
+      safetyNotes: ["Can disconnect from uncomfortable areas", "Body sensations are information, not commands", "Build tolerance gradually"]
+    },
+    "method_pause": {
+      id: "method_pause",
+      name: "The Method Practice: Pause",
+      type: "mindfulness",
+      description: "Learning the art of the pause before response",
+      evidenceBasis: "Based on Viktor Frankl's stimulus-response gap and mindfulness research",
+      traumaInformed: "Creates choice and agency in moments of reactivity",
+      benefits: ["Reduces impulsive reactions", "Creates space for wisdom", "Interrupts automatic patterns", "Builds emotional regulation"],
+      steps: [
+        { step: 1, instruction: "Think of a situation where you typically react quickly", duration: "2 min" },
+        { step: 2, instruction: "Visualize that situation arising again", duration: "2 min" },
+        { step: 3, instruction: "Practice pausing: Take one full breath before responding", duration: "5 min", tip: "Count: 1...2...3...4 in, 1...2...3...4 out" },
+        { step: 4, instruction: "In the pause, notice: What am I feeling? What do I need?", duration: "5 min" },
+        { step: 5, instruction: "Repeat with different scenarios", duration: "10 min" },
+        { step: 6, instruction: "Set intention: 'I will practice pausing today'", duration: "2 min" }
+      ],
+      modifications: ["Start with low-stress situations", "Use physical anchor like touching thumb to finger", "Practice pausing even when not triggered"],
+      safetyNotes: ["The pause is permission, not perfection", "You won't remember every time - that's normal", "Small pauses create big changes over time"]
+    },
+    "awareness_meditation": {
+      id: "awareness_meditation",
+      name: "Awareness Meditation",
+      type: "mindfulness",
+      description: "Open awareness practice without focusing on any particular object",
+      evidenceBasis: "Based on Vipassana and open monitoring meditation traditions",
+      traumaInformed: "Allows thoughts and feelings to arise and pass without force",
+      benefits: ["Develops metacognition", "Reduces identification with thoughts", "Builds equanimity", "Expands consciousness"],
+      steps: [
+        { step: 1, instruction: "Sit comfortably with eyes closed or soft gaze", duration: "1 min" },
+        { step: 2, instruction: "Take several grounding breaths", duration: "2 min" },
+        { step: 3, instruction: "Open your awareness like a wide sky", duration: "3 min", tip: "Notice whatever arises without focusing on anything in particular" },
+        { step: 4, instruction: "Notice thoughts, sensations, sounds, emotions - let them arise and pass", duration: "10 min" },
+        { step: 5, instruction: "If you get caught in a thought, gently expand back to open awareness", duration: "7 min" },
+        { step: 6, instruction: "Rest in the spaciousness of awareness itself", duration: "3 min" }
+      ],
+      modifications: ["Start with shorter periods", "Use breath as anchor if awareness feels too open", "Practice with eyes open looking at nature"],
+      safetyNotes: ["Can be destabilizing if you're not ready - that's okay", "Return to focused attention if needed", "This practice deepens over time"]
+    },
     "gentle-wake-up-breathing": {
       id: "gentle-wake-up-breathing",
       name: "Clinical Breathwork Protocol",
@@ -847,6 +1063,152 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
         "Some emotions require action (like fear in dangerous situations)",
         "Building distress tolerance takes practice - be patient with yourself"
       ]
+    },
+    // Additional Common Guides
+    "somatic-grounding-practice": {
+      id: "somatic-grounding-practice",
+      name: "Somatic Grounding Practice",
+      type: "somatic",
+      description: "Body-based grounding techniques to reconnect with the present moment",
+      evidenceBasis: "Based on somatic experiencing and sensorimotor psychotherapy",
+      traumaInformed: "Gentle body awareness with choice and control",
+      benefits: ["Reduces dissociation", "Anchors in present", "Calms nervous system", "Builds body trust"],
+      steps: [
+        { step: 1, instruction: "Feel your feet on the floor. Press down gently and notice the connection.", duration: "2 min" },
+        { step: 2, instruction: "Notice your seat on the chair. Feel the support beneath you.", duration: "2 min" },
+        { step: 3, instruction: "Press your hands together or onto your thighs. Notice the pressure.", duration: "2 min" },
+        { step: 4, instruction: "Name 5 things you can see, 4 you can touch, 3 you can hear, 2 you can smell, 1 you can taste.", duration: "5 min" },
+        { step: 5, instruction: "Take 3 deep breaths, feeling your body expand and contract.", duration: "2 min" }
+      ],
+      modifications: ["Can be done standing or lying", "Adjust pace as needed", "Focus on just feet if full body feels overwhelming"],
+      safetyNotes: ["Stop if you feel more disconnected", "Grounding should increase presence, not trigger"]
+    },
+    "narrative-therapy-letter-writing": {
+      id: "narrative-therapy-letter-writing",
+      name: "Narrative Therapy Letter Writing",
+      type: "therapy",
+      description: "Therapeutic letter writing to process experiences and rewrite your story",
+      evidenceBasis: "Based on narrative therapy principles (White & Epston)",
+      traumaInformed: "Allows you to tell your story on your terms",
+      benefits: ["Process difficult experiences", "Externalize problems", "Reclaim narrative", "Find meaning"],
+      steps: [
+        { step: 1, instruction: "Choose who you're writing to: yourself, someone else, or a symbolic figure.", duration: "2 min" },
+        { step: 2, instruction: "Set a timer for 15 minutes and write without censoring.", duration: "15 min", tip: "Don't worry about grammar or perfection" },
+        { step: 3, instruction: "Express what you need to say - anger, grief, love, forgiveness.", duration: "included above" },
+        { step: 4, instruction: "Read what you wrote. Notice what emerges.", duration: "5 min" },
+        { step: 5, instruction: "Decide what to do with the letter: keep, burn, send, or ceremonially release it.", duration: "3 min" }
+      ],
+      modifications: ["Voice record instead of write", "Type on computer", "Create a collage instead"],
+      safetyNotes: ["This may bring up strong emotions", "Have support available", "You don't have to send the letter"]
+    },
+    "inner-sanctuary-visualization": {
+      id: "inner-sanctuary-visualization",
+      name: "Inner Sanctuary Visualization",
+      type: "healing",
+      description: "Guided imagery to create a safe internal space",
+      evidenceBasis: "Based on guided imagery and safe place protocols used in trauma therapy",
+      traumaInformed: "Creates internal resource of safety and control",
+      benefits: ["Builds internal safety", "Provides refuge during distress", "Activates relaxation response", "Strengthens imagination"],
+      steps: [
+        { step: 1, instruction: "Close your eyes and take 3 deep breaths.", duration: "1 min" },
+        { step: 2, instruction: "Imagine a place where you feel completely safe - real or imagined.", duration: "3 min", tip: "This could be nature, a room, or even a floating cloud" },
+        { step: 3, instruction: "Notice all the details: colors, sounds, smells, textures, temperature.", duration: "5 min" },
+        { step: 4, instruction: "Add anything that would make it more perfect and safe for you.", duration: "3 min" },
+        { step: 5, instruction: "Know you can return here anytime you need to.", duration: "2 min" },
+        { step: 6, instruction: "Slowly return to the present, bringing the feeling of safety with you.", duration: "1 min" }
+      ],
+      modifications: ["Draw or describe your sanctuary", "Visit in small moments throughout the day", "Customize any time"],
+      safetyNotes: ["If imagery triggers you, return to present", "Your sanctuary can change over time", "This is YOUR safe space"]
+    },
+    "core-values-identification": {
+      id: "core-values-identification",
+      name: "Core Values Identification",
+      type: "reflection",
+      description: "Discover and clarify your deepest personal values",
+      evidenceBasis: "Based on Acceptance and Commitment Therapy (ACT) values work",
+      traumaInformed: "Reconnects you with what matters beyond survival",
+      benefits: ["Clarifies life direction", "Guides decision-making", "Increases motivation", "Builds authentic life"],
+      steps: [
+        { step: 1, instruction: "Review a list of common values (love, growth, creativity, justice, etc.)", duration: "5 min" },
+        { step: 2, instruction: "Circle or write down 10-15 that resonate most.", duration: "5 min" },
+        { step: 3, instruction: "Narrow to your top 5 core values.", duration: "5 min", tip: "Ask: Which would I keep if I could only choose 5?" },
+        { step: 4, instruction: "For each value, write why it matters to you.", duration: "10 min" },
+        { step: 5, instruction: "Reflect: How am I currently living (or not living) these values?", duration: "5 min" }
+      ],
+      modifications: ["Use values card sort", "Discuss with trusted friend", "Revisit and revise over time"],
+      safetyNotes: ["Values are directions, not destinations", "It's okay if you're not living your values yet", "This is about discovery, not judgment"]
+    },
+    "grief-education": {
+      id: "grief-education",
+      name: "Understanding Grief",
+      type: "therapy",
+      description: "Psychoeducation about the grief process and normalizing grief responses",
+      evidenceBasis: "Based on contemporary grief theory (Worden, Neimeyer) moving beyond stages model",
+      traumaInformed: "Normalizes all grief responses without judgment",
+      benefits: ["Normalizes your experience", "Reduces isolation", "Provides language for grief", "Challenges myths"],
+      steps: [
+        { step: 1, instruction: "Learn: Grief is not linear - there are no stages to complete in order.", duration: "5 min" },
+        { step: 2, instruction: "Grief includes many emotions: sadness, anger, guilt, relief, numbness, love.", duration: "5 min" },
+        { step: 3, instruction: "Physical symptoms are normal: fatigue, appetite changes, sleep issues, pain.", duration: "5 min" },
+        { step: 4, instruction: "Grief comes in waves - you may feel okay, then suddenly overwhelmed.", duration: "5 min", tip: "This is normal and doesn't mean you're going backward" },
+        { step: 5, instruction: "There's no timeline - your grief is as unique as your relationship.", duration: "5 min" }
+      ],
+      modifications: ["Read articles or books on grief", "Join grief support group", "Watch educational videos"],
+      safetyNotes: ["Grief is not something to 'get over'", "Professional help is appropriate for complicated grief", "You're not broken - you're grieving"]
+    },
+    "family-breathing": {
+      id: "family-breathing",
+      name: "Family Breathing Together",
+      type: "mindfulness",
+      description: "Age-appropriate breathing practice for families to do together",
+      evidenceBasis: "Adapted from child-friendly mindfulness practices",
+      traumaInformed: "Creates safety through connection and synchronized regulation",
+      benefits: ["Co-regulation", "Family bonding", "Shared calm", "Builds routine"],
+      steps: [
+        { step: 1, instruction: "Sit together in a circle or close together.", duration: "1 min" },
+        { step: 2, instruction: "Adults model slow, calm breathing first.", duration: "2 min" },
+        { step: 3, instruction: "For young children: 'Smell the flowers (inhale), blow out the candles (exhale).'", duration: "5 min", tip: "Make it playful and age-appropriate" },
+        { step: 4, instruction: "For older children: Try synchronized breathing, matching each other's rhythm.", duration: "5 min" },
+        { step: 5, instruction: "End with everyone sharing one word about how they feel.", duration: "2 min" }
+      ],
+      modifications: ["Use stuffed animal on belly to watch rise and fall", "Add gentle music", "Keep very short (2-3 min) for young children"],
+      safetyNotes: ["Never force children to participate", "Follow their lead and energy", "Stop if anyone becomes distressed"]
+    },
+    "family-grief-education": {
+      id: "family-grief-education",
+      name: "Understanding Grief as a Family",
+      type: "therapy",
+      description: "Age-appropriate grief education for the whole family",
+      evidenceBasis: "Based on developmental grief theory and family systems approaches",
+      traumaInformed: "Honors different developmental stages and grief expressions",
+      benefits: ["Shared understanding", "Normalized responses", "Open communication", "Reduced isolation"],
+      steps: [
+        { step: 1, instruction: "Explain grief using age-appropriate language for all family members.", duration: "8 min", tip: "Young children: feelings come and go like waves" },
+        { step: 2, instruction: "Normalize that everyone grieves differently.", duration: "5 min" },
+        { step: 3, instruction: "Discuss that ALL feelings are okay - sad, mad, confused, even happy sometimes.", duration: "5 min" },
+        { step: 4, instruction: "Share that grief doesn't mean forgetting - we keep loving even when someone is gone.", duration: "5 min" },
+        { step: 5, instruction: "Create family language for grief (sad times, missing times, remembering times).", duration: "5 min" }
+      ],
+      modifications: ["Use books or videos for different ages", "Have individual then group discussions", "Revisit as children develop"],
+      safetyNotes: ["Protect children from graphic details", "Honest without overwhelming", "Professional support for complicated grief"]
+    },
+    "family-art-therapy": {
+      id: "family-art-therapy",
+      name: "Art Therapy Together",
+      type: "creative",
+      description: "Shared creative expression for processing emotions as a family",
+      evidenceBasis: "Based on expressive arts therapy and play therapy principles",
+      traumaInformed: "Non-verbal expression safe for all ages",
+      benefits: ["Non-verbal processing", "Shared creation", "Emotional expression", "Memory making"],
+      steps: [
+        { step: 1, instruction: "Gather simple art supplies everyone can use.", duration: "3 min" },
+        { step: 2, instruction: "Choose a theme: 'Our family,' 'Our memories,' 'How we feel,' or open-ended.", duration: "2 min" },
+        { step: 3, instruction: "Create together in silence or with gentle music for 15-20 minutes.", duration: "20 min" },
+        { step: 4, instruction: "Share creations, with each person explaining if they choose to.", duration: "10 min", tip: "No one has to share" },
+        { step: 5, instruction: "Display art or create a family art journal.", duration: "5 min" }
+      ],
+      modifications: ["Use clay, collage, or nature materials", "Create individual then combine pieces", "Dance or movement instead"],
+      safetyNotes: ["Process over product", "No criticism of artwork", "Respect if someone doesn't want to share"]
     }
   };
 
