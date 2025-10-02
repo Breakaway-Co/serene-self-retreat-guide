@@ -28,24 +28,24 @@ const popularRetreats: PopularRetreat[] = [
     tags: ['Mindfulness', 'Corporate', 'Fast Results']
   },
   {
-    id: 'luxury-detox',
-    title: 'Luxury Digital Detox',
-    category: 'Digital Wellness',
+    id: 'life_upgrade',
+    title: 'Life Upgrade Journey',
+    category: 'Personal Transformation',
     duration: '14 days',
-    participants: 1623,
-    rating: 4.8,
-    image: '/api/placeholder/300/200',
-    tags: ['Technology', 'Luxury', 'Transformation']
-  },
-  {
-    id: 'mindful-mornings',
-    title: 'Mindful Morning Rituals',
-    category: 'Daily Practice',
-    duration: '21 days',
-    participants: 4156,
+    participants: 3421,
     rating: 4.9,
     image: '/api/placeholder/300/200',
-    tags: ['Morning', 'Habits', 'Energy']
+    tags: ['Beliefs', 'EFT', 'Empowerment']
+  },
+  {
+    id: 'wisdom_development',
+    title: 'Inner Wisdom Development',
+    category: 'Self-Discovery',
+    duration: '21 days',
+    participants: 2934,
+    rating: 4.8,
+    image: '/api/placeholder/300/200',
+    tags: ['Intuition', 'Purpose', 'Wisdom']
   }
 ];
 
