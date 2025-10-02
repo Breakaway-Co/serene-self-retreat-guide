@@ -2,7 +2,7 @@ import { RetreatConfiguration } from '@/types/retreat';
 
 export const wisdomDevelopmentRetreat: RetreatConfiguration = {
   id: 'wisdom_development',
-  name: 'Inner Wisdom: The Method & Wisdom Development Journey',
+  name: 'Inner Wisdom: Wisdom Development Journey',
   description: 'A transformative 21-day retreat integrating The Method and Wisdom Development Model. Cultivate deep inner knowing, develop intuitive intelligence, and access your innate wisdom through trauma-informed, evidence-based practices rooted in mindfulness and self-inquiry.',
   shortDescription: 'Awaken your inner wisdom and develop intuitive intelligence through guided self-discovery',
   duration: 21,
