@@ -114,6 +114,8 @@ export const useProgressPersistence = ({
           current_step: data.currentStep,
           total_steps: data.totalSteps,
           is_completed: data.isCompleted,
+        }, {
+          onConflict: 'user_id,section'
         });
 
       if (error) throw error;
