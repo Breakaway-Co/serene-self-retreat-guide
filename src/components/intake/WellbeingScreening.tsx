@@ -175,6 +175,15 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
                                currentResponses.every(response => response !== undefined);
 
   const handleNextTool = () => {
+    // Auto-save current progress before moving to next tool
+    if (user) {
+      updateProgress({
+        progressData: screening,
+        currentStep: getCurrentOverallStep(),
+        totalSteps: getTotalSteps(),
+      });
+    }
+    
     if (currentTool < tools.length - 1) {
       setCurrentTool(currentTool + 1);
     } else {
@@ -333,7 +342,6 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
         </Button>
         <Button 
           onClick={handleNextTool}
-          disabled={!isCurrentToolComplete}
           variant="healing"
         >
           {currentTool === tools.length - 1 ? "Continue" : "Next Tool"}

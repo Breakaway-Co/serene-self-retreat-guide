@@ -189,7 +189,6 @@ export function ScreeningAssessment({ toolIds, onComplete, onBack }: ScreeningAs
             
             <Button
               onClick={handleNext}
-              disabled={!canProceed}
             >
               {currentToolIndex === toolIds.length - 1 && currentQuestionIndex === currentTool.questions.length - 1
                 ? 'Complete Assessment'
