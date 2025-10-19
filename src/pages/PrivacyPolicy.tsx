@@ -143,7 +143,7 @@ const PrivacyPolicy = () => {
                 <li><strong>Object:</strong> Object to certain data processing activities</li>
               </ul>
               <p className="mt-4">
-                To exercise these rights, please contact us at privacy@healingjourney.com
+                To exercise these rights, please contact us at <strong>privacy@sereneselfretreat.com</strong>
               </p>
             </CardContent>
           </Card>
@@ -216,9 +216,10 @@ const PrivacyPolicy = () => {
                 If you have questions or concerns about this Privacy Policy or our data practices, please contact us:
               </p>
               <div className="space-y-1">
-                <p><strong>Email:</strong> privacy@healingjourney.com</p>
-                <p><strong>Address:</strong> [Your Business Address]</p>
-                <p><strong>Data Protection Officer:</strong> dpo@healingjourney.com</p>
+                <p><strong>Email:</strong> privacy@sereneselfretreat.com</p>
+                <p><strong>Website:</strong> www.sereneselfretreat.com</p>
+                <p><strong>Data Protection Officer:</strong> dpo@sereneselfretreat.com</p>
+                <p><strong>Support:</strong> support@sereneselfretreat.com</p>
               </div>
             </CardContent>
           </Card>

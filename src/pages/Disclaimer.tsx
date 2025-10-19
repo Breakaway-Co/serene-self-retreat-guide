@@ -293,7 +293,7 @@ const Disclaimer = () => {
               <CardTitle>Contact</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>For questions about this disclaimer, contact legal@healingjourney.com</p>
+              <p>For questions about this disclaimer, contact <strong>legal@sereneselfretreat.com</strong></p>
             </CardContent>
           </Card>
 

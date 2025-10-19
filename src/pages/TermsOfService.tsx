@@ -237,11 +237,11 @@ const TermsOfService = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p>
-                These Terms are governed by the laws of [Your Jurisdiction] without regard to conflict of law principles.
+                These Terms are governed by the laws of the jurisdiction where Serene Self Retreat Guide operates.
               </p>
               <p>
-                Any disputes will be resolved through binding arbitration in accordance with [Arbitration Rules], 
-                except where prohibited by law.
+                Any disputes will be resolved through binding arbitration in accordance with applicable arbitration rules, 
+                except where prohibited by law. You may have rights in your jurisdiction that cannot be waived.
               </p>
             </CardContent>
           </Card>
@@ -265,8 +265,9 @@ const TermsOfService = () => {
             <CardContent>
               <p className="mb-4">For questions about these Terms, please contact:</p>
               <div className="space-y-1">
-                <p><strong>Email:</strong> legal@healingjourney.com</p>
-                <p><strong>Address:</strong> [Your Business Address]</p>
+                <p><strong>Email:</strong> legal@sereneselfretreat.com</p>
+                <p><strong>Support:</strong> support@sereneselfretreat.com</p>
+                <p><strong>Website:</strong> www.sereneselfretreat.com</p>
               </div>
             </CardContent>
           </Card>
