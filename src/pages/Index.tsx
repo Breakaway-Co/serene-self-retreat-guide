@@ -157,7 +157,7 @@ const Index = () => {
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Join thousands who have discovered the power of luxury wellness at home. 
-            Start your journey today with a 14-day free trial.
+            Start your journey today with a 48-hour free trial.
           </p>
           <Button 
             onClick={handleStartRetreat}
