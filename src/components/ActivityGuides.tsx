@@ -1461,6 +1461,8 @@ const ActivityGuides = ({ selectedActivity, onBack }: { selectedActivity: string
           guideName={currentGuide.name}
           activityType={currentGuide.type}
           instructions={currentGuide.steps.map(step => step.instruction)}
+          timings={currentGuide.steps.map(step => step.duration)}
+          tips={currentGuide.steps.map(step => step.tip || "")}
           onAudioComplete={() => {
             toast({
               title: "Practice Complete",

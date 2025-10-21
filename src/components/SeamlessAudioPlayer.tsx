@@ -24,6 +24,8 @@ interface SeamlessAudioPlayerProps {
   guideName: string;
   activityType: string;
   instructions?: string[];
+  timings?: string[];
+  tips?: string[];
   onComplete?: () => void;
   customizations?: {
     intensity?: 'gentle' | 'moderate' | 'intensive';
@@ -47,6 +49,8 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
   guideName,
   activityType,
   instructions,
+  timings,
+  tips,
   onComplete,
   customizations
 }) => {
@@ -75,6 +79,8 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
           guideName,
           activityType,
           instructions,
+          timings,
+          tips,
           customizations
         }
       });

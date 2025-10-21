@@ -133,6 +133,8 @@ const ActivityGuide = ({
                 guideName={`${activityType.replace('-', ' ')} Guide`}
                 activityType={activityType}
                 instructions={audioInstructions}
+                timings={[]}
+                tips={[]}
               />
             </div>
           )}

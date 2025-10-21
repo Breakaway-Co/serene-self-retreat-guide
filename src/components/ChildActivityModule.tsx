@@ -417,6 +417,8 @@ const ChildActivityModule = ({ module, onBack, onComplete }: ChildActivityModule
                     "Let any worried thoughts float away like clouds",
                     "Just rest here in this peaceful moment"
                   ]}
+                  timings={["30 sec", "1 min", "1 min", "1 min", "1 min", "30 sec"]}
+                  tips={[]}
                 />
                 
                 <div className="mt-4 p-3 bg-healing/20 rounded text-center">

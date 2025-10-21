@@ -7,10 +7,12 @@ interface AudioGuidanceProps {
   guideName: string;
   activityType: string;
   instructions: string[];
+  timings: string[];
+  tips: string[];
   onAudioComplete?: () => void;
 }
 
-const AudioGuidance = ({ guideId, guideName, activityType, instructions, onAudioComplete }: AudioGuidanceProps) => {
+const AudioGuidance = ({ guideId, guideName, activityType, instructions, timings, tips, onAudioComplete }: AudioGuidanceProps) => {
   return (
     <div className="space-y-4">
       <Alert className="border-2 border-dashed border-healing/40 bg-gradient-to-r from-healing/5 to-calm/5">
@@ -26,6 +28,8 @@ const AudioGuidance = ({ guideId, guideName, activityType, instructions, onAudio
         guideName={guideName}
         activityType={activityType}
         instructions={instructions}
+        timings={timings}
+        tips={tips}
         onComplete={onAudioComplete}
       />
     </div>

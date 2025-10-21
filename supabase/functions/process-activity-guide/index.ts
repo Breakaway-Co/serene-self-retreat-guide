@@ -350,7 +350,7 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { guideId, guideName, activityType, instructions, customizations }: ActivityGuideRequest = await req.json();
+    const { guideId, guideName, activityType, instructions, timings, tips, customizations }: ActivityGuideRequest = await req.json();
 
     let guide;
     
@@ -360,8 +360,8 @@ serve(async (req) => {
         name: guideName || 'Guided Practice',
         type: activityType || 'mindfulness',
         steps: instructions,
-        timings: instructions.map(() => "variable"), // Will be calculated by TTS pacing
-        tips: []
+        timings: timings || instructions.map(() => "variable"),
+        tips: tips || []
       };
     } else if (!activityGuides[guideId]) {
       throw new Error(`Activity guide not found: ${guideId}`);
@@ -430,59 +430,182 @@ serve(async (req) => {
   }
 });
 
+// Helper: Parse duration string to seconds
+function parseDurationToSeconds(duration: string): number {
+  const match = duration.match(/(\d+)\s*(min|sec|hour)/i);
+  if (!match) return 60; // default 1 minute
+  
+  const value = parseInt(match[1]);
+  const unit = match[2].toLowerCase();
+  
+  if (unit === 'hour') return value * 3600;
+  if (unit === 'min') return value * 60;
+  return value; // seconds
+}
+
+// Helper: Detect and expand repetitions in instruction text
+function expandRepetitions(instruction: string): string {
+  let expanded = instruction;
+  
+  // Pattern: "say X times" or "repeat X times" or "(Xx)" or "(X repetitions)"
+  const patterns = [
+    /\((\d+)x\)/gi,
+    /\((\d+)\s*times?\)/gi,
+    /\((\d+)\s*repetitions?\)/gi,
+    /say\s*(\d+)\s*times/gi,
+    /repeat\s*(\d+)\s*times/gi,
+    /tap.*?(\d+)\s*times/gi
+  ];
+  
+  for (const pattern of patterns) {
+    const match = instruction.match(pattern);
+    if (match) {
+      const count = parseInt(match[1]);
+      // Extract the core instruction (remove the repetition indicator)
+      const coreInstruction = instruction.replace(pattern, '').trim();
+      
+      // Build repetition script
+      let result = '';
+      for (let i = 1; i <= count; i++) {
+        if (i === 1) {
+          result += coreInstruction;
+        } else if (i === count) {
+          result += `\n\nOne more time: ${coreInstruction}`;
+        } else {
+          result += `\n\nAgain: ${coreInstruction}`;
+        }
+      }
+      return result;
+    }
+  }
+  
+  // Special case: EFT tapping sequences "5-7 times" or "7 times each point"
+  const tappingMatch = instruction.match(/tap\s+each\s+point\s+(\d+)(?:-\d+)?\s+times/gi);
+  if (tappingMatch) {
+    const count = 7; // Use 7 as standard for EFT
+    const points = ['top of head', 'eyebrow', 'side of eye', 'under eye', 'under nose', 'chin', 'collarbone', 'under arm'];
+    
+    let result = 'Now we\'ll tap through the sequence. ';
+    points.forEach((point, idx) => {
+      result += `\n\nTap the ${point} ${count} times... `;
+      result += Array(count).fill(null).map((_, i) => `${i + 1}`).join(', ') + '. ';
+    });
+    return result;
+  }
+  
+  return expanded;
+}
+
+// Helper: Create natural transitions between steps
+function createTransition(index: number, totalSteps: number): string {
+  if (index === 0) return 'Let\'s begin. ';
+  if (index === totalSteps - 1) return 'And finally... ';
+  
+  const transitions = [
+    'Now... ',
+    'Next, ',
+    'Continue by ',
+    'Let\'s move into ',
+    'And now, ',
+    'Moving forward, '
+  ];
+  
+  return transitions[index % transitions.length];
+}
+
+// Helper: Generate guided pauses to fill duration
+function generateGuidedPauses(targetSeconds: number, instructionLength: number): string {
+  // Estimate TTS speaking time: ~150 words per minute, ~2.5 words per second
+  const estimatedSpeakingTime = instructionLength / 2.5;
+  const remainingTime = targetSeconds - estimatedSpeakingTime;
+  
+  if (remainingTime <= 5) return ''; // No pause needed
+  
+  let pauseScript = '\n\n';
+  
+  // For short remaining time (5-30 sec), single pause
+  if (remainingTime <= 30) {
+    pauseScript += `Take your time with this... [Pause for ${Math.round(remainingTime)} seconds]`;
+    return pauseScript;
+  }
+  
+  // For medium time (30-90 sec), add periodic check-ins
+  if (remainingTime <= 90) {
+    pauseScript += `Stay with this practice... [Pause for 20 seconds]\n\n`;
+    pauseScript += `Continue breathing naturally... [Pause for ${Math.round(remainingTime - 20)} seconds]`;
+    return pauseScript;
+  }
+  
+  // For longer time (90+ sec), add multiple anchoring phrases
+  const numAnchors = Math.floor(remainingTime / 30);
+  const pauseBetween = Math.floor(remainingTime / (numAnchors + 1));
+  
+  const anchors = [
+    'You\'re doing beautifully... stay present...',
+    'Notice any sensations arising...',
+    'There\'s no rush... allow yourself to fully experience this...',
+    'Continue at your own pace...',
+    'Remember, you\'re safe and in control...',
+    'Simply observe what emerges...'
+  ];
+  
+  for (let i = 0; i < numAnchors; i++) {
+    pauseScript += `${anchors[i % anchors.length]} [Pause for ${pauseBetween} seconds]\n\n`;
+  }
+  
+  return pauseScript;
+}
+
+// Main script creation function
 function createMasterScript(guide: any, customizations?: any): string {
   const intensity = customizations?.intensity || 'moderate';
-  const duration = customizations?.duration || 'medium';
-
-  let script = `Welcome to your guided ${guide.name.toLowerCase()} session. `;
   
-  if (intensity === 'gentle') {
-    script += "This will be a very gentle, slow-paced practice. Take your time and be kind to yourself. ";
-  } else if (intensity === 'intensive') {
-    script += "This will be a more focused, intensive practice. Stay present and committed to the process. ";
-  } else {
-    script += "This will be a balanced practice at a comfortable pace. ";
-  }
-
-  script += "Find a comfortable position and allow yourself to be fully present for this healing practice. ";
-
-  // Add safety reminder
-  script += "Remember, you are always in control. You can modify or stop this practice at any time if you need to. ";
-
-  // Process each step with natural pacing
+  // Opening (warm, trauma-informed)
+  let script = `Welcome to ${guide.name}. `;
+  script += `This is a ${guide.type} practice designed to support your healing and growth.\n\n`;
+  script += `Find a comfortable position where you won't be disturbed. `;
+  script += `You're in complete control throughout this experience. `;
+  script += `If at any point you need to pause or stop, please honor that need. `;
+  script += `Your comfort and safety are always the priority.\n\n`;
+  
+  // Process each step with timing, repetitions, and natural flow
   guide.steps.forEach((step: string, index: number) => {
-    const timing = guide.timings[index];
-    const tip = guide.tips[index];
-
-    script += `\n\nStep ${index + 1}: ${step} `;
+    // Add natural transition (removes "Step X")
+    script += createTransition(index, guide.steps.length);
     
-    if (tip) {
-      script += `${tip} `;
+    // Expand repetitions in the instruction
+    const expandedInstruction = expandRepetitions(step);
+    script += expandedInstruction;
+    
+    // Add tip if available
+    if (guide.tips && guide.tips[index] && guide.tips[index].length > 0) {
+      script += `\n\nHelpful tip: ${guide.tips[index]}`;
     }
-
-    // Add pacing based on timing
-    if (timing && timing.includes('minutes')) {
-      script += "Take your time with this step. There's no rush. ";
-      if (duration === 'long') {
-        script += "Allow yourself extra time to fully experience this. ";
-      }
-    } else if (timing && timing.includes('seconds')) {
-      script += "Move at a pace that feels right for you. ";
+    
+    // Add guided pauses to match the target duration
+    if (guide.timings && guide.timings[index]) {
+      const targetSeconds = parseDurationToSeconds(guide.timings[index]);
+      const instructionLength = expandedInstruction.length;
+      const pauseScript = generateGuidedPauses(targetSeconds, instructionLength);
+      script += pauseScript;
     }
-
-    // Add breathing cues between steps
+    
+    // Add gentle breathing cue between steps
     if (index < guide.steps.length - 1) {
-      script += "Take a moment to breathe naturally before we continue. ";
+      script += `\n\nTake a gentle breath...`;
     }
+    
+    script += `\n\n`;
   });
-
-  // Closing
-  script += "\n\nYou've completed this practice beautifully. Take a moment to notice how you feel now compared to when you started. ";
-  script += "Notice any changes in your body, your breathing, or your overall sense of wellbeing. ";
-  script += "Carry this sense of peace and accomplishment with you as you continue your healing journey. ";
-  script += "Remember, every time you practice self-care like this, you're building resilience and nurturing your wellbeing. ";
-  script += "Thank you for taking this time for yourself. You deserve this care and attention.";
-
+  
+  // Closing (integrative, compassionate)
+  script += `You've completed this practice.\n\n`;
+  script += `Take a moment to notice how you feel. `;
+  script += `Notice any sensations in your body, any shifts in your mind or heart.\n\n`;
+  script += `Healing is a journey, and you've taken an important step today. `;
+  script += `Be gentle with yourself as you move forward. `;
+  script += `You're exactly where you need to be.`;
+  
   return script;
 }
 
