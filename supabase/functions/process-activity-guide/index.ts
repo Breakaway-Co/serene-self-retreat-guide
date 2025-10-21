@@ -9,6 +9,9 @@ const corsHeaders = {
 
 interface ActivityGuideRequest {
   guideId: string;
+  guideName?: string;
+  activityType?: string;
+  instructions?: string[];
   customizations?: {
     intensity?: 'gentle' | 'moderate' | 'intensive';
     duration?: 'short' | 'medium' | 'long';
@@ -347,13 +350,24 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { guideId, customizations }: ActivityGuideRequest = await req.json();
+    const { guideId, guideName, activityType, instructions, customizations }: ActivityGuideRequest = await req.json();
 
-    if (!activityGuides[guideId]) {
+    let guide;
+    
+    // If instructions are provided directly, use them
+    if (instructions && instructions.length > 0) {
+      guide = {
+        name: guideName || 'Guided Practice',
+        type: activityType || 'mindfulness',
+        steps: instructions,
+        timings: instructions.map(() => "variable"), // Will be calculated by TTS pacing
+        tips: []
+      };
+    } else if (!activityGuides[guideId]) {
       throw new Error(`Activity guide not found: ${guideId}`);
+    } else {
+      guide = activityGuides[guideId];
     }
-
-    const guide = activityGuides[guideId];
     
     // Create master script by combining all steps with natural pacing
     const masterScript = createMasterScript(guide, customizations);

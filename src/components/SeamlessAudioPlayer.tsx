@@ -23,6 +23,7 @@ interface SeamlessAudioPlayerProps {
   guideId: string;
   guideName: string;
   activityType: string;
+  instructions?: string[];
   onComplete?: () => void;
   customizations?: {
     intensity?: 'gentle' | 'moderate' | 'intensive';
@@ -45,6 +46,7 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
   guideId,
   guideName,
   activityType,
+  instructions,
   onComplete,
   customizations
 }) => {
@@ -70,6 +72,9 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
       const { data, error } = await supabase.functions.invoke('process-activity-guide', {
         body: {
           guideId,
+          guideName,
+          activityType,
+          instructions,
           customizations
         }
       });

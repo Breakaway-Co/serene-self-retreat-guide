@@ -25,6 +25,7 @@ const AudioGuidance = ({ guideId, guideName, activityType, instructions, onAudio
         guideId={guideId}
         guideName={guideName}
         activityType={activityType}
+        instructions={instructions}
         onComplete={onAudioComplete}
       />
     </div>
