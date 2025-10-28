@@ -533,84 +533,129 @@ function extractPauseDuration(text: string): number {
   return 0;
 }
 
-// Helper: Convert instruction to real-time guided segments
+// Helper: Convert instruction to real-time guided segments with exact timing
 function createRealTimeGuidedSegments(instruction: string, targetSeconds: number, tip?: string): any[] {
   const segments: any[] = [];
+  const SPEAKING_RATE = 2.5; // characters per second for TTS estimation
   
-  // Pattern 1: "Take X deep breaths" or "breathe X times"
-  const breathMatch = instruction.match(/take\s+(\w+)\s+(?:deep\s+)?breaths?|(\d+)\s+(?:deep\s+)?breaths?/i);
+  // Pattern 1: "Take X deep breaths" - REAL-TIME breath guidance
+  const breathMatch = instruction.match(/take\s+(three|four|five|six|\d+)\s+(?:deep\s+)?breaths?|(\d+)\s+(?:deep\s+)?breaths?/i);
   if (breathMatch) {
-    const breathCount = breathMatch[1] === 'three' ? 3 : (breathMatch[2] ? parseInt(breathMatch[2]) : 3);
-    const timePerBreath = targetSeconds / breathCount;
-    const inhaleTime = Math.floor(timePerBreath * 0.4);
-    const exhaleTime = Math.floor(timePerBreath * 0.6);
+    const breathCount = breathMatch[1] === 'three' ? 3 : 
+                       breathMatch[1] === 'four' ? 4 : 
+                       breathMatch[1] === 'five' ? 5 : 
+                       breathMatch[1] === 'six' ? 6 : 
+                       (breathMatch[2] ? parseInt(breathMatch[2]) : 3);
+    
+    // Calculate time per breath cycle (total time minus intro speaking time)
+    const introText = instruction;
+    const introSpeakingTime = Math.ceil(introText.length / SPEAKING_RATE);
+    const availableTime = targetSeconds - introSpeakingTime;
+    const timePerBreath = Math.floor(availableTime / breathCount);
+    const inhaleTime = Math.floor(timePerBreath * 0.45); // 45% inhale
+    const holdTime = Math.floor(timePerBreath * 0.1);    // 10% hold at top
+    const exhaleTime = Math.floor(timePerBreath * 0.45); // 45% exhale
     
     segments.push({ text: instruction, pauseAfterSeconds: 2 });
     
     for (let i = 1; i <= breathCount; i++) {
       segments.push({ 
-        text: `Breath ${i}. Breathe in gently...`, 
+        text: `Breath ${i}. Breathe in, two, three, four...`, 
+        pauseAfterSeconds: Math.max(4, inhaleTime) 
+      });
+      if (holdTime > 0) {
+        segments.push({ 
+          text: `Hold...`, 
+          pauseAfterSeconds: holdTime 
+        });
+      }
+      segments.push({ 
+        text: `And breathe out, two, three, four, five, six...`, 
+        pauseAfterSeconds: Math.max(6, exhaleTime) 
+      });
+    }
+    
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // Pattern 2: "Hold for X seconds" - EXACT pause timing
+  const holdMatch = instruction.match(/(?:hold|pause|wait)\s+(?:for\s+)?(\d+)\s*(?:seconds?|sec)/i);
+  if (holdMatch) {
+    const holdSeconds = parseInt(holdMatch[1]);
+    const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
+    const actualHoldTime = Math.max(0, targetSeconds - instructionSpeakingTime);
+    
+    segments.push({ 
+      text: instruction, 
+      pauseAfterSeconds: actualHoldTime || holdSeconds 
+    });
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // Pattern 3: "Breathe in for X, hold Y, exhale Z" - PRECISE breath pattern
+  const breathPatternMatch = instruction.match(/(?:breathe in|inhale).*?(\d+).*?(?:hold|pause).*?(\d+).*?(?:breathe out|exhale).*?(\d+)/i);
+  if (breathPatternMatch) {
+    const inhaleTime = parseInt(breathPatternMatch[1]);
+    const holdTime = parseInt(breathPatternMatch[2]);
+    const exhaleTime = parseInt(breathPatternMatch[3]);
+    const cycleTime = inhaleTime + holdTime + exhaleTime;
+    const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
+    const availableTime = targetSeconds - instructionSpeakingTime;
+    const cycles = Math.max(1, Math.floor(availableTime / cycleTime));
+    
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    
+    for (let i = 1; i <= cycles; i++) {
+      segments.push({ 
+        text: `Cycle ${i}. Breathe in... ${Array.from({length: inhaleTime}, (_, j) => j + 1).join(', ')}`, 
         pauseAfterSeconds: inhaleTime 
       });
       segments.push({ 
-        text: `And breathe out slowly...`, 
+        text: `Hold... ${Array.from({length: holdTime}, (_, j) => j + 1).join(', ')}`, 
+        pauseAfterSeconds: holdTime 
+      });
+      segments.push({ 
+        text: `Breathe out... ${Array.from({length: exhaleTime}, (_, j) => j + 1).join(', ')}`, 
         pauseAfterSeconds: exhaleTime 
       });
     }
     
     if (tip) {
-      segments.push({ text: `Remember: ${tip}`, pauseAfterSeconds: 2 });
-    }
-    return segments;
-  }
-  
-  // Pattern 2: "Hold for X seconds" or "pause for X seconds"
-  const holdMatch = instruction.match(/(?:hold|pause|wait)\s+(?:for\s+)?(\d+)\s*(?:seconds?|sec)/i);
-  if (holdMatch) {
-    const holdSeconds = parseInt(holdMatch[1]);
-    segments.push({ 
-      text: instruction, 
-      pauseAfterSeconds: holdSeconds 
-    });
-    if (tip) {
       segments.push({ text: tip, pauseAfterSeconds: 2 });
     }
     return segments;
   }
   
-  // Pattern 3: "Inhale for X, hold for Y, exhale for Z"
-  const breathPatternMatch = instruction.match(/(?:breathe in|inhale).*?(\d+).*?(?:hold|pause).*?(\d+).*?(?:breathe out|exhale).*?(\d+)/i);
-  if (breathPatternMatch) {
-    const [_, inhaleTime, holdTime, exhaleTime] = breathPatternMatch.map(n => parseInt(n || '4'));
-    const cycles = Math.floor(targetSeconds / (inhaleTime + holdTime + exhaleTime)) || 1;
-    
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
-    
-    for (let i = 0; i < cycles; i++) {
-      segments.push({ text: 'Breathe in...', pauseAfterSeconds: inhaleTime });
-      segments.push({ text: 'Hold...', pauseAfterSeconds: holdTime });
-      segments.push({ text: 'Breathe out...', pauseAfterSeconds: exhaleTime });
-    }
-    
-    if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
-    }
-    return segments;
-  }
-  
-  // Pattern 4: "Tap each point X times" (EFT tapping)
-  const tappingMatch = instruction.match(/tap\s+(?:each\s+point|.*?)\s*(\d+)(?:-\d+)?\s*times/i);
+  // Pattern 4: "Tap each point X times" - REAL-TIME tapping guidance
+  const tappingMatch = instruction.match(/tap\s+(?:each\s+point|.*?)\s*(\d+)(?:-(\d+))?\s*times/i);
   if (tappingMatch) {
-    const tapsPerPoint = parseInt(tappingMatch[1]);
+    const minTaps = parseInt(tappingMatch[1]);
+    const maxTaps = tappingMatch[2] ? parseInt(tappingMatch[2]) : minTaps;
+    const tapsPerPoint = Math.floor((minTaps + maxTaps) / 2); // Use average if range given
     const points = ['top of head', 'eyebrow', 'side of eye', 'under eye', 'under nose', 'chin', 'collarbone', 'under arm'];
-    const secondsPerTap = 1;
+    const secondsPerTap = 0.8; // Realistic tapping speed
+    const timePerPoint = tapsPerPoint * secondsPerTap;
+    
+    const totalTappingTime = points.length * timePerPoint;
+    const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
+    const availableTime = targetSeconds - instructionSpeakingTime;
     
     segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    
+    // Adjust if we have extra time
+    const extraTimePerPoint = Math.max(0, (availableTime - totalTappingTime) / points.length);
     
     points.forEach(point => {
+      const countString = Array.from({length: tapsPerPoint}, (_, i) => i + 1).join(', ');
       segments.push({ 
-        text: `Now tap the ${point}. ${Array.from({length: tapsPerPoint}, (_, i) => i + 1).join(', ')}`, 
-        pauseAfterSeconds: tapsPerPoint * secondsPerTap 
+        text: `Tap the ${point}... ${countString}`, 
+        pauseAfterSeconds: Math.ceil(timePerPoint + extraTimePerPoint)
       });
     });
     
@@ -620,32 +665,48 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     return segments;
   }
   
-  // Pattern 5: "Scan [body part]" or "notice sensations" (body scan)
+  // Pattern 5: "Scan" or "notice sensations" - GUIDED observation with timing
   const scanMatch = instruction.match(/scan|notice\s+(?:any\s+)?sensations?/i);
-  if (scanMatch && targetSeconds > 30) {
+  if (scanMatch && targetSeconds > 20) {
+    const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
+    const observationTime = Math.floor((targetSeconds - instructionSpeakingTime) / 3);
+    
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
     segments.push({ 
-      text: instruction + '\n\nTake your time... notice without judgment...', 
-      pauseAfterSeconds: targetSeconds 
+      text: 'Just observe... notice without judgment...', 
+      pauseAfterSeconds: observationTime 
     });
+    segments.push({ 
+      text: 'Continue noticing... staying present...', 
+      pauseAfterSeconds: observationTime 
+    });
+    segments.push({ 
+      text: 'Take your time... there is no rush...', 
+      pauseAfterSeconds: observationTime 
+    });
+    
     if (tip) {
       segments.push({ text: tip, pauseAfterSeconds: 2 });
     }
     return segments;
   }
   
-  // Pattern 6: "Repeat X times" general pattern
+  // Pattern 6: "Repeat X times" - EXACT repetition guidance
   const repeatMatch = instruction.match(/repeat.*?(\d+)\s*times/i);
   if (repeatMatch) {
     const repeatCount = parseInt(repeatMatch[1]);
-    const timePerRepeat = targetSeconds / repeatCount;
     const baseInstruction = instruction.replace(/repeat.*?times/i, '').trim();
+    const instructionSpeakingTime = Math.ceil(baseInstruction.length / SPEAKING_RATE);
+    const availableTime = targetSeconds - (repeatCount * instructionSpeakingTime);
+    const pauseBetweenRepeats = Math.max(2, Math.floor(availableTime / repeatCount));
     
-    segments.push({ text: `We'll repeat this ${repeatCount} times.`, pauseAfterSeconds: 2 });
+    segments.push({ text: `We'll repeat this ${repeatCount} times. Ready?`, pauseAfterSeconds: 2 });
     
     for (let i = 1; i <= repeatCount; i++) {
+      const prefix = i === 1 ? `First time. ` : i === repeatCount ? `Final time. ` : `Time ${i}. `;
       segments.push({ 
-        text: i === 1 ? baseInstruction : `Again: ${baseInstruction}`, 
-        pauseAfterSeconds: timePerRepeat 
+        text: prefix + baseInstruction, 
+        pauseAfterSeconds: pauseBetweenRepeats 
       });
     }
     
@@ -655,19 +716,57 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     return segments;
   }
   
-  // Default: Single instruction with calculated pause
-  const estimatedSpeakingTime = instruction.length / 2.5; // ~2.5 characters per second
-  const pauseDuration = Math.max(0, targetSeconds - estimatedSpeakingTime);
+  // Pattern 7: Rate on scale 0-10 or 1-10
+  const rateMatch = instruction.match(/rate|scale\s+(?:of\s+)?(\d+)[-\s](?:to\s+)?(\d+)/i);
+  if (rateMatch) {
+    const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
+    const reflectionTime = targetSeconds - instructionSpeakingTime;
+    
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ 
+      text: 'Take your time to check in with yourself...', 
+      pauseAfterSeconds: Math.floor(reflectionTime / 2) 
+    });
+    segments.push({ 
+      text: 'What number feels true for you right now?', 
+      pauseAfterSeconds: Math.floor(reflectionTime / 2) 
+    });
+    
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // DEFAULT: Single instruction with calculated EXACT pause
+  const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
+  const pauseDuration = Math.max(0, targetSeconds - instructionSpeakingTime);
   
   let text = instruction;
-  if (pauseDuration > 10) {
+  
+  // Add natural pauses for longer durations
+  if (pauseDuration > 30) {
+    const midpoint = Math.floor(pauseDuration / 2);
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ 
+      text: 'Take your time... stay present with this...', 
+      pauseAfterSeconds: midpoint 
+    });
+    segments.push({ 
+      text: 'Continue... there is no rush...', 
+      pauseAfterSeconds: midpoint - 2 
+    });
+  } else if (pauseDuration > 10) {
     text += '\n\nTake your time with this...';
-  }
-  if (tip && tip.length > 0) {
-    text += '\n\n' + tip;
+    segments.push({ text, pauseAfterSeconds: pauseDuration });
+  } else {
+    segments.push({ text, pauseAfterSeconds: pauseDuration });
   }
   
-  segments.push({ text, pauseAfterSeconds: Math.round(pauseDuration) });
+  if (tip && tip.length > 0 && pauseDuration <= 10) {
+    segments.push({ text: tip, pauseAfterSeconds: 2 });
+  }
+  
   return segments;
 }
 
