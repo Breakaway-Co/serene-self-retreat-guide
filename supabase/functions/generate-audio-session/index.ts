@@ -264,15 +264,23 @@ serve(async (req) => {
       .from('audio-sessions')
       .getPublicUrl(fileName);
 
-    // Calculate metadata
-    let estimatedDuration = Math.ceil(masterScript.length / 150 * 60); // ~150 words per minute
-    const breathCycles = (masterScript.match(/breathe|inhale|exhale/gi) || []).length;
+    // Calculate metadata - use actual specified duration if available
+    let estimatedDuration: number;
     
-    // Add pause durations if segments are provided
-    if (segments && segments.length > 0) {
+    // If metadata includes totalEstimatedDuration, use that exact value
+    if (metadata?.totalEstimatedDuration) {
+      estimatedDuration = metadata.totalEstimatedDuration;
+    } else if (segments && segments.length > 0) {
+      // Calculate from segments: speaking time + pause time
+      const speakingTime = Math.ceil(masterScript.length / 150 * 60); // ~150 words per minute
       const totalPauseDuration = segments.reduce((sum, seg) => sum + (seg.pauseAfterSeconds || 0), 0);
-      estimatedDuration += totalPauseDuration;
+      estimatedDuration = speakingTime + totalPauseDuration;
+    } else {
+      // Fallback to word count estimation
+      estimatedDuration = Math.ceil(masterScript.length / 150 * 60);
     }
+    
+    const breathCycles = (masterScript.match(/breathe|inhale|exhale/gi) || []).length;
 
     // Update session with completion
     const { error: updateError } = await supabase.from('audio_sessions').update({

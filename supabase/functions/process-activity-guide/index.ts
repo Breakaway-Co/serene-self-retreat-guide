@@ -432,16 +432,17 @@ serve(async (req) => {
   }
 });
 
-// Helper: Parse duration string to seconds
+// Helper: Parse duration string to seconds (supports decimals like 19.28 minutes)
 function parseDurationToSeconds(duration: string): number {
-  const match = duration.match(/(\d+)\s*(min|sec|hour)/i);
+  // Match decimal or integer values with units
+  const match = duration.match(/(\d+\.?\d*)\s*(min|sec|hour|minute|second)/i);
   if (!match) return 60; // default 1 minute
   
-  const value = parseInt(match[1]);
+  const value = parseFloat(match[1]);
   const unit = match[2].toLowerCase();
   
-  if (unit === 'hour') return value * 3600;
-  if (unit === 'min') return value * 60;
+  if (unit.startsWith('hour')) return value * 3600;
+  if (unit.startsWith('min')) return value * 60;
   return value; // seconds
 }
 
@@ -653,13 +654,7 @@ function getVoiceForActivityType(activityType: string): string {
 function calculateTotalDuration(timings: string[]): number {
   let totalSeconds = 0;
   timings.forEach(timing => {
-    if (timing.includes('minutes')) {
-      const minutes = parseInt(timing.match(/(\d+)/)?.[1] || '0');
-      totalSeconds += minutes * 60;
-    } else if (timing.includes('seconds')) {
-      const seconds = parseInt(timing.match(/(\d+)/)?.[1] || '0');
-      totalSeconds += seconds;
-    }
+    totalSeconds += parseDurationToSeconds(timing);
   });
   return totalSeconds;
 }
