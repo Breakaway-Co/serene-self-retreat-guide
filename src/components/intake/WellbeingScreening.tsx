@@ -120,7 +120,7 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
   const currentToolData = tools[currentTool];
   const currentResponses = screening[currentToolData.responseKey] as number[] || [];
 
-  // Restore progress on component mount
+  // Restore progress on component mount (only once)
   useEffect(() => {
     if (!isLoading && user && progressState.progressData) {
       // Restore screening data from progress
@@ -133,17 +133,13 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
       setScreening(restoredScreening);
       updateData('wellbeingScreening', restoredScreening);
 
-      // Navigate to the last incomplete question
+      // Navigate to the last incomplete question, but don't scroll
       const incomplete = getFirstIncompleteQuestion();
       if (incomplete) {
         setCurrentTool(incomplete.toolIndex);
-        // Scroll to the incomplete question after a short delay
-        setTimeout(() => {
-          scrollToQuestion(incomplete.questionIndex);
-        }, 100);
       }
     }
-  }, [isLoading, user, progressState.progressData]);
+  }, [isLoading, user]);
 
   // Scroll to specific question
   const scrollToQuestion = (questionIndex: number) => {
@@ -169,6 +165,21 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
     
     updateScreening(currentToolData.responseKey, updatedResponses);
     updateScreening(currentToolData.scoreKey, score);
+    
+    // Check if all questions are answered, if so enable Next Tool button
+    const allAnswered = updatedResponses.length === currentToolData.questions.length && 
+                        updatedResponses.every(response => response !== undefined);
+    
+    // If this was the last question, show completion feedback
+    if (allAnswered && questionIndex === currentToolData.questions.length - 1) {
+      // Optional: Could add a subtle scroll to show the score card
+      setTimeout(() => {
+        const scoreCard = document.querySelector('[data-score-card="true"]');
+        if (scoreCard) {
+          scoreCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 100);
+    }
   };
 
   const isCurrentToolComplete = currentResponses.length === currentToolData.questions.length && 
@@ -185,7 +196,10 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
     }
     
     if (currentTool < tools.length - 1) {
+      // Move to next tool and scroll to top of the card
       setCurrentTool(currentTool + 1);
+      // Smooth scroll to top of the assessment area
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       // Mark as completed in progress
       if (user) {
@@ -318,15 +332,18 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
 
           {/* Score Display */}
           {isCurrentToolComplete && (
-            <Card className="bg-muted/50">
+            <Card className="bg-muted/50" data-score-card="true">
               <CardContent className="pt-4">
-                <div className="text-center">
+                <div className="text-center space-y-2">
                   <p className="text-sm text-muted-foreground mb-1">Your Score</p>
                   <p className="text-2xl font-bold">
                     {screening[currentToolData.scoreKey] as number || 0}
                   </p>
                   <p className={`text-sm font-medium ${getScoreInterpretation(currentToolData, screening[currentToolData.scoreKey] as number || 0).color}`}>
                     {getScoreInterpretation(currentToolData, screening[currentToolData.scoreKey] as number || 0).level}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    ✓ Assessment complete. Click "{currentTool === tools.length - 1 ? 'Continue' : 'Next Tool'}" below to proceed.
                   </p>
                 </div>
               </CardContent>
@@ -343,6 +360,7 @@ const WellbeingScreening = ({ data, updateData, onNext, onPrevious }: WellbeingS
         <Button 
           onClick={handleNextTool}
           variant="healing"
+          disabled={!isCurrentToolComplete}
         >
           {currentTool === tools.length - 1 ? "Continue" : "Next Tool"}
         </Button>

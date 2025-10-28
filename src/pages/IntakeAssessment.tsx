@@ -86,12 +86,16 @@ const IntakeAssessment = () => {
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+      // Scroll to top smoothly when moving to next section
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handlePrevious = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+      // Scroll to top smoothly when moving to previous section
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
