@@ -533,32 +533,142 @@ function extractPauseDuration(text: string): number {
   return 0;
 }
 
-// Helper: Generate guided pauses to fill duration (returns both script and pause duration)
-function generateGuidedPauses(targetSeconds: number, instructionLength: number): { script: string; pauseSeconds: number } {
-  // Estimate TTS speaking time: ~150 words per minute, ~2.5 words per second
-  const estimatedSpeakingTime = instructionLength / 2.5;
-  const remainingTime = targetSeconds - estimatedSpeakingTime;
+// Helper: Convert instruction to real-time guided segments
+function createRealTimeGuidedSegments(instruction: string, targetSeconds: number, tip?: string): any[] {
+  const segments: any[] = [];
   
-  if (remainingTime <= 5) return { script: '', pauseSeconds: 0 }; // No pause needed
-  
-  const pauseDuration = Math.max(0, Math.round(remainingTime));
-  let pauseScript = '\n\n';
-  
-  // For short remaining time (5-30 sec), single pause
-  if (remainingTime <= 30) {
-    pauseScript += `Take your time with this...`;
-    return { script: pauseScript, pauseSeconds: pauseDuration };
+  // Pattern 1: "Take X deep breaths" or "breathe X times"
+  const breathMatch = instruction.match(/take\s+(\w+)\s+(?:deep\s+)?breaths?|(\d+)\s+(?:deep\s+)?breaths?/i);
+  if (breathMatch) {
+    const breathCount = breathMatch[1] === 'three' ? 3 : (breathMatch[2] ? parseInt(breathMatch[2]) : 3);
+    const timePerBreath = targetSeconds / breathCount;
+    const inhaleTime = Math.floor(timePerBreath * 0.4);
+    const exhaleTime = Math.floor(timePerBreath * 0.6);
+    
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    
+    for (let i = 1; i <= breathCount; i++) {
+      segments.push({ 
+        text: `Breath ${i}. Breathe in gently...`, 
+        pauseAfterSeconds: inhaleTime 
+      });
+      segments.push({ 
+        text: `And breathe out slowly...`, 
+        pauseAfterSeconds: exhaleTime 
+      });
+    }
+    
+    if (tip) {
+      segments.push({ text: `Remember: ${tip}`, pauseAfterSeconds: 2 });
+    }
+    return segments;
   }
   
-  // For medium time (30-90 sec), add periodic check-ins
-  if (remainingTime <= 90) {
-    pauseScript += `Stay with this practice...`;
-    return { script: pauseScript, pauseSeconds: pauseDuration };
+  // Pattern 2: "Hold for X seconds" or "pause for X seconds"
+  const holdMatch = instruction.match(/(?:hold|pause|wait)\s+(?:for\s+)?(\d+)\s*(?:seconds?|sec)/i);
+  if (holdMatch) {
+    const holdSeconds = parseInt(holdMatch[1]);
+    segments.push({ 
+      text: instruction, 
+      pauseAfterSeconds: holdSeconds 
+    });
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
   }
   
-  // For longer time (90+ sec), add anchoring phrase
-  pauseScript += `Continue at your own pace... stay present with your experience...`;
-  return { script: pauseScript, pauseSeconds: pauseDuration };
+  // Pattern 3: "Inhale for X, hold for Y, exhale for Z"
+  const breathPatternMatch = instruction.match(/(?:breathe in|inhale).*?(\d+).*?(?:hold|pause).*?(\d+).*?(?:breathe out|exhale).*?(\d+)/i);
+  if (breathPatternMatch) {
+    const [_, inhaleTime, holdTime, exhaleTime] = breathPatternMatch.map(n => parseInt(n || '4'));
+    const cycles = Math.floor(targetSeconds / (inhaleTime + holdTime + exhaleTime)) || 1;
+    
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    
+    for (let i = 0; i < cycles; i++) {
+      segments.push({ text: 'Breathe in...', pauseAfterSeconds: inhaleTime });
+      segments.push({ text: 'Hold...', pauseAfterSeconds: holdTime });
+      segments.push({ text: 'Breathe out...', pauseAfterSeconds: exhaleTime });
+    }
+    
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // Pattern 4: "Tap each point X times" (EFT tapping)
+  const tappingMatch = instruction.match(/tap\s+(?:each\s+point|.*?)\s*(\d+)(?:-\d+)?\s*times/i);
+  if (tappingMatch) {
+    const tapsPerPoint = parseInt(tappingMatch[1]);
+    const points = ['top of head', 'eyebrow', 'side of eye', 'under eye', 'under nose', 'chin', 'collarbone', 'under arm'];
+    const secondsPerTap = 1;
+    
+    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    
+    points.forEach(point => {
+      segments.push({ 
+        text: `Now tap the ${point}. ${Array.from({length: tapsPerPoint}, (_, i) => i + 1).join(', ')}`, 
+        pauseAfterSeconds: tapsPerPoint * secondsPerTap 
+      });
+    });
+    
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // Pattern 5: "Scan [body part]" or "notice sensations" (body scan)
+  const scanMatch = instruction.match(/scan|notice\s+(?:any\s+)?sensations?/i);
+  if (scanMatch && targetSeconds > 30) {
+    segments.push({ 
+      text: instruction + '\n\nTake your time... notice without judgment...', 
+      pauseAfterSeconds: targetSeconds 
+    });
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // Pattern 6: "Repeat X times" general pattern
+  const repeatMatch = instruction.match(/repeat.*?(\d+)\s*times/i);
+  if (repeatMatch) {
+    const repeatCount = parseInt(repeatMatch[1]);
+    const timePerRepeat = targetSeconds / repeatCount;
+    const baseInstruction = instruction.replace(/repeat.*?times/i, '').trim();
+    
+    segments.push({ text: `We'll repeat this ${repeatCount} times.`, pauseAfterSeconds: 2 });
+    
+    for (let i = 1; i <= repeatCount; i++) {
+      segments.push({ 
+        text: i === 1 ? baseInstruction : `Again: ${baseInstruction}`, 
+        pauseAfterSeconds: timePerRepeat 
+      });
+    }
+    
+    if (tip) {
+      segments.push({ text: tip, pauseAfterSeconds: 2 });
+    }
+    return segments;
+  }
+  
+  // Default: Single instruction with calculated pause
+  const estimatedSpeakingTime = instruction.length / 2.5; // ~2.5 characters per second
+  const pauseDuration = Math.max(0, targetSeconds - estimatedSpeakingTime);
+  
+  let text = instruction;
+  if (pauseDuration > 10) {
+    text += '\n\nTake your time with this...';
+  }
+  if (tip && tip.length > 0) {
+    text += '\n\n' + tip;
+  }
+  
+  segments.push({ text, pauseAfterSeconds: Math.round(pauseDuration) });
+  return segments;
 }
 
 // Main script creation function with segments for real-time pauses
@@ -574,41 +684,30 @@ function createMasterScript(guide: any, customizations?: any): { script: string;
   openingScript += `If at any point you need to pause or stop, please honor that need. `;
   openingScript += `Your comfort and safety are always the priority.\n\n`;
   
-  segments.push({ text: openingScript, pauseAfterSeconds: 2 });
+  segments.push({ text: openingScript, pauseAfterSeconds: 3 });
   
-  // Process each step with timing, repetitions, and natural flow
+  // Process each step with real-time guided segments
   guide.steps.forEach((step: string, index: number) => {
-    let stepScript = '';
+    // Add natural transition
+    const transition = createTransition(index, guide.steps.length);
+    segments.push({ text: transition, pauseAfterSeconds: 1 });
     
-    // Add natural transition (removes "Step X")
-    stepScript += createTransition(index, guide.steps.length);
+    // Get target duration for this step
+    const targetSeconds = guide.timings && guide.timings[index] 
+      ? parseDurationToSeconds(guide.timings[index])
+      : 60;
     
-    // Expand repetitions in the instruction
-    const expandedInstruction = expandRepetitions(step);
-    stepScript += expandedInstruction;
+    // Get tip for this step
+    const tip = guide.tips && guide.tips[index] ? guide.tips[index] : '';
     
-    // Add tip if available
-    if (guide.tips && guide.tips[index] && guide.tips[index].length > 0) {
-      stepScript += `\n\nHelpful tip: ${guide.tips[index]}`;
-    }
-    
-    // Calculate pause duration based on target timing
-    let pauseDuration = 0;
-    if (guide.timings && guide.timings[index]) {
-      const targetSeconds = parseDurationToSeconds(guide.timings[index]);
-      const instructionLength = expandedInstruction.length;
-      const pauseData = generateGuidedPauses(targetSeconds, instructionLength);
-      stepScript += pauseData.script;
-      pauseDuration = pauseData.pauseSeconds;
-    }
+    // Create real-time guided segments for this step
+    const stepSegments = createRealTimeGuidedSegments(step, targetSeconds, tip);
+    segments.push(...stepSegments);
     
     // Add gentle breathing cue between steps
     if (index < guide.steps.length - 1) {
-      stepScript += `\n\nTake a gentle breath...`;
-      pauseDuration = Math.max(pauseDuration, 3); // Minimum 3 second pause
+      segments.push({ text: 'Take a gentle breath...', pauseAfterSeconds: 3 });
     }
-    
-    segments.push({ text: stepScript, pauseAfterSeconds: pauseDuration });
   });
   
   // Closing (integrative, compassionate)
@@ -626,6 +725,7 @@ function createMasterScript(guide: any, customizations?: any): { script: string;
   
   return { script: fullScript, segments };
 }
+
 
 function getSessionType(activityType: string): string {
   const typeMap: Record<string, string> = {
