@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import SegmentedAudioPlayer from './SegmentedAudioPlayer';
 
 interface SeamlessAudioPlayerProps {
   guideId: string;
@@ -34,6 +35,11 @@ interface SeamlessAudioPlayerProps {
   };
 }
 
+interface AudioSegment {
+  text: string;
+  pauseAfterSeconds?: number;
+}
+
 interface AudioSession {
   id: string;
   session_id: string;
@@ -41,7 +47,11 @@ interface AudioSession {
   audio_url?: string;
   duration_seconds?: number;
   status: string;
-  metadata: any;
+  metadata: {
+    segments?: AudioSegment[];
+    segmentedAudio?: boolean;
+    [key: string]: any;
+  };
 }
 
 const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
@@ -142,7 +152,10 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
 
         if (data.status === 'completed') {
           clearInterval(pollInterval);
-          setAudioSession(data);
+          setAudioSession({
+            ...data,
+            metadata: data.metadata as any
+          });
           setIsLoading(false);
           toast({
             title: 'Audio Ready!',
@@ -401,4 +414,82 @@ const SeamlessAudioPlayer: React.FC<SeamlessAudioPlayerProps> = ({
   );
 };
 
-export default SeamlessAudioPlayer;
+// If the audio session has segments with pauses, use SegmentedAudioPlayer
+const SeamlessAudioPlayerWrapper: React.FC<SeamlessAudioPlayerProps> = (props) => {
+  const [audioSession, setAudioSession] = useState<AudioSession | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const generateSeamlessAudio = async () => {
+    try {
+      setIsLoading(true);
+      
+      toast({
+        title: 'Generating Your Audio',
+        description: 'Creating a seamless, uninterrupted meditation experience...'
+      });
+
+      const { data, error } = await supabase.functions.invoke('process-activity-guide', {
+        body: {
+          guideId: props.guideId,
+          guideName: props.guideName,
+          activityType: props.activityType,
+          instructions: props.instructions,
+          timings: props.timings,
+          tips: props.tips,
+          customizations: props.customizations
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (data?.success) {
+        if (data.audioUrl && data.sessionId) {
+          setAudioSession({
+            id: data.sessionId,
+            session_id: data.sessionId,
+            session_name: props.guideName,
+            audio_url: data.audioUrl,
+            duration_seconds: data.duration ?? undefined,
+            status: 'completed',
+            metadata: data.metadata ?? {},
+          });
+          toast({
+            title: 'Audio Ready!',
+            description: 'Your seamless meditation session is ready to play.'
+          });
+        }
+      } else {
+        throw new Error(data?.error || 'Failed to generate audio');
+      }
+    } catch (error: any) {
+      console.error('Error generating audio:', error);
+      toast({
+        title: 'Generation Failed',
+        description: error.message || 'Failed to generate audio. Please try again.',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Check if we should use segmented audio player
+  if (audioSession?.metadata?.segmentedAudio && audioSession.metadata.segments && audioSession.audio_url) {
+    return (
+      <SegmentedAudioPlayer
+        audioUrl={audioSession.audio_url}
+        segments={audioSession.metadata.segments}
+        sessionName={audioSession.session_name}
+        onComplete={props.onComplete}
+      />
+    );
+  }
+
+  // Otherwise show the generation UI or standard player
+  return <SeamlessAudioPlayer {...props} />;
+};
+
+export default SeamlessAudioPlayerWrapper;

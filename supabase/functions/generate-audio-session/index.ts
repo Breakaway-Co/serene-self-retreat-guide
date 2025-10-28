@@ -15,6 +15,12 @@ interface AudioGenerationRequest {
   masterScript: string;
   voiceId?: string;
   metadata?: Record<string, any>;
+  segments?: AudioSegment[];
+}
+
+interface AudioSegment {
+  text: string;
+  pauseAfterSeconds?: number;
 }
 
 serve(async (req) => {
@@ -34,7 +40,7 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     const body: AudioGenerationRequest = await req.json();
-    const { sessionId, sessionName, sessionType, activityType, masterScript, voiceId, metadata } = body;
+    const { sessionId, sessionName, sessionType, activityType, masterScript, voiceId, metadata, segments } = body;
 
     // Log generation start
     await supabase.from('generation_logs').insert({
@@ -73,8 +79,19 @@ serve(async (req) => {
       session_id: sessionDbId,
       log_level: 'info',
       message: 'Session record created successfully',
-      details: { sessionDbId }
+      details: { sessionDbId, hasSegments: !!segments }
     });
+
+    // Store segments in metadata if provided
+    if (segments && segments.length > 0) {
+      await supabase.from('audio_sessions').update({
+        metadata: {
+          ...metadata,
+          segments: segments,
+          segmentedAudio: true
+        }
+      }).eq('id', sessionDbId);
+    }
 
     // Generate audio with ElevenLabs
     const audioResponse = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId || 'SAz9YHcvj6GT2YYXdXww'}`, {
@@ -248,8 +265,14 @@ serve(async (req) => {
       .getPublicUrl(fileName);
 
     // Calculate metadata
-    const estimatedDuration = Math.ceil(masterScript.length / 150 * 60); // ~150 words per minute
+    let estimatedDuration = Math.ceil(masterScript.length / 150 * 60); // ~150 words per minute
     const breathCycles = (masterScript.match(/breathe|inhale|exhale/gi) || []).length;
+    
+    // Add pause durations if segments are provided
+    if (segments && segments.length > 0) {
+      const totalPauseDuration = segments.reduce((sum, seg) => sum + (seg.pauseAfterSeconds || 0), 0);
+      estimatedDuration += totalPauseDuration;
+    }
 
     // Update session with completion
     const { error: updateError } = await supabase.from('audio_sessions').update({
@@ -260,6 +283,8 @@ serve(async (req) => {
       generated_at: new Date().toISOString(),
       metadata: {
         ...metadata,
+        segments: segments || [],
+        segmentedAudio: segments && segments.length > 0,
         fileSize: audioBuffer.byteLength,
         fileName: fileName,
         wordCount: masterScript.split(' ').length

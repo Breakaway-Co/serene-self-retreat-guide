@@ -369,8 +369,8 @@ serve(async (req) => {
       guide = activityGuides[guideId];
     }
     
-    // Create master script by combining all steps with natural pacing
-    const masterScript = createMasterScript(guide, customizations);
+    // Create master script with segments for timed pauses
+    const { script: masterScript, segments } = createMasterScript(guide, customizations);
 
     // Generate a unique session ID
     const sessionId = `${guideId}-${Date.now()}`;
@@ -388,12 +388,14 @@ serve(async (req) => {
         sessionType: getSessionType(guide.type),
         activityType: guide.type,
         masterScript,
+        segments,
         voiceId: getVoiceForActivityType(guide.type),
         metadata: {
           originalGuideId: guideId,
           customizations,
           stepCount: guide.steps.length,
-          totalEstimatedDuration: calculateTotalDuration(guide.timings)
+          totalEstimatedDuration: calculateTotalDuration(guide.timings),
+          hasTimedPauses: true
         }
       })
     });
@@ -513,100 +515,115 @@ function createTransition(index: number, totalSteps: number): string {
   return transitions[index % transitions.length];
 }
 
-// Helper: Generate guided pauses to fill duration
-function generateGuidedPauses(targetSeconds: number, instructionLength: number): string {
+// Helper: Extract pause duration from text
+function extractPauseDuration(text: string): number {
+  const patterns = [
+    /\[Pause for (\d+) seconds?\]/gi,
+    /\[(\d+)[- ]second pause\]/gi,
+    /pause.*?(\d+)\s*sec/gi
+  ];
+  
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) {
+      return parseInt(match[1]);
+    }
+  }
+  return 0;
+}
+
+// Helper: Generate guided pauses to fill duration (returns both script and pause duration)
+function generateGuidedPauses(targetSeconds: number, instructionLength: number): { script: string; pauseSeconds: number } {
   // Estimate TTS speaking time: ~150 words per minute, ~2.5 words per second
   const estimatedSpeakingTime = instructionLength / 2.5;
   const remainingTime = targetSeconds - estimatedSpeakingTime;
   
-  if (remainingTime <= 5) return ''; // No pause needed
+  if (remainingTime <= 5) return { script: '', pauseSeconds: 0 }; // No pause needed
   
+  const pauseDuration = Math.max(0, Math.round(remainingTime));
   let pauseScript = '\n\n';
   
   // For short remaining time (5-30 sec), single pause
   if (remainingTime <= 30) {
-    pauseScript += `Take your time with this... [Pause for ${Math.round(remainingTime)} seconds]`;
-    return pauseScript;
+    pauseScript += `Take your time with this...`;
+    return { script: pauseScript, pauseSeconds: pauseDuration };
   }
   
   // For medium time (30-90 sec), add periodic check-ins
   if (remainingTime <= 90) {
-    pauseScript += `Stay with this practice... [Pause for 20 seconds]\n\n`;
-    pauseScript += `Continue breathing naturally... [Pause for ${Math.round(remainingTime - 20)} seconds]`;
-    return pauseScript;
+    pauseScript += `Stay with this practice...`;
+    return { script: pauseScript, pauseSeconds: pauseDuration };
   }
   
-  // For longer time (90+ sec), add multiple anchoring phrases
-  const numAnchors = Math.floor(remainingTime / 30);
-  const pauseBetween = Math.floor(remainingTime / (numAnchors + 1));
-  
-  const anchors = [
-    'You\'re doing beautifully... stay present...',
-    'Notice any sensations arising...',
-    'There\'s no rush... allow yourself to fully experience this...',
-    'Continue at your own pace...',
-    'Remember, you\'re safe and in control...',
-    'Simply observe what emerges...'
-  ];
-  
-  for (let i = 0; i < numAnchors; i++) {
-    pauseScript += `${anchors[i % anchors.length]} [Pause for ${pauseBetween} seconds]\n\n`;
-  }
-  
-  return pauseScript;
+  // For longer time (90+ sec), add anchoring phrase
+  pauseScript += `Continue at your own pace... stay present with your experience...`;
+  return { script: pauseScript, pauseSeconds: pauseDuration };
 }
 
-// Main script creation function
-function createMasterScript(guide: any, customizations?: any): string {
+// Main script creation function with segments for real-time pauses
+function createMasterScript(guide: any, customizations?: any): { script: string; segments: any[] } {
   const intensity = customizations?.intensity || 'moderate';
+  const segments: any[] = [];
   
   // Opening (warm, trauma-informed)
-  let script = `Welcome to ${guide.name}. `;
-  script += `This is a ${guide.type} practice designed to support your healing and growth.\n\n`;
-  script += `Find a comfortable position where you won't be disturbed. `;
-  script += `You're in complete control throughout this experience. `;
-  script += `If at any point you need to pause or stop, please honor that need. `;
-  script += `Your comfort and safety are always the priority.\n\n`;
+  let openingScript = `Welcome to ${guide.name}. `;
+  openingScript += `This is a ${guide.type} practice designed to support your healing and growth.\n\n`;
+  openingScript += `Find a comfortable position where you won't be disturbed. `;
+  openingScript += `You're in complete control throughout this experience. `;
+  openingScript += `If at any point you need to pause or stop, please honor that need. `;
+  openingScript += `Your comfort and safety are always the priority.\n\n`;
+  
+  segments.push({ text: openingScript, pauseAfterSeconds: 2 });
   
   // Process each step with timing, repetitions, and natural flow
   guide.steps.forEach((step: string, index: number) => {
+    let stepScript = '';
+    
     // Add natural transition (removes "Step X")
-    script += createTransition(index, guide.steps.length);
+    stepScript += createTransition(index, guide.steps.length);
     
     // Expand repetitions in the instruction
     const expandedInstruction = expandRepetitions(step);
-    script += expandedInstruction;
+    stepScript += expandedInstruction;
     
     // Add tip if available
     if (guide.tips && guide.tips[index] && guide.tips[index].length > 0) {
-      script += `\n\nHelpful tip: ${guide.tips[index]}`;
+      stepScript += `\n\nHelpful tip: ${guide.tips[index]}`;
     }
     
-    // Add guided pauses to match the target duration
+    // Calculate pause duration based on target timing
+    let pauseDuration = 0;
     if (guide.timings && guide.timings[index]) {
       const targetSeconds = parseDurationToSeconds(guide.timings[index]);
       const instructionLength = expandedInstruction.length;
-      const pauseScript = generateGuidedPauses(targetSeconds, instructionLength);
-      script += pauseScript;
+      const pauseData = generateGuidedPauses(targetSeconds, instructionLength);
+      stepScript += pauseData.script;
+      pauseDuration = pauseData.pauseSeconds;
     }
     
     // Add gentle breathing cue between steps
     if (index < guide.steps.length - 1) {
-      script += `\n\nTake a gentle breath...`;
+      stepScript += `\n\nTake a gentle breath...`;
+      pauseDuration = Math.max(pauseDuration, 3); // Minimum 3 second pause
     }
     
-    script += `\n\n`;
+    segments.push({ text: stepScript, pauseAfterSeconds: pauseDuration });
   });
   
   // Closing (integrative, compassionate)
-  script += `You've completed this practice.\n\n`;
-  script += `Take a moment to notice how you feel. `;
-  script += `Notice any sensations in your body, any shifts in your mind or heart.\n\n`;
-  script += `Healing is a journey, and you've taken an important step today. `;
-  script += `Be gentle with yourself as you move forward. `;
-  script += `You're exactly where you need to be.`;
+  let closingScript = `You've completed this practice.\n\n`;
+  closingScript += `Take a moment to notice how you feel. `;
+  closingScript += `Notice any sensations in your body, any shifts in your mind or heart.\n\n`;
+  closingScript += `Healing is a journey, and you've taken an important step today. `;
+  closingScript += `Be gentle with yourself as you move forward. `;
+  closingScript += `You're exactly where you need to be.`;
   
-  return script;
+  segments.push({ text: closingScript, pauseAfterSeconds: 0 });
+  
+  // Combine all segments into master script for backward compatibility
+  const fullScript = segments.map(seg => seg.text).join('\n\n');
+  
+  return { script: fullScript, segments };
 }
 
 function getSessionType(activityType: string): string {
