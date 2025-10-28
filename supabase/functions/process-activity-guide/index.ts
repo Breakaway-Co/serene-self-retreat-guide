@@ -556,27 +556,26 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const holdTime = Math.floor(timePerBreath * 0.1);    // 10% hold at top
     const exhaleTime = Math.floor(timePerBreath * 0.45); // 45% exhale
     
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ text: `${instruction}... Let's begin...`, pauseAfterSeconds: 2 });
     
     for (let i = 1; i <= breathCount; i++) {
+      const inhaleCount = Math.min(Math.max(4, inhaleTime), 8);
+      const inhaleCounting = Array.from({length: inhaleCount}, (_, j) => j + 1).join('... ');
       segments.push({ 
-        text: `Breath ${i}. Breathe in, two, three, four...`, 
+        text: `Breath ${i}... Breathe in... ${inhaleCounting}...`, 
         pauseAfterSeconds: Math.max(4, inhaleTime) 
       });
-      if (holdTime > 0) {
-        segments.push({ 
-          text: `Hold...`, 
-          pauseAfterSeconds: holdTime 
-        });
+      if (holdTime > 1) {
+        const holdCounting = Array.from({length: Math.min(holdTime, 5)}, (_, j) => j + 1).join('... ');
+        segments.push({ text: `Hold... ${holdCounting}...`, pauseAfterSeconds: holdTime });
       }
-      segments.push({ 
-        text: `And breathe out, two, three, four, five, six...`, 
-        pauseAfterSeconds: Math.max(6, exhaleTime) 
-      });
+      const exhaleCount = Math.min(Math.max(6, exhaleTime), 10);
+      const exhaleCounting = Array.from({length: exhaleCount}, (_, j) => j + 1).join('... ');
+      segments.push({ text: `And breathe out... ${exhaleCounting}...`, pauseAfterSeconds: Math.max(6, exhaleTime) });
     }
     
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -588,12 +587,16 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
     const actualHoldTime = Math.max(0, targetSeconds - instructionSpeakingTime);
     
+    // Add ellipses to create natural pauses in the audio
+    const holdDuration = actualHoldTime || holdSeconds;
+    const countingText = holdDuration > 3 ? `... ${Array.from({length: Math.min(holdDuration, 10)}, (_, i) => i + 1).join('... ')}...` : '...';
+    
     segments.push({ 
-      text: instruction, 
+      text: `${instruction}${countingText}`, 
       pauseAfterSeconds: actualHoldTime || holdSeconds 
     });
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -609,25 +612,30 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const availableTime = targetSeconds - instructionSpeakingTime;
     const cycles = Math.max(1, Math.floor(availableTime / cycleTime));
     
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ text: `${instruction}... Let's begin the cycles...`, pauseAfterSeconds: 2 });
     
     for (let i = 1; i <= cycles; i++) {
+      const inhaleCounting = Array.from({length: inhaleTime}, (_, j) => j + 1).join('... ');
       segments.push({ 
-        text: `Cycle ${i}. Breathe in... ${Array.from({length: inhaleTime}, (_, j) => j + 1).join(', ')}`, 
+        text: `Cycle ${i}... Breathe in... ${inhaleCounting}...`, 
         pauseAfterSeconds: inhaleTime 
       });
+      
+      const holdCounting = Array.from({length: holdTime}, (_, j) => j + 1).join('... ');
       segments.push({ 
-        text: `Hold... ${Array.from({length: holdTime}, (_, j) => j + 1).join(', ')}`, 
+        text: `Hold... ${holdCounting}...`, 
         pauseAfterSeconds: holdTime 
       });
+      
+      const exhaleCounting = Array.from({length: exhaleTime}, (_, j) => j + 1).join('... ');
       segments.push({ 
-        text: `Breathe out... ${Array.from({length: exhaleTime}, (_, j) => j + 1).join(', ')}`, 
+        text: `Breathe out... ${exhaleCounting}...`, 
         pauseAfterSeconds: exhaleTime 
       });
     }
     
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -646,21 +654,21 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
     const availableTime = targetSeconds - instructionSpeakingTime;
     
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ text: `${instruction}... Follow along with me...`, pauseAfterSeconds: 2 });
     
     // Adjust if we have extra time
     const extraTimePerPoint = Math.max(0, (availableTime - totalTappingTime) / points.length);
     
     points.forEach(point => {
-      const countString = Array.from({length: tapsPerPoint}, (_, i) => i + 1).join(', ');
+      const countString = Array.from({length: tapsPerPoint}, (_, i) => i + 1).join('... ');
       segments.push({ 
-        text: `Tap the ${point}... ${countString}`, 
+        text: `Tap the ${point}... ${countString}... Good...`, 
         pauseAfterSeconds: Math.ceil(timePerPoint + extraTimePerPoint)
       });
     });
     
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -671,22 +679,22 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
     const observationTime = Math.floor((targetSeconds - instructionSpeakingTime) / 3);
     
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ text: `${instruction}... Take your time...`, pauseAfterSeconds: 2 });
     segments.push({ 
-      text: 'Just observe... notice without judgment...', 
+      text: 'Just observe... notice without judgment... simply be present with what arises...', 
       pauseAfterSeconds: observationTime 
     });
     segments.push({ 
-      text: 'Continue noticing... staying present...', 
+      text: 'Continue noticing... staying present... there is no need to change anything...', 
       pauseAfterSeconds: observationTime 
     });
     segments.push({ 
-      text: 'Take your time... there is no rush...', 
+      text: 'Take all the time you need... there is no rush... just notice...', 
       pauseAfterSeconds: observationTime 
     });
     
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -700,18 +708,18 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const availableTime = targetSeconds - (repeatCount * instructionSpeakingTime);
     const pauseBetweenRepeats = Math.max(2, Math.floor(availableTime / repeatCount));
     
-    segments.push({ text: `We'll repeat this ${repeatCount} times. Ready?`, pauseAfterSeconds: 2 });
+    segments.push({ text: `We'll repeat this ${repeatCount} times... Ready? Let's begin...`, pauseAfterSeconds: 2 });
     
     for (let i = 1; i <= repeatCount; i++) {
-      const prefix = i === 1 ? `First time. ` : i === repeatCount ? `Final time. ` : `Time ${i}. `;
+      const prefix = i === 1 ? `First time... ` : i === repeatCount ? `Final time... ` : `Time ${i}... `;
       segments.push({ 
-        text: prefix + baseInstruction, 
+        text: `${prefix}${baseInstruction}...`, 
         pauseAfterSeconds: pauseBetweenRepeats 
       });
     }
     
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -722,18 +730,18 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
     const instructionSpeakingTime = Math.ceil(instruction.length / SPEAKING_RATE);
     const reflectionTime = targetSeconds - instructionSpeakingTime;
     
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
+    segments.push({ text: `${instruction}... Take a moment to reflect...`, pauseAfterSeconds: 2 });
     segments.push({ 
-      text: 'Take your time to check in with yourself...', 
+      text: 'Take your time to check in with yourself... notice what feels true...', 
       pauseAfterSeconds: Math.floor(reflectionTime / 2) 
     });
     segments.push({ 
-      text: 'What number feels true for you right now?', 
+      text: 'What number feels true for you right now?... Trust your first instinct...', 
       pauseAfterSeconds: Math.floor(reflectionTime / 2) 
     });
     
     if (tip) {
-      segments.push({ text: tip, pauseAfterSeconds: 2 });
+      segments.push({ text: `${tip}...`, pauseAfterSeconds: 2 });
     }
     return segments;
   }
@@ -744,23 +752,16 @@ function createRealTimeGuidedSegments(instruction: string, targetSeconds: number
   
   let text = instruction;
   
-  // Add natural pauses for longer durations
   if (pauseDuration > 30) {
     const midpoint = Math.floor(pauseDuration / 2);
-    segments.push({ text: instruction, pauseAfterSeconds: 2 });
-    segments.push({ 
-      text: 'Take your time... stay present with this...', 
-      pauseAfterSeconds: midpoint 
-    });
-    segments.push({ 
-      text: 'Continue... there is no rush...', 
-      pauseAfterSeconds: midpoint - 2 
-    });
+    segments.push({ text: `${instruction}... Take your time with this...`, pauseAfterSeconds: 2 });
+    segments.push({ text: 'Continue at your own pace... stay present...', pauseAfterSeconds: midpoint });
+    segments.push({ text: 'Take all the time you need... just be present...', pauseAfterSeconds: Math.max(0, pauseDuration - midpoint - 4) });
   } else if (pauseDuration > 10) {
-    text += '\n\nTake your time with this...';
-    segments.push({ text, pauseAfterSeconds: pauseDuration });
+    segments.push({ text: `${instruction}... Let's take some time with this...`, pauseAfterSeconds: 3 });
+    segments.push({ text: 'Notice what you experience... stay present...', pauseAfterSeconds: Math.max(0, pauseDuration - 3) });
   } else {
-    segments.push({ text, pauseAfterSeconds: pauseDuration });
+    segments.push({ text: `${instruction}...`, pauseAfterSeconds: pauseDuration });
   }
   
   if (tip && tip.length > 0 && pauseDuration <= 10) {
